@@ -1,12 +1,17 @@
 # LBRDC-TimeKeepWEB
  Timkeeping Management System
 
-## Requirements
+#### Files
+* Database Diagram
+  - Editor: https://app.diagrams.net
+  - File: https://drive.google.com/file/d/11HVScJ35X6_PBKgqbgRrWIeChbOKXdKG/view?usp=sharing
+
+#### Requirements
 
 1. XAMPP latest
 2. Visual Studio Code (For Coding)
 
-## instructions
+#### instructions
 
 1. Install XAMPP, VSCode
 2. delete files inside htdocs folder (C:\xampp\htdocs)
