@@ -30,5 +30,5 @@
 <b>Font-Awesome:</b> 5.8.2  
 <b>jQuery:</b> 3.4.1  
 <b>jQuery-Easing:</b> 1.4.1  
-~~<b>Select2:</b> 4.0.13~~
+~~<b>Select2:</b> 4.0.13~~  
 <b>Bootstrap-Select:</b> 1.13.14
