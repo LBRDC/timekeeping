@@ -45,12 +45,11 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
+                        <th>Employee No.</th>
                         <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
+                        <th>Department</th>
+                        <th>Location</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <!--<tfoot>
@@ -65,12 +64,21 @@
                     </tfoot>-->
                     <tbody>
                       <tr>
-                        <td>Tiger Nixon</td>
-                        <td>System Architect</td>
-                        <td>Edinburgh</td>
-                        <td>61</td>
-                        <td>2011/04/25</td>
-                        <td>$320,800</td>
+                        <td>0000</td>
+                        <td>John Doe</td>
+                        <td>Administrative and General Services Department</td>
+                        <td>LBRDC Head Office</td>
+                        <td>
+                          <a href="javascript:void(0);" class="btn btn-info" data-toggle="modal" data-target="#mdlEditEmployee">
+                            <i class="fas fa-info-circle"></i>
+                          </a>
+                          <a href="#" class="btn btn-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                          </a>
+                          <a href="#" class="btn btn-danger">
+                            <i class="fas fa-trash"></i>
+                          </a>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
