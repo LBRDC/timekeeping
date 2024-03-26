@@ -6,3 +6,14 @@
     color: #fafafa;
     background-color: #028623;
 }
+
+.card-bg {
+    background-image: url('../img/landbank.webp');
+    background-size: cover;
+    min-height: 200px;
+    background-position-y: center;
+}
+
+.txt-shadow {
+    text-shadow: 2px 2px #adadad;
+}
