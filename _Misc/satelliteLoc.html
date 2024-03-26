@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<title>
+		Sattelite Locations	</title>
+	<!-- Favicon-->
+	<link rel="icon" href="https://tlcpay.ph/LBP/assets/custom/images/favicon.ico" type="image/png" />
+
+	<!-- Google Fonts -->
+	<link rel="stylesheet" href="https://tlcpay.ph/LBP/assets/fonts/googlefonts.css" />
+
+	<!-- Bootstrap Core Css -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<!-- Waves Effect Css -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/node-waves/waves.css" rel="stylesheet" />
+	<!-- Animation Css -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/animate-css/animate.css" rel="stylesheet" />
+	<!-- Morris Chart Css-->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/morrisjs/morris.css" rel="stylesheet" />
+	<!-- Multi Select Css -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/multi-select/css/multi-select.css" rel="stylesheet">
+	<!-- Bootstrap Select Css -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+	<!-- Jquery Confirm Css -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/jquery-confirm/jquery-confirm.min.css" rel="stylesheet" />
+	<!-- Custom Css -->
+	<link href="https://tlcpay.ph/LBP/assets/custom/css/style.css" rel="stylesheet" />
+	<link href="https://tlcpay.ph/LBP/assets/custom/css/workflow.css" rel="stylesheet" />
+	<!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+	<link href="https://tlcpay.ph/LBP/assets/custom/css/themes/all-themes.css" rel="stylesheet" />
+	<!-- JQuery DataTable Css -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+	<link href="https://tlcpay.ph/LBP/assets/plugins/jquery-datatable/extensions/responsive/responsive.dataTables.min.css" rel="stylesheet">
+	<!-- Date Time Picker -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
+	 rel="stylesheet" />
+	<!-- Font-awesome -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" />
+	<!-- Date Range Picker -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/daterange/daterangepicker.css" rel="stylesheet" />
+	<!-- Sweetalert -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+	<!-- LightGallery -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/light-gallery/css/lightgallery.css" rel="stylesheet">
+	<!-- Jquery Core Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery/jquery.min.js"></script>
+	<!-- Commons -->
+	<script src="https://tlcpay.ph/LBP/assets/commons/js/commons.js"></script>
+	<!-- Socket-io -->
+	<script type="text/javascript" src="https://tlcpay.ph/LBP/assets/plugins/socket.io/socket.io.js"></script>
+	<!-- Jquery Validation Plugin js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-validation/jquery.validate.js"></script>
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-validation/jquery.validate.unobtrusive.dynamic.js"></script>
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-validation/additional-methods.js"></script>
+	<!-- Materialize Js -->
+	<link href="https://tlcpay.ph/LBP/assets/plugins/materialize/js/materialize.js" rel="stylesheet">
+	<!-- Input Mask Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+	<style type="text/css">
+		.green-background {
+			background: rgb(2,0,36);
+			background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,255,255,1) 0%, rgba(40,167,69,1) 100%)
+		}
+
+		@media only screen and (min-width: 771px) {
+			#navbar-collapse ul.dropdown-menu {
+				top: 100px;
+			}
+
+			nav ul ul:before {
+				position: absolute;
+				top: -9px;
+				left: 90%;
+				display: inline-block;
+				border-right: 9px solid transparent;
+				border-bottom: 9px solid #EEE;
+				border-left: 9px solid transparent;
+				content: '';
+			}
+		}
+
+		@media only screen and (max-width: 770px) {
+			#navbar-collapse ul.dropdown-menu {
+				top: 100px;
+				left: 50px;
+			}
+
+			nav ul ul:before {
+				position: absolute;
+				top: -9px;
+				left: 6%;
+				display: inline-block;
+				border-right: 9px solid transparent;
+				border-bottom: 9px solid #EEE;
+				border-left: 9px solid transparent;
+				content: '';
+			}
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+		}
+
+		input[type=number] {
+			text-align: right
+		}
+		.daterangepicker {
+		    position: absolute;
+		    top: 18px; 
+		    left: 20px; 
+		    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+		    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+		    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+		    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		    border-bottom: 1px solid #ddd;
+		}
+		.full-screen {
+		  width: 95%;
+		}
+
+	</style>
+</head>
+
+<body class="">
+	<input type="hidden" class="employee_id_hide" value="5d9b61e90d825">
+	<!-- Modal 1 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header bg-green">
+					<button type="button" class="close" data-dismiss="modal"><i class="material-icons">close</i></button>
+					<h4 class="modal-title" id="defaultModalLabel"><i class="material-icons text-danger" style="font-size:30px;">error</i>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<center>
+						<h3 class="text-warning">Content Not Found!</h3>
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ./Modal -->
+
+	<!-- Modal 2 -->
+	<div class="modal fade" id="extraModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header bg-green">
+					<button type="button" class="close" data-dismiss="modal"><i class="material-icons">close</i></button>
+					<h4 class="modal-title" id="defaultModalLabel"><i class="material-icons text-danger" style="font-size:30px;">error</i>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<center>
+						<h3 class="text-warning">Content Not Found!</h3>
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ./Modal -->
+
+	<!-- Page Loader -->
+	<div class="page-loader-wrapper">
+		<div class="loader">
+			<div class="preloader">
+				<div class="spinner-layer pl-blue-grey">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+			<p>Please wait...</p>
+		</div>
+	</div>
+	<!-- #END# Page Loader -->
+	<!-- Overlay For Sidebars -->
+	<div class="overlay"></div>
+	<!-- #END# Overlay For Sidebars -->
+	<!-- Top Bar -->
+	<nav class="navbar green-background">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"
+				 aria-expanded="false"></a>
+				<a href="javascript:void(0);" class="bars"></a>
+				<a class="navbar-brand" href="https://tlcpay.ph/LBP/">
+					<div style="display: inline;">
+						<img style="margin-top: -10px !important; height:225%;" src="https://tlcpay.ph/LBP/assets/custom/images/lbpresources.gif"
+						 alt="" />
+						&nbsp;
+						<big style="color: black;position: absolute;" class="font-24">
+							<b style="color:#28a745"> LBP RESOURCES AND DEVELOPMENT CORPORATION - <small>Timekeeping System</small></b>
+						</big>
+					</div>
+				</a>
+			</div>
+		</div>
+	</nav>
+	<!-- #Top Bar -->
+	<section>
+		<!-- Left Sidebar -->
+		<aside id="leftsidebar" class="sidebar">
+			<!-- User Info -->
+			<div class="user-info">
+				<div class="image">
+										<img src="https://tlcpay.ph/LBP/assets/custom/images/account_circle_grey_192x192.png" width="48" height="48"
+					 alt="User" />
+									</div>
+				<div class="info-container">
+					<div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						ARIANE MAY TANGUAN					</div>
+					<div class="email">
+						lbpresourceshr@gmail.com					</div>
+					<div class="btn-group user-helper-dropdown">
+						<i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+						<ul class="dropdown-menu pull-right">
+							<li><a href="https://tlcpay.ph/LBP/userprofile/Userprofile/"><i class="material-icons">person</i>Profile</a></li>
+							<li role="seperator" class="divider"></li>
+							<li><a href="https://tlcpay.ph/LBP/session/logout"><i class="material-icons">input</i>Sign Off</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- #User Info -->
+			<!-- Menu -->
+			<div class="menu">
+	<ul class="list">
+		<li class="header">MAIN NAVIGATION</li>
+				<li>
+			<a href="https://tlcpay.ph/LBP/home">
+				<i class="material-icons">dashboard</i>
+				<span>Dashboard</span>
+			</a>
+		</li>
+						<li>
+			<a href="https://tlcpay.ph/LBP/employeetracking/EmployeeTracking" target="_blank">
+				<i class="material-icons">remove_red_eye</i>
+				<span>Employee Tracking</span>
+			</a>
+		</li>
+						<li>
+			<a href="javascript:void(0);" class="menu-toggle">
+				<i class="material-icons">people</i>
+				<span>Employee Management</span>
+			</a>
+			<ul class="ml-menu">
+								<li>
+					<a href="https://tlcpay.ph/LBP/employees/Employees/">Employees</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/employees/Employees/?EmploymentStatus=1">Ex Employees</a>
+				</li>
+							</ul>
+		</li>
+			
+		
+				<li>
+			<a href="javascript:void(0);" class="menu-toggle">
+				<i class="material-icons">timer</i>
+				<span>Timekeeping Maintenance</span>
+			</a>
+			<ul class="ml-menu">
+								<li>
+					<a href="https://tlcpay.ph/LBP/timekeeping/OvertimeApplications/">Approved Overtime</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/timekeeping/EmployeeSchedules/">Employee Schedules</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/timekeeping/ImportDTRFromDevice/">Import From Portable Device</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/timekeeping/ExportTXTFile/">Export TXT file</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/timekeeping/ImportFromExcel/">Import From Excel</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/timekeeping/DailyTimeRecordMaintenance/">Daily Time Record Maintenance</a>
+				</li>
+							</ul>
+		</li>
+							<li>
+				<a href="javascript:void(0);" class="menu-toggle">
+					<i class="material-icons">av_timer</i>
+					<span>Timekeeping Reports</span>
+				</a>
+				<ul class="ml-menu">
+										<li>
+						<a href="https://tlcpay.ph/LBP/timekeepingreports/DailyRecordReport/">Daily Record Report</a>
+					</li>
+															<li>
+						<a href="https://tlcpay.ph/LBP/timekeepingreports/SummaryOfAttendance/">Summary of Attendance</a>
+					</li>
+															<li>
+						<a href="https://tlcpay.ph/LBP/timekeepingreports/SummaryOfBilling/">Summary of Billing</a>
+					</li>
+															<li>
+						<a href="https://tlcpay.ph/LBP/timekeepingreports/BillingReport/">Billing Report</a>
+					</li>
+															<li>
+						<a href="https://tlcpay.ph/LBP/timekeepingreports/ActualAttendance/">Raw Data</a>
+					</li>
+															<li>
+						<a href="https://tlcpay.ph/LBP/timekeepingreports/ExportToExcel/">Export to Excel</a>
+					</li>
+									</ul>
+			</li>
+						<li>
+			<a href="javascript:void(0);" class="menu-toggle">
+				<i class="material-icons">list</i>
+				<span>Field Management</span>
+			</a>
+			<ul class="ml-menu">
+
+								<li>
+					<a href="https://tlcpay.ph/LBP/fieldmanagement/Departments/">Departments</a>
+				</li>
+								
+								<li>
+					<a href="https://tlcpay.ph/LBP/fieldmanagement/Holidays/">Holidays</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/fieldmanagement/PayrollGrouping/">Payroll Grouping</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/fieldmanagement/Positions/">Position</a>
+				</li>
+				
+								<li>
+					<a href="https://tlcpay.ph/LBP/fieldmanagement/Signatories/">Signatories</a>
+				</li>
+								
+								<li>
+					<a href="https://tlcpay.ph/LBP/fieldmanagement/SatelliteLocations/">Satellite Locations</a>
+				</li>
+							</ul>
+		</li>
+						<li>
+			<a href="javascript:void(0);" class="menu-toggle">
+				<i class="material-icons">person_pin</i>
+				<span>User Management</span>
+			</a>
+			<ul class="ml-menu">
+								<li>
+					<a href="https://tlcpay.ph/LBP/usermanagement/UserConfig/">User Accounts</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/usermanagement/UserLevelConfig/">User Account Levels</a>
+				</li>
+												<li>
+					<a href="https://tlcpay.ph/LBP/usermanagement/MobileUserConfig/">Mobile User Accounts</a>
+				</li>
+							</ul>
+		</li>
+						<li>
+			<a href="javascript:void(0);" class="menu-toggle">
+				<i class="material-icons">settings</i>
+				<span>Settings</span>
+			</a>
+			<ul class="ml-menu">
+								<li>
+					<a href="https://tlcpay.ph/LBP/settings/AuditTrails/">Audit Trails</a>
+				</li>
+							</ul>
+		</li>
+			</ul>
+</div>			<!-- #Menu -->
+			<!-- Footer -->
+			<div class="legal">
+				<div class="copyright">
+					Timekeeping System &copy; 2020 <a href="http://www.mobilemoney.ph" target="_blank">Telcom Live Content, Inc.</a>
+				</div>
+				<div class="version">
+					<b>Version: </b> 1.0
+				</div>
+			</div>
+			<!-- #Footer -->
+		</aside>
+		<!-- #END# Left Sidebar -->
+	</section>
+
+	<section class="content">
+		<div class="row clearfix">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header bg-green">
+                <h2>
+                    Satellite Locations <small>Satellite Locations Maintenance</small>
+                </h2>
+                
+            </div>
+            <div class="body">
+                <form id="addSatelliteLocations" action="https://tlcpay.ph/LBP/fieldmanagement/SatelliteLocations/addSatelliteLocations" method="POST">
+                    <div class="hidden-content">
+                        <input type="hidden" name="id" id="id" class="id">
+                        <input type="hidden" name="type" id="type" class="type">
+                        <input type="hidden" name="lat1" id="lat1" class="lat1">
+                        <input type="hidden" name="lat2" id="lat2" class="lat2">
+                        <input type="hidden" name="long1" id="long1" class="long1">
+                        <input type="hidden" name="long2" id="long2" class="long2">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">Location</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="name" value="" id="location" class="location form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">Latitude</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="latitude" value="" id="latitude" class="latitude form-control" readonly required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">Longitude</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="longitude" value="" id="longitude" class="longitude form-control" readonly required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">Radius</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="radius" value="" id="radius" class="radius form-control" readonly required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-circle waves-effect waves-circle waves-float" id="btnSave" data-toggle="tooltip" data-placement="top" title="Save">
+                                    <i class="material-icons">save</i>
+                                </button>
+                                <a class="btn btn-warning btn-circle waves-effect waves-circle waves-float" id="btnUpdate" data-toggle="tooltip" data-placement="top" title="Update" disabled="">
+                                    <i class="material-icons">mode_edit</i>
+                                </a>
+                                <a class="btn btn-primary btn-circle waves-effect waves-circle waves-float" id="loadSatelliteLocationsForm" href="https://tlcpay.ph/LBP/fieldmanagement/SatelliteLocations/loadSatelliteLocationsForm" data-toggle="tooltip" data-placement="top" title="Load">
+                                    <i class="material-icons">pageview</i>
+                                </a>
+                                <a class="btn btn-danger btn-circle waves-effect waves-circle waves-float" id="btnReset" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reset">
+                                    <i class="material-icons">refresh</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>   
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Search Location</label>
+                                <input type="text" name="pac-input" id="pac-input" class="pac-input form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="map"  style="height: 460px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://tlcpay.ph/LBP/assets/modules/js/fieldmanagement/satellitelocations.js"></script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCQYx12j3yb0nh4HAhbanoiq5kE8DxjM3Q&libraries=places,drawing&callback=runMaps"></script>	</section>
+
+	<!-- Module script(s) -->
+	<script type="text/javascript" src="https://tlcpay.ph/LBP/assets/modules/js/home/home.js"></script>
+	<script type="text/javascript" src="https://tlcpay.ph/LBP/assets/modules/js/home/preventValidations.js"></script>
+	<!-- Bootstrap Core Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/bootstrap/js/bootstrap.js"></script>
+	<!-- Slimscroll Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+	<!-- Waves Effect Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/node-waves/waves.js"></script>
+	<!-- Jquery CountTo Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-countto/jquery.countTo.js"></script>
+	<!-- Morris Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/raphael/raphael.min.js"></script>
+	<script src="https://tlcpay.ph/LBP/assets/plugins/morrisjs/morris.js"></script>
+	<!-- Jquery Confirm Plugin -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-confirm/jquery-confirm.min.js"></script>
+	<!-- Sparkline Chart Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+	<!-- Jquery DataTable Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-datatable/extensions/responsive/dataTables.responsive.min.js"></script>
+
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+	<!-- <script src="https://tlcpay.ph/LBP/assets/plugins/jquery-datatable/extensions/export/jszip.min.js"></script> -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+	<!-- Moment Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/momentjs/moment.js"></script>
+	<!-- Date time picker -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+	<!-- Date Range picker -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/daterange/daterangepicker.js"></script>
+	<!-- Sweetalert -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/sweetalert/sweetalert-dev.js"></script>
+	<script src="https://tlcpay.ph/LBP/assets/plugins/sweetalert/sweetalert.min.js"></script>
+	<!-- Select Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+	<!-- Multi Select Plugin Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/multi-select/js/jquery.multi-select.js"></script>
+	<!-- Alphanum Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/alphanum/js/alphanum.js"></script>
+	<!-- Autonumeric Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/autonumeric/autoNumeric.js"></script>
+	<!-- Autonumeric Js -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/autonumeric/autoNumeric.min.js"></script>
+	<!-- Lightgallery JS -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/light-gallery/js/lightgallery.js"></script>
+	<!-- Webcam JS -->
+	<script src="https://tlcpay.ph/LBP/assets/plugins/webcam-js/webcam.min.js"></script>
+	<!-- Custom Js -->
+	<script src="https://tlcpay.ph/LBP/assets/custom/js/admin.js"></script>
+	<!-- Demo Js -->
+	<script src="https://tlcpay.ph/LBP/assets/custom/js/demo.js"></script>
+	
+	</body>
+
+</html>
