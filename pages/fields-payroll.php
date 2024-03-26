@@ -11,8 +11,14 @@
             </ol>
           </div>
 
-          <div class="row">
+          <div class="row justify-content-center">
             <!-- CONTENT HERE -->
+            <div class="text-center">
+                <img src="img/innovation.svg" style="max-height: 100px;">
+                <h3 class="text-gray-800 font-weight-bold">Coming Soon!</h3>
+                <p class="lead text-gray-800">Under Development</p>
+                <a href="home.php">&larr; Back to Dashboard</a> 
+            </div> 
           </div>
 <!-- ### END FIELDS PAYROLL ### -->
         
