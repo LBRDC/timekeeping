@@ -11,7 +11,7 @@
           <div class="row mb-3"> <!-- main row -->
             <div class="col-md-6">
               <!-- Date and Time -->
-              <div class="col-xl-12 col-md-6 mb-4">
+              <div class="col-xl-12 col-md-12 mb-4">
                   <div class="card h-100 card-bg">
                       <div class="card-body">
                           <div class="row align-items-center">
