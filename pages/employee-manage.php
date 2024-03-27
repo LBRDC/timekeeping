@@ -12,7 +12,7 @@
           </div>
 
           <div class="row mb-3">
-            <!-- Earnings (Monthly) Card Example -->
+            <!-- Add Employee -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card h-100">
                 <a class="btn" href="javascript:void(0);" data-toggle="modal" data-target="#mdlAddEmployee">
@@ -69,14 +69,18 @@
                         <td>Administrative and General Services Department</td>
                         <td>LBRDC Head Office</td>
                         <td>
-                          <a href="javascript:void(0);" class="btn btn-info" data-toggle="modal" data-target="#mdlEditEmployee">
+                          <a href="javascript:void(0);" class="btn btn-info"  data-toggle="modal" data-target="#mdlViewEmployee" data-toggle="tooltip" data-placement="bottom" title="View">
                             <i class="fas fa-info-circle"></i>
                           </a>
-                          <a href="#" class="btn btn-warning">
-                            <i class="fas fa-exclamation-triangle"></i>
+                          <a href="javascript:void(0);" class="btn btn-warning" data-toggle="modal" data-target="#mdlEditEmployee" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                            <i class="fas fa-edit"></i>
                           </a>
-                          <a href="#" class="btn btn-danger">
-                            <i class="fas fa-trash"></i>
+                          <a href="#" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Disable">
+                            <!--<i class="fas fa-trash"></i>-->
+                            <i class="fas fa-times-circle"></i>
+                          </a>
+                          <a href="#" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Enable">
+                            <i class="fas fa-check-circle"></i>
                           </a>
                         </td>
                       </tr>
