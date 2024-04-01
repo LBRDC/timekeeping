@@ -11,6 +11,7 @@ $(document).ready(function () {
         clearBtn: true,
       });
 
+    //Update Date Time
     function updateDateTime() {
       $.ajax({
           url: 'query/dateTimeExe.php',
@@ -27,5 +28,5 @@ $(document).ready(function () {
       });
     }
     updateDateTime();
-    setInterval(updateDateTime, 1000);
+    setInterval(updateDateTime, 10000);
 });
