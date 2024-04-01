@@ -40,6 +40,9 @@
                 include("pages/fields-location.php");
                 include("modals/modal-fld-location.php");
                 break;
+            case 'fields-location-add':
+                include("pages/fields-location-add.php");
+                break;
             case 'fields-schedule':
                 include("pages/fields-schedule.php");
                 include("modals/modal-fld-schedule.php");

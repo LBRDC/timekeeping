@@ -27,6 +27,9 @@
       case 'fields-location':
         $page = 'fields';
         break;
+        case 'fields-location-add':
+          $page = 'fields';
+          break;
       case 'fields-schedule':
         $page = 'fields';
         break;
@@ -108,7 +111,7 @@
             <a class="collapse-item <?php if($activePage == 'fields-department'){echo 'active';} ?>" href="?page=fields-department">Department</a>
             <a class="collapse-item <?php if($activePage == 'fields-position'){echo 'active';} ?>" href="?page=fields-position">Position</a>
             <a class="collapse-item <?php if($activePage == 'fields-payroll'){echo 'active';} ?>" href="?page=fields-payroll">Payroll Grouping</a>
-            <a class="collapse-item <?php if($activePage == 'fields-location'){echo 'active';} ?>" href="?page=fields-location">Satellite Locations</a>
+            <a class="collapse-item <?php if($activePage == 'fields-location' || $activePage == 'fields-location-add'){echo 'active';} ?>" href="?page=fields-location">Satellite Locations</a>
             <a class="collapse-item <?php if($activePage == 'fields-schedule'){echo 'active';} ?>" href="?page=fields-schedule">Schedules</a>
             <a class="collapse-item <?php if($activePage == 'fields-holiday'){echo 'active';} ?>" href="?page=fields-holiday">Holidays</a>
           </div>
