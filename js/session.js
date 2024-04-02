@@ -1,36 +1,58 @@
 //Check Session
 document.addEventListener('DOMContentLoaded', function() {
-    // Your AJAX call here
+    let timerInterval;
     $.ajax({
         url: 'query/session.php',
         type: 'POST',
         dataType: "json",
         success: function(response) {
             if (response.res == "valid") {
-                // Handle valid response here
                 //alert('User Valid.');
             } else if (response.res == "invalid") {
                 Swal.fire({
                     icon: "error",
-                    title: "Error",
-                    text: "Please Login.",
+                    title: "Session Expired!",
+                    html: "Redirecting in <b>5</b> seconds.", // Changed to seconds
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            // Convert milliseconds to seconds and update the timer text every second
+                            timer.textContent = `${Math.ceil(Swal.getTimerLeft() / 1000)}`;
+                        }, 1000); // Update every second
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
                 }).then(function() {
                     window.location.href = '/';
                 });
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Error",
-                    text: "System error occurred. Please login.",
+                    title: "Session Error",
+                    html: "Redirecting in <b>5</b> seconds.", // Changed to seconds
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            // Convert milliseconds to seconds and update the timer text every second
+                            timer.textContent = `${Math.ceil(Swal.getTimerLeft() / 1000)}`;
+                        }, 1000); // Update every second
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
                 }).then(function() {
-                  window.location.href = '/';
-              });
+                    window.location.href = '/';
+                });
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            // Assuming submitButton is defined elsewhere in your code
-            submitButton.prop('disabled', false);
-
             alert('An error occurred with the session.');
             console.error(textStatus, errorThrown);
             window.location.href = '/';
