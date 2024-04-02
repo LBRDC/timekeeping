@@ -34,32 +34,32 @@
                 <!-- Maps -->
                 <div class="row m-4">
                   <div class="col-xl-6 col-md-6 col-12">
-                    <form>
-                        <div class="form-row mb-4">
-                            <label for="add_LocName">Name<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="add_LocName" required>
-                        </div>
+                    <form id="addLocationFrm" method="post">
+                      <div class="form-row mb-4">
+                          <label for="add_LocName">Name<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="add_LocName" required>
+                      </div>
 
-                        <div class="form-row">
-                            <label>Instructions: Interact with the map to fill the information below.</label>
-                        </div>
-                        <div class="form-row mb-2">
-                            <label for="add_Latitude">Latitude<span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="add_Latitude" required readonly>
-                        </div>
-                        <div class="form-row mb-2">
-                            <label for="add_Longitude">Longitude<span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="add_Longitude" required readonly>
-                        </div>
-                        <div class="form-row mb-4">
-                            <label for="add_Radius">Radius<span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="add_Radius" required readonly>
-                        </div>
-                        <div class="col-auto">
-                            <div class="form-group" align="right">
-                                <button type="submit" class="btn btn-primary">Add</button>
-                            </div> 
-                        </div>
+                      <div class="form-row">
+                          <label>Instructions: Interact with the map to fill the information below.</label>
+                      </div>
+                      <div class="form-row mb-2">
+                          <label for="add_Latitude">Latitude<span class="text-danger">*</span></label>
+                          <input type="number" class="form-control" id="add_Latitude" required readonly>
+                      </div>
+                      <div class="form-row mb-2">
+                          <label for="add_Longitude">Longitude<span class="text-danger">*</span></label>
+                          <input type="number" class="form-control" id="add_Longitude" required readonly>
+                      </div>
+                      <div class="form-row mb-4">
+                          <label for="add_Radius">Radius<span class="text-danger">*</span></label>
+                          <input type="number" class="form-control" id="add_Radius" required readonly>
+                      </div>
+                      <div class="col-auto">
+                          <div class="form-group" align="right">
+                              <button type="submit" class="btn btn-primary">Add</button>
+                          </div> 
+                      </div>
                     </form>
                   </div>
                   <div class="col-xl-6 col-md-6 col-12">
