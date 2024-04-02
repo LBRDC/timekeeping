@@ -6,8 +6,9 @@ function updateDateTime() {
     // Format the date
     const date = now.toLocaleDateString();
 
-    // Format the time
-    const time = now.toLocaleTimeString();
+    // Format the time to show only hours and minutes
+    const timeOptions = { hour: '2-digit', minute: '2-digit' };
+    const time = now.toLocaleTimeString(undefined, timeOptions);
 
     // Get the day of the week
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -23,4 +24,4 @@ function updateDateTime() {
 updateDateTime();
 
 // Set an interval to update the date, time, and day every minute
-setInterval(updateDateTime, 60000); // 60000 milliseconds = 1 minute
+setInterval(updateDateTime, 5000); // 60000 milliseconds = 1 minute
