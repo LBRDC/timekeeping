@@ -22,6 +22,8 @@
   <link href="vendor/clock-picker/clockpicker.css" rel="stylesheet">
   <!-- template css -->
   <link href="css/ruang-admin.css" rel="stylesheet">
+  <!-- sweetalert2 css -->
+  <link href="vendor/sweetalert2/old/sweetalert.min.css" rel="stylesheet">
   <!-- datatable -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- custom css -->

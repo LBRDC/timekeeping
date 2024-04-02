@@ -12,6 +12,8 @@
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.css" rel="stylesheet">
+  <!-- sweetalert2 css -->
+  <link href="vendor/sweetalert2/old/sweetalert.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-gradient-login">
@@ -28,18 +30,18 @@
                 <div class="login-form">
                   <div class="text-center">
                     <img class="mb-4" src="img/logo/lbrdc-banner-nobg.webp" alt="banner" style="max-width: 300px;">
-                    <h6 class="text-gray-900 mb-4">Biometrics and Attendance Monitoring System</h6>
+                    <h6 class="text-gray-900 mb-4">Biometrics and Attendance Management System</h6>
                   </div>
-                  <form class="user">
+                  <form id="loginFrm" method="post">
                     <div class="form-group">
-                      <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
-                        placeholder="Username">
+                      <input type="text" class="form-control" id="lgn_username" aria-describedby="usernameHelp" placeholder="Username" required>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password">
+                      <input type="password" class="form-control" id="lgn_password" placeholder="Password" required>
                     </div>
                     <div class="form-group">
-                      <a href="home.php" class="btn btn-success btn-block">Login</a>
+                      <button type="submit" class="btn btn-success btn-block" id="lgn_btn">Login</button>
+                      <!--<a href="javascript:void(0)" class="btn btn-success btn-block">Login</a>-->
                     </div>
                   </form>
                 </div>
@@ -56,6 +58,10 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
+  <!-- sweetalert2 -->
+  <script src="vendor/sweetalert2/old/sweetalert.min.js"></script>
+  <!-- LOGIN JS -->
+  <script src="js/login.js"></script>
 </body>
 
 </html>
