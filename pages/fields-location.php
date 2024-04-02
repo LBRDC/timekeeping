@@ -45,8 +45,15 @@
                     <div class="form-row mb-2">
                       <label for="view_location">Location</label>
                       <select class="form-control selectpicker" id="view_location" data-live-search="true" data-style="btn-outline-light">
-                          <option value="">Select...</option>
-                          <option>LBRDC Head Office</option>
+                        <option value="">Select...</option>
+                      <optgroup label="Enabled">
+                        <option>Mustard</option>
+                        <option>Ketchup</option>
+                        <option>Relish</option>
+                      </optgroup>
+                      <optgroup label="Disabled">
+                        <option disabled>None</option>
+                      </optgroup>
                       </select>
                     </div>
                     <div class="form-row mb-2">
