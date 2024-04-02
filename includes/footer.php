@@ -21,7 +21,7 @@
   <?php 
     // Pages
     if (!isset($page)) {
-      $pages_js = '<script src="js/intervals.js"></script>;';
+      $pages_js = '<script src="js/intervals.js"></script>';
     } else {
       switch ($page) {
         case 'employee-manage':
@@ -54,6 +54,7 @@
     }
   ?>
   
+  
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -74,12 +75,15 @@
   <!--<script src="js/demo/chart-bar-demo.js"></script>-->
   <!-- sweetalert2 -->
   <script src="vendor/sweetalert2/old/sweetalert.min.js"></script>
+  <!--<script src="vendor/sweetalert2/js/sweetalert2.min.js"></script>-->
   <!-- datatables -->
   <script src="vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
   <!-- MAPS -->
   <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
         ({key: "AIzaSyDyYdjZdfx2Fwu5g04kxXuxL5jO5DnNbKk", v: "weekly", libraries: "places"});</script>
+  <!-- session -->
+  <script src="js/session.js"></script>
   <!-- PAGES JS -->
   <?php echo $pages_js; ?>
   <!-- Custom JS -->

@@ -17,3 +17,8 @@
 .txt-shadow {
     text-shadow: 2px 2px #adadad;
 }
+
+body.swal2-shown > [aria-hidden='true'] {
+    transition: 0s filter;
+    filter: blur(10px);
+  }
