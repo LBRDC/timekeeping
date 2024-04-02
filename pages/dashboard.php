@@ -16,9 +16,9 @@
                       <div class="card-body">
                           <div class="row align-items-center">
                               <div class="col mr-2">
-                                  <div class="h3 mb-0 font-weight-bold text-white" id="currentDate">DATE</div>
-                                  <div class="h3 mb-0 font-weight-bold text-white" id="currentTime">TIME</div>
-                                  <div class="h3 mb-0 font-weight-bold text-white" id="currentDay">DAY</div>
+                                  <div class="h3 mb-0 font-weight-bold text-white" id="currentDate"></div>
+                                  <div class="h3 mb-0 font-weight-bold text-white" id="currentTime"></div>
+                                  <div class="h3 mb-0 font-weight-bold text-white" id="currentDay"></div>
                               </div>
                           </div>
                       </div>
