@@ -89,6 +89,7 @@
   <!-- Custom JS -->
   <script src="js/intervals.js"></script>
   <script src="js/custom.js"></script>
+  <script src="js/ajax.js"></script>
 </body>
 
 </html> <!-- ### END FOOTER ### -->
