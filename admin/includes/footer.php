@@ -37,10 +37,13 @@
         case 'fields-payroll':
           break;
         case 'fields-location':
-          $pages_js = '<script src="js/maps.js"></script>';
+          $pages_js = '<script src="js/pgjs/maps.js"></script>';
           break;
         case 'fields-location-add':
-          $pages_js = '<script src="js/maps-add.js"></script>';
+          $pages_js = '<script src="js/pgjs/maps-add.js"></script>';
+          break;
+        case 'fields-location-edit':
+          $pages_js = '<script src="js/pgjs/maps-edit.js"></script>';
           break;
         case 'fields-schedule':
           break;

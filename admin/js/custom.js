@@ -4,10 +4,10 @@ $(document).ready(function () {
 
     //Datepicker
     $('#datepicker-year .input-group.date').datepicker({
-        startView: 2,
-        format: 'mm/dd/yyyy',        
-        autoclose: true,     
-        todayHighlight: true,  
-        clearBtn: true,
-      }); 
+      startView: 2,
+      format: 'mm/dd/yyyy',        
+      autoclose: true,     
+      todayHighlight: true,  
+      clearBtn: true,
+    });
 });

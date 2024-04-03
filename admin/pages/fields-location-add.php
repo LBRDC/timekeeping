@@ -45,15 +45,15 @@
                       </div>
                       <div class="form-row mb-2">
                           <label for="add_Latitude">Latitude<span class="text-danger">*</span></label>
-                          <input type="number" class="form-control" id="add_Latitude" required readonly>
+                          <input type="number" step="any" class="form-control" id="add_Latitude" required readonly>
                       </div>
                       <div class="form-row mb-2">
                           <label for="add_Longitude">Longitude<span class="text-danger">*</span></label>
-                          <input type="number" class="form-control" id="add_Longitude" required readonly>
+                          <input type="number" step="any" class="form-control" id="add_Longitude" required readonly>
                       </div>
                       <div class="form-row mb-4">
                           <label for="add_Radius">Radius<span class="text-danger">*</span></label>
-                          <input type="number" class="form-control" id="add_Radius" required readonly>
+                          <input type="number" step="any" class="form-control" id="add_Radius" required readonly>
                       </div>
                       <div class="col-auto">
                           <div class="form-group" align="right">

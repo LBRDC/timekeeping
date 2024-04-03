@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include("conn.php");
 
     // Header
     include("includes/header.php"); 
@@ -45,6 +46,9 @@
                     break;
                 case 'fields-location-add':
                     include("pages/fields-location-add.php");
+                    break;
+                case 'fields-location-edit':
+                    include("pages/fields-location-edit.php");
                     break;
                 case 'fields-schedule':
                     include("pages/fields-schedule.php");
