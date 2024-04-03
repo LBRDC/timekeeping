@@ -23,4 +23,4 @@ $(document).on("submit","#addLocationFrm" , function() {
             alert('An error occurred while adding the location.');
         }
     });
-    });
+});
