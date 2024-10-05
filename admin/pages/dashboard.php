@@ -58,11 +58,31 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div><!-- #END# All Employees -->
               </div>
               <div class="row"> <!-- row 2 -->
-
+                <!-- Location -->
+                <div class="col-xl-6 col-md-6 mb-4">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-uppercase mb-1">Satellite Locations</div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-map-marked-alt fa-2x text-warning"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- #END# Location -->
               </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <!-- On Duty Today CHART -->
             </div>
           </div>
 <!-- ### END DASHBOARD ### -->
