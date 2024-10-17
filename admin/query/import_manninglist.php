@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include("../conn.php");
 
 $response = array("Error" => true, "msg" => "");
@@ -59,7 +59,14 @@ try {
         }
     }
 
-
+    $logs = addLogs("Manning-List", "Import Excel Data", $_SESSION['user']['admin_name']);
+    if (!$logs) {
+        $conn->rollBack();
+        $response['Error'] = true;
+        $response['msg'] = "Failed to add logs";
+        echo json_encode($response);
+        exit();
+    }
 
     if ($conn->inTransaction()) {
         $conn->commit();
@@ -89,6 +96,7 @@ function alterDynamicTable($conn, $headers)
         $response['msg'] = "Table created successfully";
         return $response;
     }
+
     $response['msg'] = $stmt->errorInfo();
     return $response;
 }

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "../conn.php";
 
 // $json = file_get_contents('php://input');
@@ -22,6 +23,15 @@ try {
     $query .= " where IdNumber =" . $id;
     $stmt = $conn->prepare($query);
     $stmt->execute($newData);
+
+    $logs = addLogs("Manning-List", "Update Employee :" . $id, $_SESSION['user']['admin_name']);
+    if (!$logs) {
+        $conn->rollBack();
+        $response['Error'] = true;
+        $response['msg'] = "Failed to add logs";
+        echo json_encode($response);
+        exit();
+    }
     $conn->commit();
     echo json_encode(['Error' => false, "msg" => "Record Updated"]);
 } catch (Exception $e) {

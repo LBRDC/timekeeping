@@ -153,7 +153,7 @@ if (!isset($_GET['page'])) {
         </div>
       </li>
         <!-- NAV: Manninglist Management -->
-      <li class="nav-item <?php if ($page == 'manning-list') {
+      <li class="nav-item <?php if ($page == 'manninglist') {
         echo 'active';
       } ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManninglist"
@@ -161,7 +161,7 @@ if (!isset($_GET['page'])) {
           <i class="fas fa-user-tie"></i>
           <span>Manninglist</span>
         </a>
-        <div id="collapseManninglist" class="collapse <?php if ($page == 'employee') {
+        <div id="collapseManninglist" class="collapse <?php if ($page == 'manninglist') {
           echo 'show';
         } ?>" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">

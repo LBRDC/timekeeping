@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "../conn.php";
 
 $response = array("Error" => true, "msg" => "");
@@ -17,6 +18,7 @@ $data = ["keys" => $emp_keys, "values" => $emp_values];
 // echo json_encode(value: $response);
 // exit();
 try {
+    $conn->beginTransaction();
     for ($i = 0; $i < count($data['keys']); $i++) {
         $column[] = $data['keys'][$i][0];
         $params[] = ":" . $data['keys'][$i][0];
@@ -39,9 +41,21 @@ try {
         }
     } else {
         $response['msg'] = "Employee already exist";
+        echo json_encode($response);
+        exit();
+    }
+
+    $logs = addLogs("Manning-List", "Add Employee :" . $values[':IdNumber'], $_SESSION['user']['admin_name']);
+    if (!$logs) {
+        $conn->rollBack();
+        $response['Error'] = true;
+        $response['msg'] = "Failed to add logs";
+        echo json_encode($response);
+        exit();
     }
 
     echo json_encode($response);
+    $conn->commit();
 } catch (Exception $e) {
     $response['msg'] = $e->getMessage();
     echo json_encode($response);

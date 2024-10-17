@@ -33,3 +33,17 @@ try {
     error_log("Database connection failed: " . $e->getMessage());
     echo "Connection failed: " . $e->getMessage();
 }
+
+
+function addLogs($page, $action, $user)
+{
+    global $conn;
+    $stmt = $conn->prepare("INSERT INTO `admin_editlog`(`log_page`, `log_action`, `log_user`) VALUES (:page, :action, :user)");
+    $stmt->bindParam(":page", $page);
+    $stmt->bindParam(":action", $action);
+    $stmt->bindParam(":user", $user);
+    if ($stmt->execute()) {
+        return true;
+    }
+    return false;
+}

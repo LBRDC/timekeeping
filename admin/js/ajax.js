@@ -380,7 +380,7 @@ $(document).on("submit", "#importfileFrm", (e) => {
         } else {
           swal.fire({
             title: "Error",
-            text: "Internal Server Error",
+            text: res.result.msg,
             icon: "error",
           });
         }

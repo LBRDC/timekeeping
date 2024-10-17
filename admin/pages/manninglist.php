@@ -77,8 +77,7 @@ function mstr($str)
   return $new_str;
 }
 
-var_dump($_SESSION['user']['admin_name']);
-echo $page;
+
 ?>
 
 

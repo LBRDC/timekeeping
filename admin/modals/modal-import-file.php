@@ -14,14 +14,14 @@
                         <div class="form-row">
                             <label for="sheetName">Name of Sheet<span class="text-danger">*</span></label>
                             <input type="text" name="sheetName" id="sheetName" class="form-control" placeholder=""
-                                autocomplete="off" required style="width:100%" >
-                                <!-- value="Janitorial Field Units" -->
+                                autocomplete="off" required style="width:100%" 
+                                value="Janitorial Field Units">
                         </div>
                         <div class="form-row">
                             <label for="sheetName">Table Range<span class="text-danger">*</span></label>
                             <input type="text" name="sheetName" id="range" class="form-control" placeholder=""
-                                autocomplete="off" required style="width:100%" >
-                                <!-- value="A6:K114" -->
+                                autocomplete="off" required style="width:100%" 
+                                value="A6:K114">
                         </div>
 
                         <div class="form-row">
