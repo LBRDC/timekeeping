@@ -22,3 +22,20 @@
     transition: 0s filter;
     filter: blur(3px);
   }*/
+
+#manningList tbody tr td:last-of-type {
+    display: flex;
+    gap: 5px;
+
+}
+
+.hoverable-input:hover .close-btn {
+    display: block;
+}
+
+.close-btn {
+    margin-bottom: 5px;
+    display: none;
+    color: red;
+    cursor: pointer;
+}

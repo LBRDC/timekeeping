@@ -1,9 +1,15 @@
-<?php 
+<?php
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "lbrdc-tk";
+$db = "lbrdc_tk";
 $conn = null;
+
+// $host = "https://m11d8vd2-80.asse.devtunnels.ms";
+// $user = "Zhen";
+// $pass = "1225";
+// $db = "lbrdc_tk";
+// $conn = null;
 
 try {
     $conn = new PDO("mysql:host={$host};dbname={$db};charset=utf8", $user, $pass);
@@ -23,7 +29,7 @@ try {
     }
 
     //echo "Connected successfully"; 
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     error_log("Database connection failed: " . $e->getMessage());
     echo "Connection failed: " . $e->getMessage();
 }

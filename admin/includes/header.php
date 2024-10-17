@@ -29,6 +29,10 @@
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- custom css -->
   <link href="css/custom.css" rel="stylesheet">
+<!-- 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.bootstrap4.min.css"> -->
 </head>
 
 <body id="page-top">

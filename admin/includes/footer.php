@@ -18,43 +18,46 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <?php 
-    // Pages
-    if (!isset($page)) {
-      $pages_js = '<script src="js/intervals.js"></script>';
-    } else {
-      switch ($page) {
-        case 'employee-manage':
-          break;
-        case 'timekeep-record':
-          break;
-        case 'timekeep-report':
-          break;
-        case 'fields-department':
-          break;
-        case 'fields-position':
-          break;
-        case 'fields-payroll':
-          break;
-        case 'fields-location':
-          $pages_js = '<script src="js/pgjs/maps.js"></script>';
-          break;
-        case 'fields-location-add':
-          $pages_js = '<script src="js/pgjs/maps-add.js"></script>';
-          break;
-        case 'fields-location-edit':
-          $pages_js = '<script src="js/pgjs/maps-edit.js"></script>';
-          break;
-        case 'fields-schedule':
-          break;
-        case 'fields-holiday':
-          break;
-        case 'adminMng-user':
-          break;
-        default:
-          break;
-      }
+  <?php
+  // Pages
+  if (!isset($page)) {
+    $pages_js = '<script src="js/intervals.js"></script>';
+  } else {
+    switch ($page) {
+      case 'employee-manage':
+        break;
+      case 'timekeep-record':
+        break;
+      case 'timekeep-report':
+        break;
+      case 'fields-department':
+        break;
+      case 'fields-position':
+        break;
+      case 'fields-payroll':
+        break;
+      case 'fields-location':
+        $pages_js = '<script src="js/pgjs/maps.js"></script>';
+        break;
+      case 'fields-location-add':
+        $pages_js = '<script src="js/pgjs/maps-add.js"></script>';
+        break;
+      case 'fields-location-edit':
+        $pages_js = '<script src="js/pgjs/maps-edit.js"></script>';
+        break;
+      case 'manning-list':
+        $pages_js = '<script src="js/pgjs/xlsx.full.min.js"></script>';
+        break;
+      case 'fields-schedule':
+        break;
+      case 'fields-holiday':
+        break;
+      case 'adminMng-user':
+        break;
+      default:
+        break;
     }
+  }
   ?>
   
   
@@ -82,17 +85,44 @@
   <!-- datatables -->
   <script src="vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
   <!-- MAPS -->
   <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
         ({key: "AIzaSyDyYdjZdfx2Fwu5g04kxXuxL5jO5DnNbKk", v: "weekly", libraries: "places"});</script>
   <!-- session -->
   <script src="js/session.js"></script>
   <!-- PAGES JS -->
+
   <?php echo $pages_js; ?>
   <!-- Custom JS -->
   <script src="js/intervals.js"></script>
-  <script src="js/custom.js"></script>
+  <script type="module" src="js/custom.js"></script>
   <script src="js/ajax.js"></script>
+
+
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"> -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.bootstrap4.min.css"> 
+<!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.bootstrap4.min.js"></script> -->
+<!-- <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> -->
+<!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script> -->
+
+<!-- <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.bootstrap4.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script> 
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+
+
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <!-- <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script> -->
 </body>
 
 </html> <!-- ### END FOOTER ### -->

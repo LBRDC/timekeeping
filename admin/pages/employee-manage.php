@@ -76,7 +76,6 @@
                             <i class="fas fa-edit"></i>
                           </a>
                           <a href="#" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Disable">
-                            <!--<i class="fas fa-trash"></i>-->
                             <i class="fas fa-times-circle"></i>
                           </a>
                           <a href="#" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Enable">
