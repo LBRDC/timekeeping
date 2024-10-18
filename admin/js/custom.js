@@ -4,22 +4,31 @@ $(document).ready(async function () {
   let rateArray = await regionRate();
   let regionSelection = $("#Region:not(div)");
   const manninglistTbl = $("#manningList").DataTable({
-    columnDefs: [{ targets: 1, width: "230px" }],
+    scrollX: false,
+    columnDefs: [
+      { targets: 1, width: "230px" },
+      { targets: 0, width: "100px" },
+    ],
     dom: "Bfrtip",
     pageLength: 10,
     buttons: [
       {
         extend: "excelHtml5",
-        text: "Export to Excel",
+        text: "Excel",
         className: "btn btn-success",
-        title: "Data Export",
+        title: "Manninglist Employees",
         exportOptions: {
-          columns: ":visible",
+          columns: ":visible:not(:last-child)",
         },
+      },
+      {
+        extend: "pageLength",
+        text: "Page",
+        className: "btn btn-secondary",
       },
     ],
   });
-  if (manninglistTbl.columns().count() >= 7) {
+  if (manninglistTbl.columns().count() >= 6) {
     $("#manningList").DataTable().destroy();
     $("#manningList").DataTable({
       scrollX: true,
@@ -30,9 +39,9 @@ $(document).ready(async function () {
           extend: "excelHtml5",
           text: "Excel",
           className: "btn btn-success",
-          title: "Data Export",
+          title: "Manninglist Employees",
           exportOptions: {
-            columns: ":visible",
+            columns: ":visible:not(:last-child)",
           },
         },
         {

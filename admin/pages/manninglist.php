@@ -8,7 +8,6 @@ $dbresult = $dbstmt->fetchAll(PDO::FETCH_ASSOC);
 $defaultDbCol = ["IdNumber", "FirstName", "MiddleName", "LastName"];
 $dbcolumns = [];
 $logicalArr = [];
-// $logicalStmt = isset($_SESSION['filterdata']) ? " where " . implode(" ", $_SESSION['filterdata']) : "";
 if (isset($_SESSION['filterdata'])) {
   foreach ($_SESSION['filterdata'] as $item) {
     $logicalArr[] = $item['logic'] . " " . $item['column'] . " " . $item['operator'] . " " . "'" . $item['value'] . "'";
@@ -18,53 +17,38 @@ if (isset($_SESSION['filterdata'])) {
   }
 }
 $logicalStmt = empty($logicalArr) ? "" : " where " . implode(" ", $logicalArr);
-// var_dump($_SESSION['filterdata']);
-// echo "<br>";
-// echo "<br>";
-// echo "<br>";
 
-// exit();
 foreach ($dbresult as $val) {
-  if ($val['Field'] != "emp_id" && $val['Field'] != "emp_timestamp" && $val['Field'] != "emp_created" && $val['Field'] != "FirstName" && $val['Field'] != "MiddleName" && $val['Field'] != "LastName" && $val['Field'] != "IdNumber") {
+  if ($val['Field'] != "emp_id" && $val['Field'] != "emp_timestamp" && $val['Field'] != "emp_created" && $val['Field'] != "FirstName" && $val['Field'] != "MiddleName" && $val['Field'] != "LastName" && $val['Field'] != "IdNumber" && $val['Field'] != "emp_status") {
     $dbcolumns[] = $val['Field'];
     $defaultDbCol[] = $val['Field'];
   }
 
 }
-// var_dump($dbresult);
-// echo ;
+
 $headerResultTemplate = ["IdNumber", "Name"];
 $columnTemplate = ["IdNumber", "concat(IFNULL(LastName, ''),', ', IFNULL(FirstName, ''), ' ', IFNULL(MiddleName, '')) as Name"];
 if (!array_search("IdNumber", $defaultDbCol) && !array_search("LastName", $defaultDbCol)) {
   $columnTemplate = [];
   $headerResultTemplate = [];
 }
-// var_dump($columnTemplate);
 if (isset($_SESSION['selectedColumn'])) {
   $columns = array_merge($headerResultTemplate, $_SESSION['selectedColumn']);
-  $query = "SELECT " . implode(", ", array_merge($columnTemplate, $_SESSION['selectedColumn'])) . " FROM employee_tbl" . $logicalStmt . " order by IdNumber asc";
-  echo $query;
+  array_push($columns, "emp_status");
+  $query = "SELECT " . implode(", ", array_merge($columnTemplate, $_SESSION['selectedColumn'])) . ",emp_status FROM employee_tbl" . $logicalStmt . " order by IdNumber asc";
   $stmt = $conn->prepare($query);
   $stmt->execute();
   $employee = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
   $columns = array_merge($headerResultTemplate, $dbcolumns);
-  $query = "SELECT " . implode(", ", array_merge($columnTemplate, $dbcolumns)) . " FROM employee_tbl" . $logicalStmt . " order by IdNumber asc";
-  // echo $query;
-  // exit();
-  // $query = "SELECT IdNumber, concat(IFNULL(LastName, ''),', ', IFNULL(FirstName, ''), ' ', IFNULL(MiddleName, '')) as Name, emp_status, Category, Position, UnitOfAssignment, Region, SalaryRate, DailyBillRate, StatusOfDeployment, Remarks, MonthlyBillRate FROM employee_tbl where IdNumber=999932949 order by IdNumber asc";
-  // echo $query;
+  array_push($columns, "emp_status");
+  $query = "SELECT " . implode(", ", array_merge($columnTemplate, $dbcolumns)) . ",emp_status FROM employee_tbl" . $logicalStmt . " order by IdNumber asc";
   $stmt = $conn->prepare($query);
   $stmt->execute();
   $employee = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  // echo $query;
-  // echo "\n";
-  // var_dump($employee);
-  // exit();
 }
 
 
-//format Header
 function format($str)
 {
   $new_str = preg_replace('/(?<!^)([A-Z])/', ' $1', $str);
@@ -188,6 +172,7 @@ function mstr($str)
                              echo "<td class='fs-6 fw-light'>{$data}</td>";
                            }
                          }
+
                          echo '<td><div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
   <div class="btn-group btn-group-sm" role="group" aria-label="First group">
     <button type="button" class="btn btn-info emp_info" title="View"  data-toggle="modal" data-target="#manninglist_view_emp" data-id="' . $emp['IdNumber'] . '"> <i class="fas fa-info-circle"></i></button>
@@ -197,7 +182,7 @@ function mstr($str)
                          } else {
                            echo '<button title="Active" type="button" data-target="#manninglist_mdl_enable_status" data-toggle="modal" class="btn btn-success emp_enable" data-id="' . $emp['IdNumber'] . '" data-name="' . $emp['Name'] . '"><i class="fas fa-check-circle"></i></button>';
                          }
-                         echo " </div></div></tr></td>";
+                         echo " </div></div></td></tr>";
                        }
                        ?>  
                         </tbody>

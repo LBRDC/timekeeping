@@ -303,7 +303,7 @@ $(document).on("submit", "#importfileFrm", (e) => {
     if (jsonData.length === 0) {
       swal.fire({
         icon: "warning",
-        title: "Data not  found",
+        title: "Data not found",
         text: "Please select a valid sheet with data.",
       });
 
@@ -312,22 +312,23 @@ $(document).on("submit", "#importfileFrm", (e) => {
 
     const keys = jsonData[0];
     const values = jsonData.slice(1);
+    // console.log(keys);
+    // console.log(values);
+    // return;
     let newData = [];
     for (let i = 0; i < values.length; i++) {
       let obj = {};
       for (let j = 0; j < keys.length; j++) {
         if (keys[j] != "No.") {
-          if (keys[j] != "Employee Name") {
+          if (keys[j] != "Employee Name" && keys[j] != "NAME") {
             obj[sanitizeHeader(keys[j])] = values[i][j];
           } else {
             const customName = _splitName(values[i][j]);
             if (!customName.FirstName && !customName.LastName) {
+              const row = i + 1;
               swal.fire({
                 title: "Error",
-                text:
-                  "Invalid name format=>" +
-                  values[i][j] +
-                  ". It should be (LASTNAME, FIRSTNAME MIDDLENAME)",
+                text: customName.Error + " at No. " + row,
                 icon: "error",
               });
               return;
@@ -340,7 +341,6 @@ $(document).on("submit", "#importfileFrm", (e) => {
       }
       newData.push(obj);
     }
-
     let newkeys = ["FirstName", "MiddleName", "LastName"];
     keys.forEach((oldKeys) => {
       if (oldKeys != "No." && oldKeys != "Employee Name") {
@@ -355,11 +355,20 @@ $(document).on("submit", "#importfileFrm", (e) => {
       return self.findIndex((t) => t.IdNumber === item.IdNumber) === index;
     });
 
+    console.log(filteredEmp);
+    if (filteredEmp.length === 0 || filteredEmp.length === 1) {
+      swal.fire({
+        icon: "warning",
+        title: "Invalid Table Range",
+        text: "Please select a valid table range.",
+      });
+      return;
+    }
+
     const employees = {
       employees: JSON.stringify(filteredEmp),
       keys: JSON.stringify(newkeys),
     };
-    // console.log(filteredEmp);
     // return;
 
     _executeRequest(
