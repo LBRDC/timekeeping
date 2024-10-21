@@ -275,6 +275,17 @@ $(document).on("submit", "#importfileFrm", (e) => {
     return;
   }
   const reader = new FileReader();
+  /**
+   * This function reads the selected excel file and validates the 
+   * sheet name, data, and table range. It then processes the data
+   * by splitting the name into first, middle, and last name, and
+   * removing any duplicate id numbers. It then sends the data
+   * to import_manninglist.php to import the data into the database.
+   * 
+   * @param {event} e - The event triggered when the excel file is selected.
+   * 
+   * @returns {void}
+   */
   reader.onload = (e) => {
     const data = new Uint8Array(e.target.result);
     const workbook = XLSX.read(data, { type: "array" });
@@ -287,7 +298,6 @@ $(document).on("submit", "#importfileFrm", (e) => {
         title: "Sheet  not found",
         text: "Please select a valid sheet.",
       });
-
       return;
     }
 
@@ -297,9 +307,7 @@ $(document).on("submit", "#importfileFrm", (e) => {
       defval: "",
       range: range,
     });
-    // console.log(jsonData);
-    // return;
-    //validate excel data
+
     if (jsonData.length === 0) {
       swal.fire({
         icon: "warning",
@@ -312,9 +320,22 @@ $(document).on("submit", "#importfileFrm", (e) => {
 
     const keys = jsonData[0];
     const values = jsonData.slice(1);
-    // console.log(keys);
-    // console.log(values);
-    // return;
+    const checkID = keys.filter((e) => {
+      const str = e.toString();
+      return (
+        str.toLowerCase() == "id number" || str.toLowerCase() == "idnumber"
+      );
+    });
+
+    if (checkID.length == 0) {
+      swal.fire({
+        icon: "warning",
+        title: "ID NUMBER not found",
+        text: "Please check  your table range.",
+      });
+      return;
+    }
+
     let newData = [];
     for (let i = 0; i < values.length; i++) {
       let obj = {};
@@ -341,21 +362,18 @@ $(document).on("submit", "#importfileFrm", (e) => {
       }
       newData.push(obj);
     }
+
     let newkeys = ["FirstName", "MiddleName", "LastName"];
     keys.forEach((oldKeys) => {
-      if (oldKeys != "No." && oldKeys != "Employee Name") {
+      if (oldKeys != "No." && oldKeys != "Employee Name" && oldKeys != "NAME") {
         newkeys.push(sanitizeHeader(oldKeys));
       }
     });
 
-    // console.log(ExcelValidation(jsonData));
-    //   console.log(newData);
-    //   return;
     const filteredEmp = newData.filter((item, index, self) => {
       return self.findIndex((t) => t.IdNumber === item.IdNumber) === index;
     });
 
-    console.log(filteredEmp);
     if (filteredEmp.length === 0 || filteredEmp.length === 1) {
       swal.fire({
         icon: "warning",
@@ -369,7 +387,6 @@ $(document).on("submit", "#importfileFrm", (e) => {
       employees: JSON.stringify(filteredEmp),
       keys: JSON.stringify(newkeys),
     };
-    // return;
 
     _executeRequest(
       "query/import_manninglist.php",
@@ -399,6 +416,11 @@ $(document).on("submit", "#importfileFrm", (e) => {
   reader.readAsArrayBuffer(file);
 });
 
+/**
+ * Sanitizes a header name by splitting it into words, capitalizing the first letter of each word, and joining them back together.
+ * @param {string} name The header name to sanitize.
+ * @returns {string} The sanitized header name.
+ */
 const sanitizeHeader = (name) => {
   return name
     .split(" ")
@@ -668,6 +690,11 @@ $(document).on("submit", "#manninglist_enable_emp", function (e) {
   updateStatus(data, 1);
 });
 
+/**
+ * Update employee status
+ * @param {number} id - Employee ID
+ * @param {number} status - Status (0 or 1)
+ */
 const updateStatus = (id, status) => {
   _executeRequest(
     "query/manninglist_updateStatus.php",
@@ -695,6 +722,12 @@ const updateStatus = (id, status) => {
   );
 };
 
+/**
+ * Splits the full name into first name, middle name, and last name.
+ *
+ * @param {string} fullName - The full name in the format "LASTNAME, FIRSTNAME MIDDLENAME"
+ * @returns {object} An object containing the FirstName, MiddleName, and LastName properties
+ */
 const _splitName = (fullName) => {
   if (!fullName) {
     console.log("Name is missing");
@@ -732,7 +765,28 @@ const _splitName = (fullName) => {
   };
 };
 
+/**
+ * Sends an AJAX request to the specified URL using the provided HTTP method.
+ * Displays a loading dialog while the request is in progress and closes it once
+ * the request is completed. Calls the result callback with the response data or
+ * an error object based on the result of the request.
+ *
+ * @param {string} url - The URL to send the request to.
+ * @param {string} method - The HTTP method to use for the request (e.g., "GET", "POST").
+ * @param {object} data - The data to be sent along with the request.
+ * @param {function} result - Callback function to handle the response. Receives an
+ *                            object with an `Error` property indicating success or failure,
+ *                            and a `result` property containing the response data or error.
+ */
 const _executeRequest = (url, method, data, result) => {
+  /**
+   * @description Send an AJAX request to the given URL
+   * @param {string} url The URL to send the request to
+   * @param {string} method The type of request to make (GET, POST, etc.)
+   * @param {object} data The data to be sent with the request
+   * @param {function} result The function to call when the request is completed
+   * @return {void}
+   */
   $.ajax({
     url: url,
     type: method,

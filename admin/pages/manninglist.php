@@ -19,6 +19,7 @@ if (isset($_SESSION['filterdata'])) {
 $logicalStmt = empty($logicalArr) ? "" : " where " . implode(" ", $logicalArr);
 
 foreach ($dbresult as $val) {
+
   if ($val['Field'] != "emp_id" && $val['Field'] != "emp_timestamp" && $val['Field'] != "emp_created" && $val['Field'] != "FirstName" && $val['Field'] != "MiddleName" && $val['Field'] != "LastName" && $val['Field'] != "IdNumber" && $val['Field'] != "emp_status") {
     $dbcolumns[] = $val['Field'];
     $defaultDbCol[] = $val['Field'];
@@ -161,6 +162,7 @@ function mstr($str)
                     </thead>
                         <tbody>
                        <?php
+
                        foreach ($employee as $emp) {
                          echo "<tr>";
                          foreach ($columns as $header) {

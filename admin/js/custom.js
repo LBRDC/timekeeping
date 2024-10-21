@@ -41,7 +41,7 @@ $(document).ready(async function () {
           className: "btn btn-success",
           title: "Manninglist Employees",
           exportOptions: {
-            columns: ":visible:not(:last-child)",
+            columns: ":visible:not(:nth-last-child(-n+2))",
           },
         },
         {
