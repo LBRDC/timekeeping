@@ -283,17 +283,35 @@ $(document).ready(async function () {
   });
 });
 
+/**
+ * Retrieves a list of regions with their corresponding rates from the database.
+ *
+ * @returns {Promise<Array<{region: string, rate: number}>>} A promise that resolves to a list of region-rate pairs.
+ */
 const regionRate = async () => {
   const res = await fetch("query/regionrate.php");
   const result = await res.json();
   return result.rates;
 };
 
+/**
+ * Retrieves the rate for a specific region from the given list of regions.
+ *
+ * @param {Array} regions - The list of regions containing region-rate pairs.
+ * @param {string} region - The specific region to retrieve the rate for.
+ * @returns {number | null} The rate for the specified region, or null if the region is not found.
+ */
 const getRateByRegion = (regions, region) => {
   const foundRegion = regions.find((r) => r.region === region);
   return foundRegion ? foundRegion.rate : null;
 };
 
+/**
+ * Updates the filter list header based on the given filter list.
+ * If the filter list is empty, the header is cleared and the logic input is hidden.
+ * Otherwise, the header is set to "Filter List" and the logic input is shown.
+ * @param {Array} filterList - The list of filters
+ */
 const updateFilterlistHeader = (filterList) => {
   $("#filterList").html(filterList.length == 0 ? "" : "Filter List");
   if (filterList.length == 0) {
@@ -303,6 +321,16 @@ const updateFilterlistHeader = (filterList) => {
   }
 };
 
+/**
+ * Updates the UI of the filter list based on the given filterList.
+ * @param {Object[]} filterList - Array of objects containing the filter data.
+ * @example
+ * const filterList = [
+ *   { logic: "AND", column: "name", operator: "=", value: "John" },
+ *   { logic: "OR", column: "age", operator: "<", value: "20" },
+ * ];
+ * updateFilterList(filterList);
+ */
 const updateFilterList = (filterList) => {
   const parentRow = $("#filterListtable");
   parentRow.html("");
@@ -333,6 +361,19 @@ const updateFilterList = (filterList) => {
   });
 };
 
+/**
+ * Sends an AJAX request to the specified URL using the provided HTTP method.
+ * Displays a loading dialog while the request is in progress and closes it once
+ * the request is completed. Calls the result callback with the response data or
+ * an error object based on the result of the request.
+ *
+ * @param {string} url - The URL to send the request to.
+ * @param {string} method - The HTTP method to use for the request (e.g., "GET", "POST").
+ * @param {object} data - The data to be sent along with the request.
+ * @param {function} result - Callback function to handle the response. Receives an
+ *                            object with an `Error` property indicating success or failure,
+ *                            and a `result` property containing the response data or error.
+ */
 const _executeRequest = (url, method, data, result) => {
   $.ajax({
     url: url,

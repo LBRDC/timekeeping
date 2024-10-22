@@ -276,14 +276,14 @@ $(document).on("submit", "#importfileFrm", (e) => {
   }
   const reader = new FileReader();
   /**
-   * This function reads the selected excel file and validates the 
+   * This function reads the selected excel file and validates the
    * sheet name, data, and table range. It then processes the data
    * by splitting the name into first, middle, and last name, and
    * removing any duplicate id numbers. It then sends the data
    * to import_manninglist.php to import the data into the database.
-   * 
+   *
    * @param {event} e - The event triggered when the excel file is selected.
-   * 
+   *
    * @returns {void}
    */
   reader.onload = (e) => {
