@@ -56,6 +56,10 @@ try {
                 $response['Error'] = true;
                 return json_encode($response);
             }
+        } else {
+            //Update Current Entry
+            // $query = ""
+            // $stmt = $conn->prepare()
         }
     }
 
@@ -87,7 +91,7 @@ function alterDynamicTable($conn, $headers)
     $response = array("Error" => true, "msg" => "");
     $columnName = [];
     foreach ($headers as $val) {
-        $columnName[] = "ADD COLUMN {$val} varchar(255)";
+        $columnName[] = "ADD COLUMN {$val} varchar(255) NOT NULL";
     }
     $query = "ALTER TABLE employee_tbl " . implode(", ", $columnName);
     $stmt = $conn->prepare($query);

@@ -4,13 +4,13 @@ $status1 = "active";
 $status2 = "inactive";
 
 // Prepare and execute the statement for active locations
-$stmt1 = $conn->prepare("SELECT * FROM field_location WHERE loc_status = :loc_status");
+$stmt1 = $conn->prepare("SELECT * FROM field_location WHERE status = :loc_status");
 $stmt1->bindParam(':loc_status', $status1);
 $stmt1->execute();
 $selActive_location = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
 // Prepare and execute the statement for inactive locations
-$stmt2 = $conn->prepare("SELECT * FROM field_location WHERE loc_status = :loc_status");
+$stmt2 = $conn->prepare("SELECT * FROM field_location WHERE status = :loc_status");
 $stmt2->bindParam(':loc_status', $status2);
 $stmt2->execute();
 $selInactive_location = $stmt2->fetchAll(PDO::FETCH_ASSOC);
@@ -65,18 +65,18 @@ $selInactive_location = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                         <option value="">Select...</option>
                         <optgroup label="Active">
                             <?php foreach ($selActive_location as $location): ?>
-                                <option value="<?= $location['fld_location_id'] ?>" data-id="<?= $location['fld_location_id'] ?>" data-latitude="<?= $location['latitude'] ?>" data-longitude="<?= $location['longitude'] ?>" data-radius="<?= $location['radius'] ?>" data-status="<?= $location['loc_status'] ?>"><?= $location['name_location'] ?></option>
+                                                <option value="<?= $location['fld_location_id'] ?>" data-id="<?= $location['fld_location_id'] ?>" data-latitude="<?= $location['latitude'] ?>" data-longitude="<?= $location['longitude'] ?>" data-radius="<?= $location['radius'] ?>" data-status="<?= $location['status'] ?>"><?= $location['name_location'] ?></option>
                             <?php endforeach; ?>
                             <?php if (empty($selActive_location)): ?>
-                                <option disabled>None</option>
+                                                <option disabled>None</option>
                             <?php endif; ?>
                         </optgroup>
                         <optgroup label="Inactive">
                             <?php foreach ($selInactive_location as $location): ?>
-                                <option value="<?= $location['fld_location_id'] ?>" data-id="<?= $location['fld_location_id'] ?>" data-latitude="<?= $location['latitude'] ?>" data-longitude="<?= $location['longitude'] ?>" data-radius="<?= $location['radius'] ?>" data-status="<?= $location['loc_status'] ?>"><?= $location['name_location'] ?></option>
+                                                <option value="<?= $location['fld_location_id'] ?>" data-id="<?= $location['fld_location_id'] ?>" data-latitude="<?= $location['latitude'] ?>" data-longitude="<?= $location['longitude'] ?>" data-radius="<?= $location['radius'] ?>" data-status="<?= $location['status'] ?>"><?= $location['name_location'] ?></option>
                             <?php endforeach; ?>
                             <?php if (empty($selInactive_location)): ?>
-                                <option disabled>None</option>
+                                                <option disabled>None</option>
                             <?php endif; ?>
                         </optgroup>
                       </select>

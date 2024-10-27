@@ -37,6 +37,7 @@ $(document).on("submit", "#addLocationFrm", function (event) {
     dataType: "json",
     data: formData,
     success: function (response) {
+      console.log(response);
       if (response.res == "success") {
         Swal.fire({
           icon: "success",
@@ -76,7 +77,7 @@ $(document).on("submit", "#addLocationFrm", function (event) {
     },
     error: function (jqXHR, textStatus, errorThrown) {
       alert("A script error occured. Please try again.");
-      console.error(textStatus, errorThrown);
+      console.error(textStatus, errorThrown, jqXHR);
     },
   });
 });
@@ -383,6 +384,16 @@ $(document).on("submit", "#importfileFrm", (e) => {
       return;
     }
 
+    const haveDuplicate = new Set(newkeys).size !== newkeys.length;
+    if (haveDuplicate) {
+      swal.fire({
+        icon: "warning",
+        title: "Table Column",
+        text: "Duplicate Entry of Table Column",
+      });
+      return;
+    }
+
     const employees = {
       employees: JSON.stringify(filteredEmp),
       keys: JSON.stringify(newkeys),
@@ -510,7 +521,6 @@ $(document).on("click", "#btndefaultFilter", (e) => {
 $(document).on("submit", "#SavefilterData", function (e) {
   e.preventDefault();
   const listfilter = JSON.parse($(this).attr("data-list"));
-  console.log(listfilter);
   if (listfilter.length == 0) {
     return;
   }
@@ -527,14 +537,11 @@ $(document).on("submit", "#SavefilterData", function (e) {
   // return;
   let data = [];
   listfilter.forEach((element) => {
-    // console.log(element.toString());
-
     data.push(element);
-    // data.push(
-    //   `${element.logic} ${element.column} ${element.operator}` +
-    //     `${element.value}`
-    // );
   });
+  console.log(data);
+
+  // return;
   _executeRequest(
     "query/filterTableData.php",
     "POST",
@@ -552,7 +559,6 @@ $(document).on("submit", "#SavefilterData", function (e) {
         console.log(data);
 
         sessionStorage.setItem("filteredData", JSON.stringify(data));
-
         swal
           .fire({
             title: "Success",

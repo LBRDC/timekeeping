@@ -17,6 +17,7 @@ if (isset($_SESSION['filterdata'])) {
   }
 }
 $logicalStmt = empty($logicalArr) ? "" : " where " . implode(" ", $logicalArr);
+echo $logicalStmt;
 
 foreach ($dbresult as $val) {
 

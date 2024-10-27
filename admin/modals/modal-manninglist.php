@@ -328,15 +328,43 @@
                                if ($val != "emp_status" && $val != "emp_timestamp" && $val != "emp_created" && $val != "emp_id") {
                                    $mtype = str_contains(format($val), "NUMBER") || str_contains(format($val), "RATE") ? "number" : "text";
                                    $isNumber = str_contains(format($val), "RATE") ? "step='any'" : "";
-                                   $tx = $val == "IdNumber" ? "readonly" : "";
-                                   echo ' <div class="col-md-6 hoverable-input" id="' . $val . '">
+                                   if ($val == "Region") {
+                                       echo ' <div class="col-md-6 hoverable-input" id="' . $val . '">
                                    <div class="form-group">
                                    <label for="' . $val . '" class="text-monospace">' . format($val) . '</label>
-                                   <input type="' . $mtype . '" class="form-control font-weight-bold"  id="' . $val . '" name="' . $val . '"' . $tx . $isNumber . '/>
+                                   <span class="text-danger">*</span>
+                                   <span class="close close-btn" data-name="' . format($val) . '" data-id="' . $val . '" aria-hidden="true">&times;</span>
+                                 <select id="Region" name="Region" class="form-select custom-select">
+                                 <option value="">Select Region</option>
+                                 </select>
                                    </div>
                                </div>';
+                                   } else {
+                                       echo ' <div class="col-md-6 hoverable-input" id="' . $val . '">
+                                   <div class="form-group">
+                                   <label for="' . $val . '" class="text-monospace">' . format($val) . '</label>
+                                   <span class="text-danger">*</span>
+                                   <span class="close close-btn" data-name="' . format($val) . '" data-id="' . $val . '" aria-hidden="true">&times;</span>
+                                   <input type="' . $mtype . '" class="form-control"  id="' . $val . '" name="' . $val . '"required autocomplete="off" ' . $isNumber . ' />
+                                   </div>
+                               </div>';
+                                   }
                                }
                            }
+
+                           //    foreach ($defaultDbCol as $val) {
+                           //        if ($val != "emp_status" && $val != "emp_timestamp" && $val != "emp_created" && $val != "emp_id") {
+                           //            $mtype = str_contains(format($val), "NUMBER") || str_contains(format($val), "RATE") ? "number" : "text";
+                           //            $isNumber = str_contains(format($val), "RATE") ? "step='any'" : "";
+                           //            $tx = $val == "IdNumber" ? "readonly" : "";
+                           //            echo ' <div class="col-md-6 hoverable-input" id="' . $val . '">
+                           //            <div class="form-group">
+                           //            <label for="' . $val . '" class="text-monospace">' . format($val) . '</label>
+                           //            <input type="' . $mtype . '" class="form-control font-weight-bold"  id="' . $val . '" name="' . $val . '"' . $tx . $isNumber . '/>
+                           //            </div>
+                           //        </div>';
+                           //        }
+                           //    }
                            ?>
 
                         </div>

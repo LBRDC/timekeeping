@@ -54,6 +54,8 @@
         break;
       case 'adminMng-user':
         break;
+      case "adminMng-mobile-user":
+        break;
       default:
         break;
     }

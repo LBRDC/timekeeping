@@ -39,6 +39,9 @@ if (!isset($_GET['page'])) {
     case 'adminMng-user':
       $page = 'adminMng';
       break;
+    case 'adminMng-mobile-user':
+      $page = "adminMng";
+      break;
     case 'manning-list':
       $page = 'manninglist';
       break;
@@ -192,9 +195,13 @@ if (!isset($_GET['page'])) {
             <h6 class="collapse-header">Management</h6>
             <a class="collapse-item <?php if ($activePage == 'adminMng-user') {
               echo 'active';
-            } ?>" href="?page=adminMng-user">Users</a>
+            } ?>" href="?page=adminMng-user">Users Accounts</a>
+                         <a class="collapse-item <?php if ($activePage == 'adminMng-mobile-user') {
+                           echo 'active';
+                         } ?>" href="?page=adminMng-mobile-user">Mobile Users Account</a>
           </div>
         </div>
+
       </li>
       <hr class="sidebar-divider">
       <div class="version">v0.0.1-alpha</div>

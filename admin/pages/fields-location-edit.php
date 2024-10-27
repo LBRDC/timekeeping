@@ -69,8 +69,12 @@ $edit_location = $stmt1->fetch(PDO::FETCH_ASSOC);
                         <label for="edit_Status">Status<span class="text-danger">*</span></label>
                           <select class="form-control selectpicker" id="edit_Status" data-style="btn-outline-light">
                               <option value="" disabled>Select</option>
-                              <option value="active" <?php if($edit_location['loc_status'] == 'active') { echo 'selected'; } ?>>Active</option>
-                              <option value="inactive" <?php if($edit_location['loc_status'] == 'inactive') { echo 'selected'; } ?>>Inactive</option>
+                              <option value="active" <?php if ($edit_location['status'] == 'active') {
+                                echo 'selected';
+                              } ?>>Active</option>
+                              <option value="inactive" <?php if ($edit_location['status'] == 'inactive') {
+                                echo 'selected';
+                              } ?>>Inactive</option>
                           </select>
                       </div>
                       <div class="col-auto">
