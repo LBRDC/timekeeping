@@ -4,6 +4,8 @@ $(document).ready(async function () {
   let rateArray = await regionRate();
   let regionSelection = $("#Region:not(div)");
   const manninglistTbl = $("#manningList").DataTable({
+    colReorder: true,
+    colResize: true,
     scrollX: false,
     columnDefs: [
       { targets: 1, width: "230px" },
@@ -31,6 +33,8 @@ $(document).ready(async function () {
   if (manninglistTbl.columns().count() >= 6) {
     $("#manningList").DataTable().destroy();
     $("#manningList").DataTable({
+      colReorder: true,
+      colResize: true,
       scrollX: true,
       columnDefs: [{ targets: 1, width: "230px" }],
       dom: "Bfrtip",
@@ -65,6 +69,32 @@ $(document).ready(async function () {
     .header()
     .toArray()
     .findIndex((header) => $(header).text() === "UNIT OF ASSIGNMENT");
+
+  const remarksColumn = manninglistTbl
+    .columns()
+    .header()
+    .toArray()
+    .findIndex((header) => $(header).text() === "REMARKS");
+
+  manninglistTbl.column(remarksColumn).header({
+    with: "300px"
+  })
+  if (remarksColumn !== -1) {
+    manninglistTbl
+      .column(remarksColumn)
+      .data()
+      .each(function (data, index) {
+        if (data.length >= 15) {
+          const mtext = data.substring(0, 5) + "...";
+          const cell = manninglistTbl.cell(index, remarksColumn).node();
+          const escapedData = $("<div>").text(data).html();
+          $(cell).html(
+            `<span title="${escapedData.replace("&amp;", "&")}">${mtext}</span>`
+          );
+        }
+      });
+  }
+
   if (targetColumnIndex !== -1) {
     manninglistTbl
       .column(targetColumnIndex)
@@ -266,8 +296,8 @@ $(document).ready(async function () {
         ? value.val().toLowerCase() == "inactive"
           ? 0
           : value.val().toLowerCase() == "active"
-          ? 1
-          : value.val()
+            ? 1
+            : value.val()
         : value.val();
     data.logic = logic.val();
 
@@ -335,11 +365,9 @@ const updateFilterList = (filterList) => {
   const parentRow = $("#filterListtable");
   parentRow.html("");
   for (let i = 0; i < filterList.length; i++) {
-    const txt = `[${i + 1}]=> ${filterList[i].logic} [ ${
-      filterList[i].column == "emp_status" ? "Status" : filterList[i].column
-    } ${filterList[i].operator} ${
-      filterList[i].value.length == 0 ? "empty" : filterList[i].value
-    } ]`;
+    const txt = `[${i + 1}]=> ${filterList[i].logic} [ ${filterList[i].column == "emp_status" ? "Status" : filterList[i].column
+      } ${filterList[i].operator} ${filterList[i].value.length == 0 ? "empty" : filterList[i].value
+      } ]`;
 
     parentRow.append(`<div class="row my-2 listfilter">
           <div class="col-md-11 shadow-sm pt-2  d-flex align-items-center rounded">

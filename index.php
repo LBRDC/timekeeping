@@ -5,4 +5,4 @@
 
     session_unset();
     session_destroy();
-    header("location:/admin");
+    header("location:/timekeeping/admin");

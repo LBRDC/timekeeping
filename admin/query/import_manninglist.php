@@ -12,8 +12,10 @@ try {
     // $POST = json_decode($jsonData, true);
     // $employees = $POST['employees'];
     // $tableFields = $POST['keys'];
+    // $overWrite = $POST['overwrite'];
     $employees = json_decode($_POST['employees'], true);
     $tableFields = json_decode($_POST['keys']);
+    $overWrite = json_decode($_POST['overwrite']);
     $currentFields = checkFields($conn);
     $finalColumn = [];
 
@@ -57,9 +59,36 @@ try {
                 return json_encode($response);
             }
         } else {
-            //Update Current Entry
-            // $query = ""
-            // $stmt = $conn->prepare()
+            if ($overWrite) {
+                $forq = [];
+                // $id = $params[':IdNumber'];
+                $idNumberIndex = array_search("IdNumber", $newKey);
+                $empStatusIndex = array_search("emp_status", $newKey);
+                $empCreatedIndex = array_search("emp_created", $newKey);
+                unset($params[':emp_status']);
+                unset($params[':emp_created']);
+                // unset($params[':IdNumber']);
+                unset($newKey[$idNumberIndex]);
+                unset($newKey[$empStatusIndex]);
+                unset($newKey[$empCreatedIndex]);
+                foreach ($newKey as $key) {
+                    $forq[] = $key . "=:" . $key;
+                }
+                $query = "update employee_tbl set " . implode(", ", $forq) . " where IdNumber=:IdNumber";
+                $stmt = $conn->prepare($query);
+                if (!$stmt->execute($params)) {
+                    $conn->rollBack();
+                    $response['Error'] = true;
+                    $response['msg'] = "Failed to update existing employee with ID of " . $params[':IdNumber'];
+                    echo json_encode($response);
+                    exit();
+                }
+            } else {
+                $response['Error'] = true;
+                $response['msg'] = "Failed to update existing employee";
+                echo json_encode($response);
+                exit();
+            }
         }
     }
 
@@ -83,6 +112,16 @@ try {
     $response['msg'] = $e->getMessage();
     echo json_encode($response);
 }
+
+
+//  function to check duplicate entry
+// Update Query
+
+function updateEmployee($conn, $data)
+{
+    echo json_encode(["Error" => false, "msg" => "update employee"]);
+}
+
 
 
 //Alter the database table to make a dynamic column based on imported table data header

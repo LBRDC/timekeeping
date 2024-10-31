@@ -394,9 +394,11 @@ $(document).on("submit", "#importfileFrm", (e) => {
       return;
     }
 
+
     const employees = {
       employees: JSON.stringify(filteredEmp),
       keys: JSON.stringify(newkeys),
+      overwrite: false
     };
 
     _executeRequest(
@@ -404,6 +406,7 @@ $(document).on("submit", "#importfileFrm", (e) => {
       "POST",
       employees,
       (res) => {
+        console.log(res);
         if (!res.Error && !res.result.Error) {
           swal
             .fire({
@@ -415,10 +418,32 @@ $(document).on("submit", "#importfileFrm", (e) => {
               window.location.reload();
             });
         } else {
-          swal.fire({
-            title: "Error",
-            text: res.result.msg,
-            icon: "error",
+          Swal.fire({
+            title: "Existing Employee",
+            text: "Do you want to overwrite?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              //do overwrite 
+              employees.overwrite = true
+              _executeRequest("query/import_manninglist.php", "POST", employees, (res) => {
+                if (!res.Error && !res.result.Error) {
+                  swal
+                    .fire({
+                      title: "Success",
+                      text: "Import Success",
+                      icon: "success",
+                    })
+                    .then((res) => {
+                      window.location.reload();
+                    });
+                }
+              })
+            }
           });
         }
       }
@@ -513,6 +538,13 @@ $(document).on("click", "#btndefaultFilter", (e) => {
           .then((res) => {
             window.location.reload();
           });
+      } else {
+        swal
+          .fire({
+            title: "Warning",
+            text: res.result.msg + "\n Do you want to overwrite?",
+            icon: "error",
+          })
       }
     }
   );
