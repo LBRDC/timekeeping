@@ -1,8 +1,31 @@
+document.addEventListener("DOMContentLoaded", function () {
+  try {
+    new TomSelect(".custom-select-location", {
+      create: false,
+      sortField: {
+        field: "text",
+        direction: "asc",
+      },
+    });
+    new TomSelect(".custom-select-employee", {
+      create: false,
+      sortField: {
+        field: "text",
+        direction: "asc",
+      },
+    });
+  } catch (error) {
+    // console.log(error);
+  }
+});
+
 $(document).ready(async function () {
   $("#dataTable").DataTable(); // ID From dataTable
   $("#dataTableHover").DataTable(); // ID From dataTable with Hover
   let rateArray = await regionRate();
+  let locArray = await fieldLocation();
   let regionSelection = $("#Region:not(div)");
+  let locationSelection = $("#Location:not(div)");
   const manninglistTbl = $("#manningList").DataTable({
     colReorder: true,
     colResize: true,
@@ -57,10 +80,22 @@ $(document).ready(async function () {
     });
   }
 
-  // console.log(regionSelection);
+  $("#fld_employee").on("change", function () {
+    const position = $(this).find(":selected").data("pos");
+    const unitofassignment = $(this).find(":selected").data("unit");
+    $("#fld_position").val(position);
+    $("#fld_unitofassignment").val(unitofassignment);
+  });
+
   rateArray.forEach((item) => {
     regionSelection.append(
       `<option value='${item.rate}'>${item.region}</option>`
+    );
+  });
+
+  locArray.forEach((item) => {
+    locationSelection.append(
+      `<option value='${item.fld_location_id}'>${item.name_location}</option>`
     );
   });
 
@@ -77,8 +112,8 @@ $(document).ready(async function () {
     .findIndex((header) => $(header).text() === "REMARKS");
 
   manninglistTbl.column(remarksColumn).header({
-    with: "300px"
-  })
+    with: "300px",
+  });
   if (remarksColumn !== -1) {
     manninglistTbl
       .column(remarksColumn)
@@ -296,8 +331,8 @@ $(document).ready(async function () {
         ? value.val().toLowerCase() == "inactive"
           ? 0
           : value.val().toLowerCase() == "active"
-            ? 1
-            : value.val()
+          ? 1
+          : value.val()
         : value.val();
     data.logic = logic.val();
 
@@ -310,6 +345,43 @@ $(document).ready(async function () {
     value.val("");
     logic.val("");
     $("#SavefilterData").attr("data-list", JSON.stringify(filterList));
+  });
+
+  //Mobile Account
+  $(".acc_edit").on("click", function (e) {
+    const id = $(this).data("id");
+    const data = {
+      id: id,
+    };
+    _executeRequest("query/view_mobile_user.php", "POST", data, (res) => {
+      const result = res.result.msg;
+      $("#edit_fld_location").val(result.loc_id);
+      $("#edit_fld_employee").val(result.IdNumber);
+      $("#edit_fld_position").val(result.Position);
+      $("#edit_fld_unitofassignment").val(result.UnitOfAssignment);
+      $("#accountID").val(id);
+    });
+  });
+
+  //Updating Status Button Mobile Account
+  $(".acc_enable").on("click", function (e) {
+    const id = $(this).data("id");
+    const name = $(this).data("name");
+    $("#acc_enable_name").html(name);
+    $("#acc_enable_id").val(id);
+  });
+
+  $(".acc_disable").on("click", function (e) {
+    const id = $(this).data("id");
+    const name = $(this).data("name");
+    $("#acc_disable_name").html(name);
+    $("#acc_disable_id").val(id);
+  });
+  $(".acc_reset").on("click", function (e) {
+    const id = $(this).data("id");
+    const name = $(this).data("name");
+    $("#acc_reset_name").html(name);
+    $("#acc_reset_id").val(id);
   });
 });
 
@@ -324,6 +396,11 @@ const regionRate = async () => {
   return result.rates;
 };
 
+const fieldLocation = async () => {
+  const res = await fetch("query/fldLocations.php");
+  const result = await res.json();
+  return result.locations;
+};
 /**
  * Retrieves the rate for a specific region from the given list of regions.
  *
@@ -365,9 +442,11 @@ const updateFilterList = (filterList) => {
   const parentRow = $("#filterListtable");
   parentRow.html("");
   for (let i = 0; i < filterList.length; i++) {
-    const txt = `[${i + 1}]=> ${filterList[i].logic} [ ${filterList[i].column == "emp_status" ? "Status" : filterList[i].column
-      } ${filterList[i].operator} ${filterList[i].value.length == 0 ? "empty" : filterList[i].value
-      } ]`;
+    const txt = `[${i + 1}]=> ${filterList[i].logic} [ ${
+      filterList[i].column == "emp_status" ? "Status" : filterList[i].column
+    } ${filterList[i].operator} ${
+      filterList[i].value.length == 0 ? "empty" : filterList[i].value
+    } ]`;
 
     parentRow.append(`<div class="row my-2 listfilter">
           <div class="col-md-11 shadow-sm pt-2  d-flex align-items-center rounded">

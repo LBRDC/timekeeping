@@ -202,6 +202,17 @@
                                  </select>
                                    </div>
                                </div>';
+                                   } else if ($val == "Location") {
+                                       echo ' <div class="col-md-6 hoverable-input" id="' . $val . '">
+                                   <div class="form-group">
+                                   <label for="' . $val . '" class="text-monospace">' . format($val) . '</label>
+                                   <span class="text-danger">*</span>
+                                   <span class="close close-btn" data-name="' . format($val) . '" data-id="' . $val . '" aria-hidden="true">&times;</span>
+                                 <select id="Location" name="Location" class="form-select custom-select">
+                                 <option value="">Select Location</option>
+                                 </select>
+                                   </div>
+                               </div>';
                                    } else {
                                        echo ' <div class="col-md-6 hoverable-input" id="' . $val . '">
                                    <div class="form-group">
@@ -336,6 +347,17 @@
                                    <span class="close close-btn" data-name="' . format($val) . '" data-id="' . $val . '" aria-hidden="true">&times;</span>
                                  <select id="Region" name="Region" class="form-select custom-select">
                                  <option value="">Select Region</option>
+                                 </select>
+                                   </div>
+                               </div>';
+                                   } else if ($val == "Location") {
+                                       echo ' <div class="col-md-6 hoverable-input" id="' . $val . '">
+                                   <div class="form-group">
+                                   <label for="' . $val . '" class="text-monospace">' . format($val) . '</label>
+                                   <span class="text-danger">*</span>
+                                   <span class="close close-btn" data-name="' . format($val) . '" data-id="' . $val . '" aria-hidden="true">&times;</span>
+                                 <select id="Location" name="Location" class="form-select custom-select">
+                                 <option value="">Select Location</option>
                                  </select>
                                    </div>
                                </div>';

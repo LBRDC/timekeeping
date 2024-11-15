@@ -1,6 +1,6 @@
 <?php
 
-//DB COLUMN
+
 $dbquery = "SHOW COLUMNS FROM lbrdc_tk.employee_tbl";
 $dbstmt = $conn->prepare($dbquery);
 $dbstmt->execute();
@@ -8,6 +8,9 @@ $dbresult = $dbstmt->fetchAll(PDO::FETCH_ASSOC);
 $defaultDbCol = ["IdNumber", "FirstName", "MiddleName", "LastName"];
 $dbcolumns = [];
 $logicalArr = [];
+
+
+
 if (isset($_SESSION['filterdata'])) {
   foreach ($_SESSION['filterdata'] as $item) {
     $logicalArr[] = $item['logic'] . " " . $item['column'] . " " . $item['operator'] . " " . "'" . $item['value'] . "'";
@@ -17,7 +20,7 @@ if (isset($_SESSION['filterdata'])) {
   }
 }
 $logicalStmt = empty($logicalArr) ? "" : " where " . implode(" ", $logicalArr);
-// echo $logicalStmt;
+
 
 foreach ($dbresult as $val) {
 

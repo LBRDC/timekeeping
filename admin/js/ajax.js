@@ -394,12 +394,20 @@ $(document).on("submit", "#importfileFrm", (e) => {
       return;
     }
 
-
     const employees = {
       employees: JSON.stringify(filteredEmp),
       keys: JSON.stringify(newkeys),
-      overwrite: false
+      overwrite: false,
     };
+    // const employees = {
+    //   employees: filteredEmp,
+    //   keys: newkeys,
+    //   overwrite: false,
+    // };
+    // console.log(JSON.stringify(employees));
+
+    // return;
+    // console.log(employees);
 
     _executeRequest(
       "query/import_manninglist.php",
@@ -419,8 +427,8 @@ $(document).on("submit", "#importfileFrm", (e) => {
             });
         } else {
           Swal.fire({
-            title: "Existing Employee",
-            text: "Do you want to overwrite?",
+            title: res.result.title,
+            text: res.result.msg,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -428,21 +436,25 @@ $(document).on("submit", "#importfileFrm", (e) => {
             confirmButtonText: "Yes",
           }).then((result) => {
             if (result.isConfirmed) {
-              //do overwrite 
-              employees.overwrite = true
-              _executeRequest("query/import_manninglist.php", "POST", employees, (res) => {
-                if (!res.Error && !res.result.Error) {
-                  swal
-                    .fire({
-                      title: "Success",
-                      text: "Import Success",
-                      icon: "success",
-                    })
-                    .then((res) => {
-                      window.location.reload();
-                    });
+              employees.overwrite = true;
+              _executeRequest(
+                "query/import_manninglist.php",
+                "POST",
+                employees,
+                (res) => {
+                  if (!res.Error && !res.result.Error) {
+                    swal
+                      .fire({
+                        title: res.result.title,
+                        text: res.result.msg,
+                        icon: "success",
+                      })
+                      .then((res) => {
+                        window.location.reload();
+                      });
+                  }
                 }
-              })
+              );
             }
           });
         }
@@ -539,12 +551,11 @@ $(document).on("click", "#btndefaultFilter", (e) => {
             window.location.reload();
           });
       } else {
-        swal
-          .fire({
-            title: "Warning",
-            text: res.result.msg + "\n Do you want to overwrite?",
-            icon: "error",
-          })
+        swal.fire({
+          title: "Warning",
+          text: res.result.msg + "\n Do you want to overwrite?",
+          icon: "error",
+        });
       }
     }
   );
@@ -728,6 +739,47 @@ $(document).on("submit", "#manninglist_enable_emp", function (e) {
   updateStatus(data, 1);
 });
 
+$(document).on("submit", "#mobile_disabled_user", function (e) {
+  e.preventDefault();
+  const data = $("#acc_disable_id").val();
+  updateMobileStatus(data, 0);
+});
+
+$(document).on("submit", "#mobile_enable_user", function (e) {
+  e.preventDefault();
+  const data = $("#acc_enable_id").val();
+  updateMobileStatus(data, 1);
+});
+
+$(document).on("submit", "#mobile_reset_user", function (e) {
+  e.preventDefault();
+  const data = $("#acc_reset_id").val();
+  _executeRequest(
+    "query/reset_mobile_user.php",
+    "POST",
+    { accountID: data },
+    (res) => {
+      if (!res.result.Error) {
+        swal
+          .fire({
+            title: "Success",
+            text: res.result.msg,
+            icon: "success",
+          })
+          .then((res) => {
+            window.location.reload();
+          });
+      } else {
+        swal.fire({
+          title: "Error",
+          text: res.result.msg,
+          icon: "error",
+        });
+      }
+    }
+  );
+});
+
 /**
  * Update employee status
  * @param {number} id - Employee ID
@@ -758,6 +810,32 @@ const updateStatus = (id, status) => {
       }
     }
   );
+};
+
+const updateMobileStatus = (id, status) => {
+  const data = {
+    accountID: id,
+    status: status,
+  };
+  _executeRequest("query/update_status_mobile.php", "POST", data, (res) => {
+    if (!res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then((res) => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
 };
 
 /**
@@ -853,3 +931,79 @@ const _executeRequest = (url, method, data, result) => {
     },
   });
 };
+
+$(document).on("submit", "#addMobileUserFrm", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const data = {
+    location: frmdata.get("fld_location"),
+    employee: frmdata.get("fld_employee"),
+  };
+
+  if (!data.location || !data.employee) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  _executeRequest("query/add_mobile_user.php", "POST", data, (res) => {
+    if (!res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then((res) => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#editMobileUserFrm", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const data = {
+    location: frmdata.get("edit_fld_location"),
+    accountID: frmdata.get("accountID"),
+  };
+
+  if (!data.location || !data.accountID) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  _executeRequest("query/update_mobile_user.php", "POST", data, (res) => {
+    if (!res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then((res) => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});

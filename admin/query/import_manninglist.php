@@ -50,24 +50,49 @@ try {
             $params[":" . $keys[$i]] = $values[$i];
         }
 
+        if (empty($params[':UnitOfAssignment'])) {
+            $response['Error'] = true;
+            $response['title'] = "Unit of Assignment";
+            $response['msg'] = "Employee with ID of " . $params[':IdNumber'] . " has no Unit of Assignment";
+            echo json_encode($response);
+            exit();
+        }
+
+        /* Location Field */
+        /* Check if location exists */
+        // if (!checkLocation($conn, $params[':UnitOfAssignment'])) {
+        //     $locname = $params[':UnitOfAssignment'];
+        //     $queLoc = "INSERT INTO field_location(name_location, latitude, longitude, radius, status) VALUES (:locname, '0', '0', '0', 'active')";
+        //     $locstmt = $conn->prepare($queLoc);
+        //     $locstmt->bindParam(':locname', $locname);
+        //     if (!$locstmt->execute()) {
+        //         $conn->rollBack();
+        //         $response['Error'] = true;
+        //         $response['title'] = "Error";
+        //         $response['msg'] = "Failed to add location => " . $params[':UnitOfAssignment'];
+        //         echo json_encode($response);
+        //         exit();
+        //     }
+        // }
+
+
         $query = "insert into employee_tbl (" . implode(",", $newKey) . ") values(" . implode(",", $newVal) . ")";
         if (!checkDuplicate($conn, $params[':IdNumber'])) {
             $stmt = $conn->prepare($query);
             if (!$stmt->execute($params)) {
                 $conn->rollback();
                 $response['Error'] = true;
-                return json_encode($response);
+                echo json_encode($response);
+                exit();
             }
         } else {
             if ($overWrite) {
                 $forq = [];
-                // $id = $params[':IdNumber'];
                 $idNumberIndex = array_search("IdNumber", $newKey);
                 $empStatusIndex = array_search("emp_status", $newKey);
                 $empCreatedIndex = array_search("emp_created", $newKey);
                 unset($params[':emp_status']);
                 unset($params[':emp_created']);
-                // unset($params[':IdNumber']);
                 unset($newKey[$idNumberIndex]);
                 unset($newKey[$empStatusIndex]);
                 unset($newKey[$empCreatedIndex]);
@@ -85,7 +110,8 @@ try {
                 }
             } else {
                 $response['Error'] = true;
-                $response['msg'] = "Failed to update existing employee";
+                $response['title'] = "Duplicate Employee";
+                $response['msg'] = "Do you want to overwrite all existing employee";
                 echo json_encode($response);
                 exit();
             }
@@ -105,6 +131,7 @@ try {
         $conn->commit();
     }
     $response['Error'] = false;
+    $response['title'] = "Success";
     $response['msg'] = "Employees imported successfully";
     echo json_encode($response);
 } catch (Exception $e) {
@@ -117,9 +144,14 @@ try {
 //  function to check duplicate entry
 // Update Query
 
-function updateEmployee($conn, $data)
+function checkLocation($con, $loc)
 {
-    echo json_encode(["Error" => false, "msg" => "update employee"]);
+    $query = 'SELECT * FROM field_location WHERE name_location=:loc';
+    $stmt = $con->prepare($query);
+    $stmt->bindParam(':loc', $loc);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return count($result) == 1 ? true : false;
 }
 
 
@@ -176,3 +208,4 @@ function checkDuplicate($con, $emp_number)
     return count($result) == 1 ? true : false;
 
 }
+

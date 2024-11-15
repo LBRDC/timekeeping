@@ -18,6 +18,7 @@ if (!isset($_SESSION['user'])) {
         switch ($page) {
             case "adminMng-mobile-user":
                 include("pages/adminmng-mobile-user.php");
+                include("modals/modal-mobile-user.php");
                 break;
             case "manning-list":
                 include("pages/manninglist.php");

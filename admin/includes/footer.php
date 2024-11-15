@@ -76,6 +76,8 @@
   <script src="js/ruang-admin.min.js"></script>
   <script src="js/ruang-forms.js"></script>
   <!-- dashboard -->
+
+
   <!--<script src="vendor/chart.js/Chart.min.js"></script>-->
   <!--<script src="js/demo/chart-area-demo.js"></script>-->
   <!-- chart -->
@@ -94,8 +96,7 @@
   <!-- session -->
   <script src="js/session.js"></script>
   <!-- PAGES JS -->
-
-  <?php echo $pages_js; ?>
+  <?php //echo $pages_js; ?>
   <!-- Custom JS -->
   <script src="js/intervals.js"></script>
   <script type="module" src="js/custom.js"></script>
@@ -125,6 +126,10 @@
 <!-- <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script> -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
 </body>
 
 </html> <!-- ### END FOOTER ### -->
