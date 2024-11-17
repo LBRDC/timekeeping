@@ -6,13 +6,14 @@ $SERVER_DATA = stripslashes(file_get_contents("php://input"));
 $mdata = json_decode($SERVER_DATA, true);
 $email = (string) $mdata["email"];
 $otp = (string) $mdata['otp'];
+$subject = (string) $mdata['subject'];
 // $email = $_POST["user"];
 // $otp = $_POST['uotp'];
 $mail = new PHPMailer\PHPMailer\PHPMailer();
 $mail->isHTML(true);
 $mail->setFrom("lbrdcsoftware@gmail.com", "LBRDC");
 $mail->addAddress($email);
-$mail->Subject = "NeoCore Account";
+$mail->Subject = $subject;
 $mail->Body = '<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,11 +90,11 @@ $mail->Port = 587;
 $data = array();
 $raw_data = array();
 if ($mail->send()) {
-  $raw_data['Error'] = false;
-  array_push($data, $raw_data);
+    $raw_data['Error'] = false;
+    array_push($data, $raw_data);
 } else {
-  $raw_data['Error'] = $mail->ErrorInfo;
-  $raw_data['Data'] = $email;
-  array_push($data, $raw_data);
+    $raw_data['Error'] = $mail->ErrorInfo;
+    $raw_data['Data'] = $email;
+    array_push($data, $raw_data);
 }
 echo json_encode($data);
