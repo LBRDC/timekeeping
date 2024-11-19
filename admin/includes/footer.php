@@ -37,13 +37,13 @@
       case 'fields-payroll':
         break;
       case 'fields-location':
-        $pages_js = '<script src="js/pgjs/maps.js"></script>';
+        // $pages_js = '<script src="js/pgjs/maps.js"></script>';
         break;
       case 'fields-location-add':
-        $pages_js = '<script src="js/pgjs/maps-add.js"></script>';
+        // $pages_js = '<script src="js/pgjs/maps-add.js"></script>';
         break;
       case 'fields-location-edit':
-        $pages_js = '<script src="js/pgjs/maps-edit.js"></script>';
+        // $pages_js = '<script src="js/pgjs/maps-edit.js"></script>';
         break;
       case 'manning-list':
         $pages_js = '<script src="js/pgjs/xlsx.full.min.js"></script>';
@@ -62,7 +62,7 @@
   }
   ?>
   
-  
+    
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -111,6 +111,7 @@
 <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script> -->
 
 <!-- <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+ 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
@@ -129,6 +130,9 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+<script src="js/pgjs/maps.js"></script>
+<script src="js/pgjs/maps-add.js"></script>
+<script src="js/pgjs/maps-edit.js"></script>
 
 </body>
 

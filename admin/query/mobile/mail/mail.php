@@ -5,6 +5,7 @@ require_once 'SMTP.php';
 $SERVER_DATA = stripslashes(file_get_contents("php://input"));
 $mdata = json_decode($SERVER_DATA, true);
 $email = (string) $mdata["email"];
+$subject = (string) $mdata["subject"];
 $otp = (string) $mdata['otp'];
 // $email = $_POST["user"];
 // $otp = $_POST['uotp'];
@@ -12,7 +13,7 @@ $mail = new PHPMailer\PHPMailer\PHPMailer();
 $mail->isHTML(true);
 $mail->setFrom("lbrdcsoftware@gmail.com", "LBRDC");
 $mail->addAddress($email);
-$mail->Subject = "NeoCore Account";
+$mail->Subject = $subject;
 $mail->Body = '<!DOCTYPE html>
 <html lang="en">
 <head>
