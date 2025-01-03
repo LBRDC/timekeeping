@@ -1,13 +1,21 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "lbrdc_tk";
+// $host = "localhost";
+// $user = "root";
+// $pass = "";
+// $db = "lbrdc_tk";
+// $conn = null;
+
+$host = "sql101.infinityfree.com";
+$user = "if0_38029794";
+$pass = "Lbrdc2021";
+$db = "if0_38029794_tk";
+$port = 3306;
 $conn = null;
 
 
 try {
-    $conn = new PDO("mysql:host={$host};dbname={$db};charset=utf8", $user, $pass);
+    // $conn = new PDO("mysql:host={$host};dbname={$db};charset=utf8", $user, $pass);
+    $conn = new PDO("mysql:host={$host};port={$port};dbname={$db};charset=utf8", $user, $pass); // for infinityfree
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $userId = 1;
