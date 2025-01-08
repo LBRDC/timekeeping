@@ -1,16 +1,16 @@
 <?php
-// $host = "localhost";
-// $user = "root";
-// $pass = "";
-// $db = "lbrdc_tk";
-// $conn = null;
-
-$host = "sql101.infinityfree.com";
-$user = "if0_38029794";
-$pass = "Lbrdc2021";
-$db = "if0_38029794_tk";
-$port = 3306;
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db = "lbrdc_tk";
 $conn = null;
+
+// $host = "sql101.infinityfree.com";
+// $user = "if0_38029794";
+// $pass = "Lbrdc2021";
+// $db = "if0_38029794_tk";
+// $port = 3306;
+// $conn = null;
 
 
 try {

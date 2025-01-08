@@ -27,5 +27,5 @@ try {
 }
 
 function unix_to_date($date){
-    return date("Y-m-d", $date);
+    return date("m-d-Y", $date);
 }
