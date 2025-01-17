@@ -20,6 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 $(document).ready(async function () {
+  $("#dtr_table").DataTable({
+    scrollX: true,
+    width: "100%",
+  });
+  $("#mobileUserTable").DataTable();
   $("#dataTable").DataTable(); // ID From dataTable
   $("#dataTableHover").DataTable(); // ID From dataTable with Hover
   let rateArray = await regionRate();

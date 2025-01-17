@@ -3,6 +3,7 @@ $host = "localhost";
 $user = "root";
 $pass = "";
 $db = "lbrdc_tk";
+$port = 3306;
 $conn = null;
 
 // $host = "sql101.infinityfree.com";
