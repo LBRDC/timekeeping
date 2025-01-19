@@ -1007,3 +1007,120 @@ $(document).on("submit", "#editMobileUserFrm", function (e) {
     }
   });
 });
+
+$(document).on("submit", "#frmAddDepartment", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const code = frmdata.get("dept_code");
+  const name = frmdata.get("dept_name");
+
+  if (!code || !name) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = { code: code, name: name, fields: "department", key: "add" };
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    }
+  });
+});
+
+$(document).on("submit", "#frmEditDepartment", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const code = frmdata.get("edit_DeptCode");
+  const name = frmdata.get("edit_DeptName");
+  const id = frmdata.get("edit_DeptId");
+
+  if (!id) {
+    swal.fire({
+      title: "Error",
+      text: "Please refresh your browser",
+      icon: "error",
+    });
+    return;
+  }
+
+  if (!code || !name) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    code: code,
+    name: name,
+    id: id,
+    fields: "department",
+    key: "edit",
+  };
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#disable_department", function (e) {
+  e.preventDefault();
+  updateDeptStatus($("#dept_disable_id").val(), 0);
+});
+
+$(document).on("submit", "#enable_department", function (e) {
+  e.preventDefault();
+  updateDeptStatus($("#dept_enable_id").val(), 1);
+});
+
+const updateDeptStatus = (id, status) => {
+  const data = { id: id, status: status, fields: "department", key: "status" };
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+};
