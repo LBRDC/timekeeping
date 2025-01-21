@@ -6,7 +6,6 @@ include("conn.php");
 include("includes/header.php");
 
 if (!isset($_SESSION['user'])) {
-
 } else {
     include('includes/navbar.php');
 
@@ -70,6 +69,10 @@ if (!isset($_SESSION['user'])) {
             case 'adminMng-user':
                 include("pages/adminmng-user.php");
                 include("modals/modal-admn-user.php");
+                break;
+            case 'fields-signatories':
+                include("pages/fields-signatories.php");
+                include("modals/modal-fld-signatories.php");
                 break;
             default:
                 include("pages/404.php");

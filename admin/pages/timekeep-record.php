@@ -63,7 +63,7 @@ function validate($data)
         <input type="date" class="form-control" id="fld_date" placeholder="Select Date">
       </div>
       <div class="col-md-2">
-        <button class="btn btn-primary w-100">Load Employee</button>
+        <button class="btn btn-primary w-100" id="load_employee_btn" data-target="#mdlLoadSelectedEmployee" data-toggle="modal">Load Employee</button>
       </div>
     </div>
   </div>
@@ -87,19 +87,6 @@ function validate($data)
             th {
               white-space: nowrap;
             }
-
-            /* @media print {
-      table {
-        page-break-inside: auto;
-      }
-      tr {
-        page-break-inside: avoid;
-        page-break-after: auto;
-      }
-      th, td {
-        white-space: nowrap;
-      }
-    } */
           </style>
           <table class="table align-items-center table-flush table-hover" id="dtr_table">
             <thead class="thead-light">

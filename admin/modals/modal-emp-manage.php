@@ -1,4 +1,3 @@
-
 <!-- Modal Add Employee -->
 <div class="modal fade" id="mdlAddEmployee" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="ModalLabelAddEmployee" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
@@ -6,15 +5,15 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabelLogout">Add Employee</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <!-- Company -->
                 <div name="company_info">
-                    <hr/>
+                    <hr />
                     <h5 class="font-weight-bold text-center">Company Information</h5>
-                    <hr/>
+                    <hr />
                     <div class="form-row mb-2 justify-content-center">
                         <div class="col-md-6">
                             <label for="add_EmpId">Employee Number<span class="text-danger">*</span></label>
@@ -54,7 +53,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="form-row mb-2">
                         <div class="col">
                             <label for="add_SatLoc">Satellite Location<span class="text-danger">*</span></label>
@@ -88,9 +87,9 @@
                 </div> <!-- #END# Company -->
                 <!-- Personal -->
                 <div name="personal_info">
-                    <hr/>
+                    <hr />
                     <h5 class="font-weight-bold text-center">Personal Information</h5>
-                    <hr/>
+                    <hr />
                     <div class="form-row mb-2">
                         <div class="col-md-3">
                             <label for="add_NameFirst">First Name<span class="text-danger">*</span></label>
@@ -169,9 +168,9 @@
                 </div> <!-- #END# Personal -->
                 <!-- Login -->
                 <div name="login">
-                    <hr/>
+                    <hr />
                     <h5 class="font-weight-bold text-center">Login Credentials</h5>
-                    <hr/>
+                    <hr />
                     <div class="form-row mb-2 justify-content-center">
                         <div class="col-md-6">
                             <label for="add_Pass">Password<span class="text-danger">*</span></label>

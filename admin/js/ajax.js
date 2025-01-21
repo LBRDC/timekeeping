@@ -29,8 +29,6 @@ $(document).on("submit", "#addLocationFrm", function (event) {
     return; // Exit the function if formData is not valid
   }
 
-  console.log("VALIDATED");
-
   $.ajax({
     url: "query/add_location_Exe.php",
     type: "POST",
@@ -1124,3 +1122,118 @@ const updateDeptStatus = (id, status) => {
     }
   });
 };
+
+$(document).on("submit", "#frmAddHoliday", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const name = frmdata.get("holidayName");
+  const date = frmdata.get("holidayDate");
+  const type = frmdata.get("holidayType");
+
+  if (!name || !date || !type) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    name: name,
+    date: date,
+    type: type,
+    fields: "holiday",
+    key: "add",
+  };
+
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#deleteHolidayForm", function (e) {
+  e.preventDefault();
+  const id = $("#holiday_delete_id").val();
+  const data = { id: id, fields: "holiday", key: "delete" };
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#frmAddSignatory", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const name = frmdata.get("signatoryName");
+  const position = frmdata.get("signatoryPosition");
+  const no = frmdata.get("signatoryNo");
+
+  if (!name || !position || !no) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    name: name,
+    position: position,
+    no: no,
+    fields: "signatory",
+    key: "add",
+  };
+
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
