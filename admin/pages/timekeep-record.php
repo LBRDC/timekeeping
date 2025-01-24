@@ -5,13 +5,13 @@ $stmt->execute();
 $attendance = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-$query = "SELECT * FROM `field_location`";
+$query = "SELECT * FROM `field_location` where status != 0";
 $stmt1 = $conn->prepare($query);
 $stmt1->execute();
 $location = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
 
-$query = "SELECT * FROM `field_department`";
+$query = "SELECT * FROM `field_department` where status !=0";
 $stmt2 = $conn->prepare($query);
 $stmt2->execute();
 $department = $stmt2->fetchAll(PDO::FETCH_ASSOC);
@@ -39,7 +39,7 @@ function validate($data)
   <div class="row">
     <!-- CONTENT HERE -->
     <div class="card w-100 p-4 d-flex align-items-center justify-content-between flex-row">
-      <div class="col-md-3 ">
+      <div class="col-md-2 ">
         <select class="form-control custom-select-location" name="dtr_location" id="dtr_location">
           <option value="" selected disabled>Select Location...</option>
           <?php foreach ($location as $loc): ?>
@@ -48,7 +48,7 @@ function validate($data)
         </select>
       </div>
 
-      <div class="col-md-3 ">
+      <div class="col-md-2 ">
         <select class="form-control custom-select-department" name="dtr_department" id="dtr_department">
           <option value="" selected disabled>Select Department...</option>
           <?php foreach ($department as $dept): ?>
@@ -56,6 +56,16 @@ function validate($data)
           <?php endforeach; ?>
         </select>
       </div>
+
+      <div class="col-md-2 ">
+        <select class="form-control custom-select-location" name="dtr_location" id="dtr_location">
+          <option value="" selected disabled>Employment Status</option>
+          <?php foreach ($location as $loc): ?>
+            <option value="<?= $loc['fld_location_id'] ?>"><?= $loc['name_location'] ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
       <div class="col-md-2">
         <input type="date" class="form-control" id="fld_date" placeholder="Select Date">
       </div>

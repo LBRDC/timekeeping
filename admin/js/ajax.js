@@ -90,19 +90,24 @@ $(document).on("submit", "#editLocationFrm", function (event) {
     edit_Latitude: $("#edit_Latitude").val(),
     edit_Longitude: $("#edit_Longitude").val(),
     edit_Radius: $("#edit_Radius").val(),
-    edit_Status: $("#edit_Status").val(),
+    edit_Status: $("#edit_Status").val().toLowerCase() == "active" ? 1 : 0,
   };
 
   // Validate formData
   var isValid;
   $.each(formData, function (key, value) {
-    if (value === "") {
+    if (value.toString().length == 0) {
       isValid = false;
-      return false; // Break the loop
+      return false;
     } else {
       isValid = true;
     }
   });
+
+  console.log(isValid);
+  console.log("===================================");
+
+  // console.log(formData);
 
   if (!isValid) {
     Swal.fire({
@@ -110,7 +115,7 @@ $(document).on("submit", "#editLocationFrm", function (event) {
       title: "Incomplete",
       text: "Please fill in all fields.",
     });
-    return; // Exit the function if formData is not valid
+    return;
   } else {
     Swal.fire({
       title: "Update?",
@@ -128,6 +133,7 @@ $(document).on("submit", "#editLocationFrm", function (event) {
           dataType: "json",
           data: formData,
           success: function (response) {
+            console.log(response);
             if (response.res == "success") {
               Swal.fire({
                 icon: "success",
@@ -1011,6 +1017,7 @@ $(document).on("submit", "#frmAddDepartment", function (e) {
   const frmdata = new FormData(this);
   const code = frmdata.get("dept_code");
   const name = frmdata.get("dept_name");
+  const location = frmdata.get("dept_location");
 
   if (!code || !name) {
     swal.fire({
@@ -1021,7 +1028,18 @@ $(document).on("submit", "#frmAddDepartment", function (e) {
     return;
   }
 
-  const data = { code: code, name: name, fields: "department", key: "add" };
+  const data = {
+    code: code,
+    name: name,
+    location: location,
+    fields: "department",
+    key: "add",
+  };
+
+  // console.log(data);
+
+  // return;
+
   _executeRequest("query/fields.php", "POST", data, (res) => {
     if (!res.Error && !res.result.Error) {
       swal
@@ -1092,6 +1110,8 @@ $(document).on("submit", "#frmEditDepartment", function (e) {
 
 $(document).on("submit", "#disable_department", function (e) {
   e.preventDefault();
+  console.log($("#dept_disable_id").val());
+
   updateDeptStatus($("#dept_disable_id").val(), 0);
 });
 
@@ -1236,4 +1256,243 @@ $(document).on("submit", "#frmAddSignatory", function (e) {
       });
     }
   });
+});
+
+$(document).on("submit", "#frmAddPosition", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const code = frmdata.get("add_PosCode");
+  const name = frmdata.get("pos_name");
+  const daily = frmdata.get("dailyRate");
+  const monthly = frmdata.get("monthlyRate");
+  const description = frmdata.get("edit_PosDesc");
+
+  if (!code || !name || !daily || !monthly || !description) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    code: code,
+    name: name,
+    daily: daily,
+    monthly: monthly,
+    description: description,
+    fields: "position",
+    key: "add",
+  };
+
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#frmEditPosition", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const code = frmdata.get("edit_PosCode");
+  const name = frmdata.get("edit_PosName");
+  const daily = frmdata.get("edit_dailyRate");
+  const monthly = frmdata.get("edit_monthlyRate");
+  const description = frmdata.get("edit_PosDesc");
+  const id = frmdata.get("edit_pos_id");
+
+  console.log(code, name, daily, monthly, description, id);
+
+  if (!id) {
+    swal.fire({
+      title: "Error",
+      text: "Please refresh your browser",
+      icon: "error",
+    });
+    return;
+  }
+
+  if (!code || !name || !daily || !monthly || !description) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    code: code,
+    name: name,
+    daily: daily,
+    monthly: monthly,
+    description: description,
+    id: id,
+    fields: "position",
+    key: "edit",
+  };
+
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#disable_position", function (e) {
+  e.preventDefault();
+  updatePositionStatus($("#pos_disable_id").val(), 0);
+});
+
+$(document).on("submit", "#enable_position", function (e) {
+  e.preventDefault();
+  updatePositionStatus($("#pos_enable_id").val(), 1);
+});
+
+const updatePositionStatus = (id, status) => {
+  const data = { id: id, status: status, fields: "position", key: "status" };
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+};
+
+$(document).on("submit", "#mdlAddEmployees", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const dept = frmdata.get("add_emp_dept");
+  const position = frmdata.get("add_emp_pos");
+  const empno = frmdata.get("add_emp_idnumber");
+  const shift = frmdata.get("add_emp_shift");
+  const location = frmdata.get("add_emp_location");
+  const emp_type = frmdata.get("add_emp_type");
+  const emp_status = frmdata.get("add_emp_status");
+  const lname = frmdata.get("add_emp_lname");
+  const fname = frmdata.get("add_emp_fname");
+  const mname = frmdata.get("add_emp_mname");
+  const suffix = frmdata.get("add_emp_suffix");
+  const address = frmdata.get("add_emp_address");
+  const email = frmdata.get("add_emp_email");
+  const contact = frmdata.get("add_emp_contact");
+  const dateofbirth = frmdata.get("add_emp_bdate");
+  const gender = frmdata.get("add_emp_gender");
+  const civil_status = frmdata.get("add_emp_civil");
+  const nationality = frmdata.get("add_emp_nationality");
+
+  console.log(
+    dept,
+    "\n",
+    position,
+    "\n",
+    empno,
+    "\n",
+    shift,
+    "\n",
+    location,
+    "\n",
+    emp_type,
+    "\n",
+    emp_status
+  );
+  console.log(
+    "\n",
+    lname,
+    "\n",
+    fname,
+    "\n",
+    mname,
+    "\n",
+    suffix,
+    "\n",
+    address,
+    "\n",
+    email,
+    "\n",
+    contact
+  );
+  console.log(
+    "\n",
+    dateofbirth,
+    "\n",
+    gender,
+    "\n",
+    civil_status,
+    "\n",
+    nationality
+  );
+
+  const validate = [
+    dept,
+    position,
+    empno,
+    shift,
+    location,
+    emp_type,
+    emp_status,
+    lname,
+    suffix,
+    fname,
+    mname,
+    address,
+    email,
+    contact,
+    dateofbirth,
+    gender,
+    civil_status,
+    nationality,
+  ];
+
+  if (validate.includes("")) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
 });

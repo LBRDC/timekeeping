@@ -15,14 +15,23 @@
                         <div class="form-row mb-2 justify-content-center">
                             <div class="col-xl-6 col-md-6">
                                 <label for="add_DeptCode">Department Code<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control text-dark" name="dept_code" id="add_DeptCode" placeholder="AGSD" required>
+                                <input type="text" class="form-control text-dark" name="dept_code" id="add_DeptCode" required>
                             </div>
                         </div>
                         <div class="form-row mb-2">
                             <div class="col">
                                 <label for="add_DeptName">Department Name<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="add_DeptName" name="dept_name" placeholder="Administrative and General Services Department" required>
+                                <input type="text" class="form-control" id="add_DeptName" name="dept_name" required>
                             </div>
+                        </div>
+                        <div class="form-row mb-2">
+                            <label for="add_Position">Department Location<span class="text-danger">*</span></label>
+                            <select class="form-control custom-select-location" name="dept_location" id="dept_location">
+                                <option value="">Select...</option>
+                                <?php foreach ($location as $list): ?>
+                                    <option value="<?= $list['fld_location_id']; ?>"><?= $list['name_location']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <!-- <div class="form-row mb-2">
                             <div class="col">
@@ -71,6 +80,16 @@
                                 <input type="text" class="form-control" id="edit_DeptName" name="edit_DeptName" placeholder="Administrative and General Services Department" required>
                             </div>
                         </div>
+                        <div class="form-row mb-2">
+                            <label for="add_Position">Department Location<span class="text-danger">*</span></label>
+                            <select class="form-control custom-select-location" name="edit_dept_location" id="edit_dept_location">
+                                <option value="">Select...</option>
+                                <?php foreach ($location as $list): ?>
+                                    <option value="<?= $list['fld_location_id']; ?>"><?= $list['name_location']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
                         <input type="hidden" id="edit_DeptId" name="edit_DeptId">
                         <!--<div class="form-row mb-2">
                             <div class="col">

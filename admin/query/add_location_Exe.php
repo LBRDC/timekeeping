@@ -5,7 +5,7 @@ $add_LocName = isset($_POST['add_LocName']) ? $_POST['add_LocName'] : '';
 $add_Latitude = isset($_POST['add_Latitude']) ? $_POST['add_Latitude'] : '';
 $add_Longitude = isset($_POST['add_Longitude']) ? $_POST['add_Longitude'] : '';
 $add_Radius = isset($_POST['add_Radius']) ? $_POST['add_Radius'] : '';
-$status = "active";
+$status = 1;
 
 // Check if all variables contain values
 if (empty($add_LocName) || empty($add_Latitude) || empty($add_Longitude) || empty($add_Radius)) {

@@ -1,4 +1,5 @@
 import { generatePDF } from "./dtr.js";
+import { loadSelection } from "./employee.js";
 document.addEventListener("DOMContentLoaded", function () {
   try {
     new TomSelect(".custom-select-location", {
@@ -22,12 +23,20 @@ document.addEventListener("DOMContentLoaded", function () {
         direction: "asc",
       },
     });
+    new TomSelect(".custom-select-deptlocation", {
+      create: false,
+      sortField: {
+        field: "text",
+        direction: "asc",
+      },
+    });
   } catch (error) {
     // console.log(error);
   }
 });
 
 $(document).ready(async function () {
+  loadSelection();
   $("#dtr_table").DataTable({
     scrollX: true,
     width: "100%",
@@ -93,14 +102,6 @@ $(document).ready(async function () {
       ],
     });
   }
-
-  $("#dtr_selection_employee").DataTable({
-    columns: [
-      null, // First column (no width specified)
-      { width: "2390px" }, // Second column
-      null, // Third column (no width specified)
-    ],
-  });
 
   $("#fld_employee").on("change", function () {
     const position = $(this).find(":selected").data("pos");
@@ -495,9 +496,12 @@ $(document).on("click", ".update_department_btn", function () {
   const departmentId = $(this).attr("data-id");
   const departmentName = $(this).attr("data-name");
   const departmentCode = $(this).attr("data-code");
+  const departmentLoc = $(this).attr("data-dept-location");
+
   $("#edit_DeptCode").val(departmentCode);
   $("#edit_DeptName").val(departmentName);
   $("#edit_DeptId").val(departmentId);
+  $("#edit_dept_location").val(departmentLoc);
 });
 
 $(document).on("click", ".enable_dept", function () {
@@ -575,880 +579,7 @@ $(document).on("click", ".delete_signatory_btn", function () {
   });
 });
 
-$(document).on("click", "#load_employee_btn", async function () {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({
-    orientation: "portrait",
-    unit: "pt",
-    format: [612, 792],
-  });
-
-  const datas = [
-    {
-      user: {
-        idnumber: 3101,
-        name: "Johnny Johnny ",
-        department: "Human Resources",
-      },
-      attendance: [
-        [
-          "01/01/2025",
-          "Wed",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/02/2025",
-          "Thu",
-          "08:10",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/03/2025",
-          "Fri",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/04/2025",
-          "Sat",
-          "08:15",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/05/2025",
-          "Sun",
-          "08:05",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/06/2025",
-          "Mon",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/07/2025",
-          "Tue",
-          "08:20",
-          "18:15",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/08/2025",
-          "Wed",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/09/2025",
-          "Thu",
-          "08:05",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/10/2025",
-          "Fri",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-      ],
-    },
-    {
-      user: {
-        idnumber: 3102,
-        name: "Yes Johnny",
-        department: "Finance",
-      },
-      attendance: [
-        [
-          "01/01/2025",
-          "Wed",
-          "08:10",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/02/2025",
-          "Thu",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/03/2025",
-          "Fri",
-          "08:05",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/04/2025",
-          "Sat",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/05/2025",
-          "Sun",
-          "08:15",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/06/2025",
-          "Mon",
-          "08:05",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/07/2025",
-          "Tue",
-          "08:10",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/08/2025",
-          "Wed",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/09/2025",
-          "Thu",
-          "08:05",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/10/2025",
-          "Fri",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-      ],
-    },
-    {
-      user: {
-        idnumber: 3103,
-        name: "Buko ni Johnny",
-        department: "IT",
-      },
-      attendance: [
-        [
-          "01/01/2025",
-          "Wed",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/02/2025",
-          "Thu",
-          "08:20",
-          "18:15",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/03/2025",
-          "Fri",
-          "08:15",
-          "18:20",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/04/2025",
-          "Sat",
-          "08:10",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/05/2025",
-          "Sun",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/06/2025",
-          "Mon",
-          "08:10",
-          "18:15",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/07/2025",
-          "Tue",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/08/2025",
-          "Wed",
-          "08:05",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/09/2025",
-          "Thu",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/10/2025",
-          "Fri",
-          "08:15",
-          "18:20",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-      ],
-    },
-    {
-      user: {
-        idnumber: 3104,
-        name: "Main Johhny",
-        department: "Marketing",
-      },
-      attendance: [
-        [
-          "01/01/2025",
-          "Wed",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/02/2025",
-          "Thu",
-          "08:10",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/03/2025",
-          "Fri",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/04/2025",
-          "Sat",
-          "08:15",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/05/2025",
-          "Sun",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/06/2025",
-          "Mon",
-          "08:05",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/07/2025",
-          "Tue",
-          "08:10",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/08/2025",
-          "Wed",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/09/2025",
-          "Thu",
-          "08:05",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/10/2025",
-          "Fri",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-      ],
-    },
-    {
-      user: {
-        idnumber: 3105,
-        name: "Iam Johhny",
-        department: "Operations",
-      },
-      attendance: [
-        [
-          "01/01/2025",
-          "Wed",
-          "08:05",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/02/2025",
-          "Thu",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/03/2025",
-          "Fri",
-          "08:10",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/04/2025",
-          "Sat",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/05/2025",
-          "Sun",
-          "08:15",
-          "18:15",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/06/2025",
-          "Mon",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/07/2025",
-          "Tue",
-          "08:10",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/08/2025",
-          "Wed",
-          "08:05",
-          "18:05",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/09/2025",
-          "Thu",
-          "08:00",
-          "18:00",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-        [
-          "01/10/2025",
-          "Fri",
-          "08:10",
-          "18:10",
-          "08:00",
-          "17:00",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-        ],
-      ],
-    },
-  ];
-
-  for (let i = 0; i < datas.length; i++) {
-    const data = datas[i];
-    const { user, attendance } = data;
-    await generatePDF(doc, user, attendance);
-    if (i < datas.length - 1) {
-      doc.addPage();
-    }
-  }
-  const pdfBlob = doc.output("blob");
-  const pdfURL = URL.createObjectURL(pdfBlob);
-  const iframe = document.createElement("iframe");
-  iframe.src = pdfURL;
-  iframe.style.width = "100%";
-  iframe.style.height = "900px";
-  const previewContainer = document.getElementById("pdfPreview");
-  previewContainer.innerHTML = "";
-  previewContainer.appendChild(iframe);
-});
+$(document).on("click", "#load_employee_btn", async function () {});
 
 function convertDateRange(dateRange) {
   const months = [
@@ -1478,4 +609,91 @@ function convertDateRange(dateRange) {
   } else {
     return `${startMonthName} ${startDay} ${startYear} - ${endMonthName} ${endDay} ${endYear}`;
   }
+}
+
+$(document).on("click", ".update_position", function () {
+  const positionId = $(this).attr("data-id");
+  const positionName = $(this).attr("data-name");
+  const positionCode = $(this).attr("data-code");
+  const positionDesc = $(this).attr("data-description");
+  const positionDailyRate = $(this).attr("data-daily");
+  const positionMonthlyRate = $(this).attr("data-monthly");
+
+  $("#edit_PosName").val(positionName);
+  $("#edit_PosCode").val(positionCode);
+  $("#edit_PosDesc").val(positionDesc);
+  $("#edit_pos_id").val(positionId);
+  $("#edit_dailyRate").val(positionDailyRate);
+  $("#edit_monthlyRate").val(positionMonthlyRate);
+});
+
+$(document).on("click", ".enable_position", function (e) {
+  e.preventDefault();
+  const positionId = $(this).attr("data-id");
+  const positionName = $(this).attr("data-name");
+  $("#mdlEnablePosition").html(positionName);
+  $("#pos_enable_id").val(positionId);
+});
+
+$(document).on("click", ".disable_position", function (e) {
+  e.preventDefault();
+  const positionId = $(this).attr("data-id");
+  const positionName = $(this).attr("data-name");
+  $("#mdlDisablePosition").html(positionName);
+  $("#pos_disable_id").val(positionId);
+});
+
+$(document).on("click", "#btnEnablelocation", function () {
+  const locId = $("#view_location").val();
+  $("#edit_Id2").val(locId);
+});
+
+$(document).on("click", "#btnDisableLocation", function (e) {
+  e.preventDefault();
+  const locId = $("#view_location").val();
+  $("#edit_Id1").val(locId);
+});
+
+$(document).on("submit", "#editEnableLoc", function (e) {
+  e.preventDefault();
+  const id = $("#edit_Id2").val();
+
+  if (!id) {
+    swal.fire({
+      title: "Error",
+      text: "Location ID is required",
+      icon: "error",
+    });
+    return;
+  }
+  updateLocStatus(id, 1);
+});
+
+$(document).on("submit", "#editDisableLoc", function (e) {
+  e.preventDefault();
+  const id = $("#edit_Id1").val();
+  if (!id) {
+    swal.fire({
+      title: "Error",
+      text: "Location ID is required",
+      icon: "error",
+    });
+    return;
+  }
+  updateLocStatus(id, 0);
+});
+
+function updateLocStatus(id, status) {
+  const data = { id: id, status: status };
+  _executeRequest("query/location.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      window.location.reload();
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
 }

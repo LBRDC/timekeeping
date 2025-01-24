@@ -8,12 +8,14 @@ if ($fields == "department") {
     if ($key == "add") {
         $code = $_POST['code'];
         $name = $_POST['name'];
+        $loc = $_POST['location'];
         $status = 1;
-        $query = "INSERT INTO `field_department`(`code`, `name`, `status`) VALUES (:code, :name, :status)";
+        $query = "INSERT INTO `field_department`(`code`, `name`, location_id, `status`) VALUES (:code, :name, :location,:status)";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':code', $code);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':location', $loc);
         if ($stmt->execute()) {
             $response['msg'] = "Department added successfully!";
         } else {
@@ -144,6 +146,71 @@ if ($fields == "department") {
         } else {
             $response['Error'] = true;
             $response['msg'] = "Failed to delete signatory!";
+        }
+        echo json_encode($response);
+        exit();
+    }
+} else if ($fields == "position") {
+    if ($key == "add") {
+        $code = $_POST['code'];
+        $name = $_POST['name'];
+        $dailyRate = $_POST['daily'];
+        $monthlyRate = $_POST['monthly'];
+        $desc = $_POST['description'];
+        $status = 1;
+        $query = "insert into field_position (code, name, dailyRate, monthlyRate, description, status ) values (:code, :name, :dailyRate, :monthlyRate, :desc, :status)";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':code', $code);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':dailyRate', $dailyRate);
+        $stmt->bindParam(':monthlyRate', $monthlyRate);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':status', $status);
+        if ($stmt->execute()) {
+            $response['msg'] = "Position added successfully!";
+        } else {
+            $response['Error'] = true;
+            $response['msg'] = "Failed to add position!";
+        }
+        echo json_encode($response);
+        exit();
+    }
+    if ($key == "edit") {
+        $id = $_POST['id'];
+        $code = $_POST['code'];
+        $name = $_POST['name'];
+        $dailyRate = $_POST['daily'];
+        $monthlyRate = $_POST['monthly'];
+        $desc = $_POST['description'];
+        $query = "update field_position set code = :code, name = :name, dailyRate = :dailyRate, monthlyRate = :monthlyRate, description = :desc where fld_position_id = :id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':code', $code);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':dailyRate', $dailyRate);
+        $stmt->bindParam(':monthlyRate', $monthlyRate);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()) {
+            $response['msg'] = "Position updated successfully!";
+        } else {
+            $response['Error'] = true;
+            $response['msg'] = "Failed to update position!";
+        }
+        echo json_encode($response);
+        exit();
+    }
+    if ($key == "status") {
+        $id = $_POST['id'];
+        $status = $_POST['status'];
+        $query = "update field_position set status = :status where fld_position_id = :id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()) {
+            $response['msg'] = "Position status updated successfully!";
+        } else {
+            $response['Error'] = true;
+            $response['msg'] = "Failed to update position status!";
         }
         echo json_encode($response);
         exit();

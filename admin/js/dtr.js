@@ -35,35 +35,50 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
   addFont(doc, "verdana", verdana, "normal");
   addFont(doc, "verdana_bold", verdana_bold, "bold");
   addFont(doc, "verdana_italic", verdana_italic, "italic");
-  doc.setFontSize(12);
+  doc.setFontSize(10);
   doc.setFont("verdana_bold", "bold");
   //Setting the header image
-  doc.addImage(loadedImages[0], "JPG", 40, 20, 70, 70);
-  doc.addImage(loadedImages[1], "JPG", 450, 30, 76.32, 52.56);
-  doc.addImage(loadedImages[2], "PNG", 530, 30, 48.24, 52.56);
+  doc.addImage(loadedImages[0], "JPG", 35, 15, 60, 60);
+  doc.addImage(loadedImages[1], "JPG", 365, 30, 71.32, 47.56);
+  doc.addImage(loadedImages[2], "PNG", 365, 30, 43.24, 47.56);
   doc.setTextColor("#7aad71");
-  doc.text("LBP Resources and Development Corporation", 120, 40);
+  doc.text("LBP Resources and Development Corporation", 100, 30);
+  doc.setFontSize(8);
+  doc.setFont("verdana", "normal");
+  doc.text("Formerly: LB (Land Bank) Realty Development Corporation", 100, 40);
+  doc.setTextColor("#000000");
+  doc.text("A Subsidiary of the Land Bank of the Philippines", 100, 50);
+  doc.text("VAT Reg. TIN 000-129-546", 100, 60);
+  doc.setFont("verdana_bold", "bold");
+  doc.text("BS EN ISO 9001:2015", 100, 70);
+  doc.setFont("verdana_bold", "bold");
+  doc.setFontSize(18);
+  doc.text("CLASS D", 450, 40);
   doc.setFontSize(9);
   doc.setFont("verdana", "normal");
-  doc.text("Formerly: LB (Land Bank) Realty Development Corporation", 120, 50);
-  doc.setTextColor("#000000");
-  doc.text("A Subsidiary of the Land Bank of the Philippines", 120, 60);
-  doc.text("VAT Reg. TIN 000-129-546", 120, 70);
+  doc.text("SF-48", 450, 53);
+  doc.text("REVISION No.:01", 450, 63);
+  doc.text("REVISION DATE: OCT. 16, 2023", 450, 73);
+  doc.setFontSize(11);
   doc.setFont("verdana_bold", "bold");
-  doc.text("BS EN ISO 9001:2015", 120, 80);
+  doc.text(user.location, 35, 100);
   doc.text("INDIVIDUAL ATTENDANCE REPORT", 306, 130, {
     align: "center",
   });
   doc.setFont("verdana_italic", "italic");
+  doc.setFontSize(8);
+
   doc.text(dateRange, 306, 140, { align: "center" });
-  doc.text(user.idnumber.toString(), 40, 170);
-  doc.text(user.name, 100, 170);
-  doc.text(user.department, 250, 170);
+  doc.text(user.idnumber.toString(), 40, 155);
+  doc.text(user.name, 80, 155);
+  doc.text(user.position, 180, 155);
+  doc.text(user.department, 280, 155);
+  doc.text(user?.employmentStatus, 380, 155);
 
   //TABLE FOR ATTENDANCE
   const _tableStartX = 30;
-  let _tableStartY = 200;
-  const _tableRowHeight = 15;
+  let _tableStartY = 180;
+  const _tableRowHeight = 12;
   const _tablePadding = 8; // Padding in each cell
   const _tableHeaderHeight = 20;
 
@@ -98,7 +113,7 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
       const cellX =
         _tableStartX + columnWidths.slice(0, index).reduce((a, b) => a + b, 0);
       doc.setFont("verdana", "normal");
-      doc.setFontSize(8);
+      doc.setFontSize(7);
       doc.rect(cellX, _tableStartY, colWidth, _tableRowHeight, "F");
       doc.rect(cellX, _tableStartY, colWidth, _tableRowHeight);
       const cellWidth = doc.getTextWidth(cell);
@@ -118,7 +133,7 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
   //Summary
   const _summaryFirstTableHeight =
     _tableHeaderHeight + rows.length * _tableRowHeight;
-  let _summaryStartY = _tableStartY + 50;
+  let _summaryStartY = _tableStartY + 30;
 
   const _summaryHeader = "Summary";
   const _summaryRows = [
@@ -169,7 +184,7 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
 
   //Legend
   const _legendStartX = _tableStartX + _summaryTableWidth + 160;
-  const _legendStartY = _tableStartY + 40;
+  const _legendStartY = _tableStartY + 20;
 
   doc.setFont("verdana_bold", "bold");
   doc.setFontSize(10);
@@ -229,9 +244,9 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
   //End of Summary and Legend
 
   //Last Content
-  _tableStartY = _summaryStartY + 50;
+  _tableStartY = _summaryStartY + 20;
   doc.setFont("verdana", "normal");
-  doc.setFontSize(11);
+  doc.setFontSize(9);
   doc.text("Prepared by:", 30, _tableStartY);
   doc.text("Noted by:", 250, _tableStartY);
   _tableStartY += 30;
@@ -264,7 +279,7 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
     { align: "center" }
   );
   doc.text(
-    "Mobile Nos. 09859011590; website: www.lbpresources.com; email: lbpresourcesanddevelopmentcorp@gmail.com ",
+    "Mobile Nos. 09859011590; website: www.lbpresources.com; email: customerservice@lbpresources.com ",
     306,
     770,
     { align: "center" }
