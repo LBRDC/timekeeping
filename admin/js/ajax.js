@@ -1496,3 +1496,137 @@ $(document).on("submit", "#mdlAddEmployees", function (e) {
     return;
   }
 });
+
+$(document).on("submit", "#frmAddPayroll", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const name = frmdata.get("payroll_name");
+  const code = frmdata.get("payroll_code");
+  const location = frmdata.get("payroll_location");
+
+  if (!name || !code || !location) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    name: name,
+    code: code,
+    location: location,
+    fields: "payroll",
+    key: "add",
+  };
+
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#frmEditPayroll", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const name = frmdata.get("edit_payroll_name");
+  const code = frmdata.get("edit_payroll_code");
+  const location = frmdata.get("edit_payroll_location");
+  const id = frmdata.get("edit_payroll_id");
+
+  if (!id) {
+    swal.fire({
+      title: "Error",
+      text: "Please refresh your browser",
+      icon: "error",
+    });
+    return;
+  }
+
+  if (!name || !code || !location) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    name: name,
+    code: code,
+    location: location,
+    id: id,
+    fields: "payroll",
+    key: "edit",
+  };
+
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#disable_payroll", function (e) {
+  e.preventDefault();
+  updatePayrollStatus($("#payroll_disable_id").val(), 0);
+});
+
+$(document).on("submit", "#enable_payroll", function (e) {
+  e.preventDefault();
+  updatePayrollStatus($("#payroll_enable_id").val(), 1);
+});
+
+const updatePayrollStatus = (id, status) => {
+  const data = { id: id, status: status, fields: "payroll", key: "status" };
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+};

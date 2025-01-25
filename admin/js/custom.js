@@ -1,37 +1,88 @@
 import { generatePDF } from "./dtr.js";
 import { loadSelection } from "./employee.js";
+let payroll = null;
+let adddepartment = null;
+let editdepartment = null;
+let addpayroll = null;
+let editpayroll = null;
 document.addEventListener("DOMContentLoaded", function () {
   try {
-    new TomSelect(".custom-select-location", {
-      create: false,
-      sortField: {
-        field: "text",
-        direction: "asc",
-      },
-    });
-    new TomSelect(".custom-select-department", {
-      create: false,
-      sortField: {
-        field: "text",
-        direction: "asc",
-      },
-    });
-    new TomSelect(".custom-select-employee", {
-      create: false,
-      sortField: {
-        field: "text",
-        direction: "asc",
-      },
-    });
-    new TomSelect(".custom-select-deptlocation", {
-      create: false,
-      sortField: {
-        field: "text",
-        direction: "asc",
-      },
-    });
+    const page = new URLSearchParams(window.location.search).get("page");
+    if (page == "fields-department") {
+      adddepartment = new TomSelect("#dept_location", {
+        create: false,
+        sortField: {
+          field: "text",
+          direction: "asc",
+        },
+      });
+      editdepartment = new TomSelect("#edit_dept_location", {
+        create: false,
+        sortField: {
+          field: "text",
+          direction: "asc",
+        },
+      });
+    } else if (page == "fields-payroll") {
+      addpayroll = new TomSelect("#payroll_location", {
+        create: false,
+        sortField: {
+          field: "text",
+          direction: "asc",
+        },
+      });
+      editpayroll = new TomSelect("#edit_payroll_location", {
+        create: false,
+        sortField: {
+          field: "text",
+          direction: "asc",
+        },
+      });
+    }
+    // payroll = new TomSelect(".custom-select-location1", {
+    //   create: false,
+    //   sortField: {
+    //     field: "text",
+    //     direction: "asc",
+    //   },
+    // });
+    // department = new TomSelect(".custom-select-department", {
+    //   create: false,
+    //   sortField: {
+    //     field: "text",
+    //     direction: "asc",
+    //   },
+    // });
+    // new TomSelect(".custom-select-location", {
+    //   create: false,
+    //   sortField: {
+    //     field: "text",
+    //     direction: "asc",
+    //   },
+    // });
+    // new TomSelect(".custom-select-department", {
+    //   create: false,
+    //   sortField: {
+    //     field: "text",
+    //     direction: "asc",
+    //   },
+    // });
+    // new TomSelect(".custom-select-employee", {
+    //   create: false,
+    //   sortField: {
+    //     field: "text",
+    //     direction: "asc",
+    //   },
+    // });
+    // new TomSelect(".custom-select-deptlocation", {
+    //   create: false,
+    //   sortField: {
+    //     field: "text",
+    //     direction: "asc",
+    //   },
+    // });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
   }
 });
 
@@ -497,11 +548,10 @@ $(document).on("click", ".update_department_btn", function () {
   const departmentName = $(this).attr("data-name");
   const departmentCode = $(this).attr("data-code");
   const departmentLoc = $(this).attr("data-dept-location");
-
   $("#edit_DeptCode").val(departmentCode);
   $("#edit_DeptName").val(departmentName);
   $("#edit_DeptId").val(departmentId);
-  $("#edit_dept_location").val(departmentLoc);
+  editdepartment.setValue(departmentLoc);
 });
 
 $(document).on("click", ".enable_dept", function () {
@@ -697,3 +747,31 @@ function updateLocStatus(id, status) {
     }
   });
 }
+
+$(document).on("click", ".update_payroll_btn", function () {
+  const locId = $(this).attr("data-location");
+  const name = $(this).attr("data-name");
+  const code = $(this).attr("data-code");
+  const id = $(this).attr("data-id");
+
+  $("#edit_payroll_name").val(name);
+  $("#edit_payroll_code").val(code);
+  $("#edit_payroll_id").val(id);
+  $("#edit_payroll_location").val(locId);
+  payroll.setValue(locId);
+  $("#edit_payroll_id").val(id);
+});
+
+$(document).on("click", ".enable_payroll", function () {
+  const id = $(this).attr("data-id");
+  const name = $(this).attr("data-name");
+  $("#mdlEnablePayrollName").html(name);
+  $("#payroll_enable_id").val(id);
+});
+
+$(document).on("click", ".disable_payroll", function () {
+  const id = $(this).attr("data-id");
+  const name = $(this).attr("data-name");
+  $("#mdlDisablePayrollname").html(name);
+  $("#payroll_disable_id").val(id);
+});

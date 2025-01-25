@@ -6,17 +6,20 @@ $attendance = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 $query = "SELECT * FROM `field_location` where status != 0";
-$stmt1 = $conn->prepare($query);
-$stmt1->execute();
-$location = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$location = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 $query = "SELECT * FROM `field_department` where status !=0";
-$stmt2 = $conn->prepare($query);
-$stmt2->execute();
-$department = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-// var_dump($attendance[0]);
-// exit();
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$department = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$query = "SELECT * FROM `field_payrollgroup` where status != 0";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$payroll = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 function validate($data)
@@ -49,6 +52,15 @@ function validate($data)
       </div>
 
       <div class="col-md-2 ">
+        <select class="form-control custom-select-location" name="payroll_group" id="payroll_group">
+          <option value="" selected disabled>Select Payroll...</option>
+          <?php foreach ($payroll as $list): ?>
+            <option value="<?= $list['id'] ?>"><?= $list['code'] . " : " . $list['name'] ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
+      <div class="col-md-2 ">
         <select class="form-control custom-select-department" name="dtr_department" id="dtr_department">
           <option value="" selected disabled>Select Department...</option>
           <?php foreach ($department as $dept): ?>
@@ -57,14 +69,7 @@ function validate($data)
         </select>
       </div>
 
-      <div class="col-md-2 ">
-        <select class="form-control custom-select-location" name="dtr_location" id="dtr_location">
-          <option value="" selected disabled>Employment Status</option>
-          <?php foreach ($location as $loc): ?>
-            <option value="<?= $loc['fld_location_id'] ?>"><?= $loc['name_location'] ?></option>
-          <?php endforeach; ?>
-        </select>
-      </div>
+
 
       <div class="col-md-2">
         <input type="date" class="form-control" id="fld_date" placeholder="Select Date">

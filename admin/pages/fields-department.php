@@ -1,5 +1,5 @@
 <?php
-$query = "SELECT fd.code, fd.name, fd.status, field_location.name_location, fd.fld_dept_id FROM `field_department` as fd inner join field_location on field_location.fld_location_id = fd.location_id order by fld_dept_id desc  ";
+$query = "SELECT fd.code, fd.name, fd.status, field_location.name_location, fd.fld_dept_id, fd.location_id FROM `field_department` as fd inner join field_location on field_location.fld_location_id = fd.location_id order by fld_dept_id desc  ";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $department = $stmt->fetchAll(PDO::FETCH_ASSOC);

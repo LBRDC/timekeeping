@@ -215,4 +215,63 @@ if ($fields == "department") {
         echo json_encode($response);
         exit();
     }
+} else if ($fields == "payroll") {
+    if ($key == "add") {
+        $code = $_POST['code'];
+        $name = $_POST['name'];
+        $loc = $_POST['location'];
+        $status = 1;
+        $query = "INSERT INTO `field_payrollgroup`(`code`, `name`, location_id, `status`) VALUES (:code, :name, :location,:status)";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':code', $code);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':location', $loc);
+        if ($stmt->execute()) {
+            $response['msg'] = "Payroll added successfully!";
+        } else {
+            $response['Error'] = true;
+            $response['msg'] = "Failed to add payroll!";
+        }
+        echo json_encode($response);
+        exit();
+    }
+
+    if ($key == "edit") {
+        $id = $_POST['id'];
+        $code = $_POST['code'];
+        $name = $_POST['name'];
+        $loc = $_POST['location'];
+        $query = "UPDATE `field_payrollgroup` SET `code`=:code,`name`=:name, location_id=:location WHERE `fld_payroll_id`=:id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':code', $code);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':location', $loc);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()) {
+            $response['msg'] = "Payroll updated successfully!";
+        } else {
+            $response['Error'] = true;
+            $response['msg'] = "Failed to update payroll!";
+        }
+        echo json_encode($response);
+        exit();
+    }
+
+    if ($key == "status") {
+        $id = $_POST['id'];
+        $status = $_POST['status'];
+        $query = "UPDATE `field_payrollgroup` SET `status`=:status WHERE `fld_payroll_id`=:id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()) {
+            $response['msg'] = "Payroll status updated successfully!";
+        } else {
+            $response['Error'] = true;
+            $response['msg'] = "Failed to update payroll status!";
+        }
+        echo json_encode($response);
+        exit();
+    }
 }
