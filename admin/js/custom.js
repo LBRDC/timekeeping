@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
           direction: "asc",
         },
       });
-      editdepartment = new TomSelect("#edit_dept_location", {
+      editdepartment = new TomSelect("#edit_dept_payroll", {
         create: false,
         sortField: {
           field: "text",
@@ -774,4 +774,172 @@ $(document).on("click", ".disable_payroll", function () {
   const name = $(this).attr("data-name");
   $("#mdlDisablePayrollname").html(name);
   $("#payroll_disable_id").val(id);
+});
+
+$(document).on("click", ".update_schedule_btn", function () {
+  const id = $(this).attr("data-id");
+  const code = $(this).attr("data-code");
+  const check_in = $(this).attr("data-checkin");
+  const check_out = $(this).attr("data-checkout");
+
+  $("#edit_scheduleCode").val(code);
+  $("#edit_schedule_id").val(id);
+  $("#edit_checkIn").val(check_in);
+  $("#edit_checkOut").val(check_out);
+});
+
+$(document).on("click", ".disable_sched", function () {
+  const id = $(this).attr("data-id");
+  const code = $(this).attr("data-code");
+  $("#mdlDisableschedcode").html(code);
+  $("#sched_disable_id").val(id);
+});
+
+$(document).on("click", ".enable_sched", function () {
+  const id = $(this).attr("data-id");
+  const code = $(this).attr("data-code");
+  $("#mdlEnableschedcode").html(code);
+  $("#sched_enable_id").val(id);
+});
+
+$(document).on("change", "#dtr_location", function () {
+  const location = $(this).val();
+  const data = { location: location, key: "payrollgroup" };
+
+  _executeRequest("query/managedtr.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      const payrollgroup = res.result.msg;
+      const payrollgroupSelection = $("#payroll_group");
+      payrollgroupSelection.html("");
+      payrollgroupSelection.append(
+        "`<option value='' disabled selected>Select Payroll Group</option>`"
+      );
+      payrollgroup.forEach((payroll) => {
+        payrollgroupSelection.append(
+          `<option value='${payroll.fld_payroll_id}'>${payroll.name}</option>`
+        );
+      });
+    }
+  });
+});
+
+$(document).on("change", "#add_emp_location", function () {
+  const location = $(this).val();
+  const data = { location: location, key: "payrollgroup" };
+
+  _executeRequest("query/managedtr.php", "POST", data, (res) => {
+    console.log(res);
+
+    if (!res.Error && !res.result.Error) {
+      const payrollgroup = res.result.msg;
+      const payrollgroupSelection = $("#add_emp_payroll");
+      console.log(payrollgroupSelection);
+
+      payrollgroupSelection.html("");
+      payrollgroupSelection.append(
+        "`<option value='' disabled selected>Select Payroll Group</option>`"
+      );
+      payrollgroup.forEach((payroll) => {
+        payrollgroupSelection.append(
+          `<option value='${payroll.fld_payroll_id}'>${payroll.name}</option>`
+        );
+      });
+    }
+  });
+});
+
+$(document).on("change", "#payroll_group", function () {
+  const payrollgroup = $(this).val();
+  const data = { payrollgroup: payrollgroup, key: "department" };
+
+  _executeRequest("query/managedtr.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      const department = res.result.msg;
+      const departmentSelection = $("#dtr_department");
+      departmentSelection.html("");
+      departmentSelection.append(
+        "`<option value='' disabled selected>Select Department</option>`"
+      );
+      department.forEach((dept) => {
+        departmentSelection.append(
+          `<option value='${dept.fld_dept_id}'>${dept.name}</option>`
+        );
+      });
+    }
+  });
+});
+
+$(document).on("change", "#add_emp_payroll", function () {
+  const payrollgroup = $(this).val();
+  const data = { payrollgroup: payrollgroup, key: "department" };
+
+  _executeRequest("query/managedtr.php", "POST", data, (res) => {
+    console.log(res);
+
+    if (!res.Error && !res.result.Error) {
+      const department = res.result.msg;
+      const departmentSelection = $("#add_emp_dept");
+      departmentSelection.html("");
+      departmentSelection.append(
+        "`<option value='' disabled selected>Select Department</option>`"
+      );
+      department.forEach((dept) => {
+        departmentSelection.append(
+          `<option value='${dept.fld_dept_id}'>${dept.name}</option>`
+        );
+      });
+    }
+  });
+});
+
+$(document).on("click", "#load_dtremployee_btn", function () {
+  const location = $("#dtr_location").val();
+  const payrollgroup = $("#payroll_group").val();
+  const department = $("#dtr_department").val();
+  const startDate = $("#dtr_startdate").val();
+  const endDate = $("#dtr_endDate").val();
+
+  if (!location || !payrollgroup || !department || !startDate || !endDate) {
+    swal.fire({
+      title: "Error",
+      text: "All fields are required",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    location: location,
+    payrollgroup: payrollgroup,
+    department: department,
+    key: "employees",
+  };
+
+  _executeRequest("query/managedtr.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      const employees = res.result.msg;
+      if (employees.length == 0) {
+        swal.fire({
+          title: "Error",
+          text: "No employees found",
+          icon: "error",
+        });
+        return;
+      }
+      const tbl = $("#dtr_selection_employee").DataTable();
+      tbl.clear().draw();
+      employees.forEach((emp) => {
+        tbl.row
+          .add([
+            `<input class="big row-checkbox" type="checkbox" data-start="${startDate}" data-end="${endDate}" data-id="${emp.idnumber}" />`,
+            emp.idnumber,
+            `${emp.lastname}, ${emp.firstname}`,
+            emp.position,
+          ])
+          .draw();
+      });
+
+      $("#mdlLoadSelectedEmployee").modal("show");
+    }
+  });
 });

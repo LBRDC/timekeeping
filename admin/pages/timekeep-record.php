@@ -20,8 +20,8 @@ $query = "SELECT * FROM `field_payrollgroup` where status != 0";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $payroll = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
+// var_dump($payroll);
+// exit();
 function validate($data)
 {
   return $data == null ? 'N/A' : date('H:i', $data);
@@ -55,7 +55,7 @@ function validate($data)
         <select class="form-control custom-select-location" name="payroll_group" id="payroll_group">
           <option value="" selected disabled>Select Payroll...</option>
           <?php foreach ($payroll as $list): ?>
-            <option value="<?= $list['id'] ?>"><?= $list['code'] . " : " . $list['name'] ?></option>
+            <!-- <option value="<?= $list['fld_payroll_id'] ?>"><?= $list['code'] . " : " . $list['name'] ?></option> -->
           <?php endforeach; ?>
         </select>
       </div>
@@ -64,7 +64,7 @@ function validate($data)
         <select class="form-control custom-select-department" name="dtr_department" id="dtr_department">
           <option value="" selected disabled>Select Department...</option>
           <?php foreach ($department as $dept): ?>
-            <option value="<?= $dept['fld_dept_id'] ?>"><?= $dept['code'] . " : " . $dept['name'] ?></option>
+            <!-- <option value="<?= $dept['fld_dept_id'] ?>"><?= $dept['code'] . " : " . $dept['name'] ?></option> -->
           <?php endforeach; ?>
         </select>
       </div>
@@ -72,13 +72,13 @@ function validate($data)
 
 
       <div class="col-md-2">
-        <input type="date" class="form-control" id="fld_date" placeholder="Select Date">
+        <input type="date" class="form-control" id="dtr_startdate" placeholder="Select Date">
       </div>
       <div class="col-md-2">
-        <input type="date" class="form-control" id="fld_date" placeholder="Select Date">
+        <input type="date" class="form-control" id="dtr_endDate" placeholder="Select Date">
       </div>
       <div class="col-md-2">
-        <button class="btn btn-primary w-100" id="load_employee_btn" data-target="#mdlLoadSelectedEmployee" data-toggle="modal">Load Employee</button>
+        <button class="btn btn-primary w-100" id="load_dtremployee_btn" data-toggle="modal">Load Employee</button>
       </div>
     </div>
   </div>

@@ -1,5 +1,4 @@
 <?php
-include "../conn.php";
 
 $query = "SELECT * FROM field_department";
 $stmt = $conn->prepare($query);
@@ -16,6 +15,31 @@ $query = "SELECT * FROM field_location";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $location = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+$query = "SELECT * FROM field_payrollgroup";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$payrollgroup = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$query = "SELECT * FROM field_schedule";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+$query = "select emp.id, emp.idnumber, emp.firstname, emp.lastname, fd.name as department, fl.name_location as location from employees as emp inner join field_department as fd on fd.fld_dept_id = emp.department inner join field_location as fl on fl.fld_location_id = emp.location";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+function formatTime($time24hr)
+{
+  $time12hr = date("g:i A", strtotime($time24hr));
+  return $time12hr;
+}
+?>
+
 ?>
 <!-- &&& EMPLOYEE MANAGE &&& -->
 <div class="container-fluid" id="container-wrapper">
@@ -81,26 +105,18 @@ $location = $stmt->fetchAll(PDO::FETCH_ASSOC);
                       </tr>
                     </tfoot>-->
             <tbody>
-              <tr>
-                <td>0000</td>
-                <td>John Doe</td>
-                <td>Administrative and General Services Department</td>
-                <td>LBRDC Head Office</td>
-                <td>
-                  <a href="javascript:void(0);" class="btn btn-info" data-toggle="modal" data-target="#mdlViewEmployee" data-toggle="tooltip" data-placement="bottom" title="View">
-                    <i class="fas fa-info-circle"></i>
-                  </a>
-                  <a href="javascript:void(0);" class="btn btn-warning" data-toggle="modal" data-target="#mdlEditEmployee" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                    <i class="fas fa-edit"></i>
-                  </a>
-                  <a href="#" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Disable">
-                    <i class="fas fa-times-circle"></i>
-                  </a>
-                  <a href="#" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Enable">
-                    <i class="fas fa-check-circle"></i>
-                  </a>
-                </td>
-              </tr>
+              <?php foreach ($employees as $employee) : ?>
+                <tr>
+                  <td><?= $employee['idnumber'] ?></td>
+                  <td><?= $employee['firstname'] . ' ' . $employee['lastname'] ?></td>
+                  <td><?= $employee['department'] ?></td>
+                  <td><?= $employee['location'] ?></td>
+                  <td>
+                    <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlEditEmployee<?= $employee['id'] ?>" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlDeleteEmployee<?= $employee['id'] ?>" class="btn btn-sm btn-danger">Delete</a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
             </tbody>
           </table>
         </div> <!-- #END# TABLE -->

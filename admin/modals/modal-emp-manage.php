@@ -15,22 +15,43 @@
                         <hr />
                         <h5 class="font-weight-bold text-center">Company Information</h5>
                         <hr />
+
+                        <div class="form-row mb-2">
+                            <div class="col-md-6">
+                                <label for="add_SatLoc">Satellite Location<span class="text-danger">*</span></label>
+                                <select class="form-control " id="add_emp_location" name="add_emp_location" data-live-search="true" data-style="btn-outline-light">
+                                    <option value="" disabled selected>Select Location....</option>
+                                    <?php foreach ($location as $list): ?>
+                                        <option value="<?= $list['fld_location_id']; ?>"><?= $list['name_location']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="add_Position">Payroll Group<span class="text-danger">*</span></label>
+                                <select class="form-control " id="add_emp_payroll" name="add_emp_payroll" data-live-search="true" data-style="btn-outline-light">
+                                    <?php foreach ($payrollgroup as $list): ?>
+                                        <!-- <option value="<?= $list['fld_payroll_id']; ?>"><?= "[" . $list['code'] . "]" ?> <?= $list['name']; ?></option> -->
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-row mb-2">
                             <div class="col-md-6">
                                 <label for="add_Dept">Department<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker" name="add_emp_dept" id="add_emp_dept" data-live-search="true" data-style="btn-outline-light">
-                                    <option value="">Select...</option>
+                                <select class="form-control " name="add_emp_dept" id="add_emp_dept" data-live-search="true" data-style="btn-outline-light">
+
                                     <?php foreach ($departments as $list): ?>
-                                        <option value="<?= $list['fld_dept_id']; ?>"><?= "[" . $list['code'] . "]" ?> <?= $list['name']; ?></option>
+                                        <!-- <option value="<?= $list['fld_dept_id']; ?>"><?= "[" . $list['code'] . "]" ?> <?= $list['name']; ?></option> -->
                                     <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="add_Position">Position<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker" id="add_emp_pos" name="add_emp_pos" data-live-search="true" data-style="btn-outline-light">
+                                <select class="form-control " id="add_emp_pos" name="add_emp_pos" data-live-search="true" data-style="btn-outline-light">
                                     <option value="">Select...</option>
                                     <?php foreach ($position as $list): ?>
-                                        <option value="<?= $dept['fld_position_id']; ?>"><?= "[" . $list['code'] . "]" ?> <?= $list['name']; ?></option>
+                                        <option value="<?= $list['fld_position_id']; ?>"><?= "[" . $list['code'] . "]" ?> <?= $list['name']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -42,32 +63,21 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="add_EmpSched">Shift Schedule<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker" id="add_emp_shift" name="add_emp_shift" data-style="btn-outline-light">
+                                <select class="form-control " id="add_emp_shift" name="add_emp_shift" data-style="btn-outline-light">
                                     <option value="">Select...</option>
-                                    <option value="1">Day Shift</option>
-                                    <option value="2">Mid Shift</option>
-                                    <option value="3">Night Shift</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row mb-2">
-                            <div class="col">
-                                <label for="add_SatLoc">Satellite Location<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker" id="add_emp_location" name="add_emp_location" data-live-search="true" data-style="btn-outline-light">
-                                    <option value="">Select...</option>
-                                    <?php foreach ($location as $list): ?>
-                                        <option value="<?= $dept['fld_location_id']; ?>"><?= $list['name_location']; ?></option>
+                                    <?php foreach ($schedules as $list): ?>
+                                        <option value="<?= $list['fld_schedule_id'] ?>"><?= $list['code'] . ": " ?><?= formatTime($list['check_in']) . ' - ' . formatTime($list['check_out']) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
 
+
+
                         <div class="form-row mb-4">
                             <div class="col-md-6">
                                 <label for="add_EmpType">Employment Type<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker" id="add_emp_type" name="add_emp_type" data-style="btn-outline-light">
+                                <select class="form-control " id="add_emp_type" name="add_emp_type" data-style="btn-outline-light">
                                     <option value="">Select...</option>
                                     <option value="regular">Regular</option>
                                     <option value="reliever">Reliever</option>
@@ -75,7 +85,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="add_EmpStatus">Employment Status<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker" id="add_emp_status" name="add_emp_status" data-style="btn-outline-light">
+                                <select class="form-control " id="add_emp_status" name="add_emp_status" data-style="btn-outline-light">
                                     <option value="">Select...</option>
                                     <option value="active">Active</option>
                                     <option value="resigned">Resigned</option>

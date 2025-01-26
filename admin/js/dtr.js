@@ -70,10 +70,10 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
 
   doc.text(dateRange, 306, 140, { align: "center" });
   doc.text(user.idnumber.toString(), 40, 155);
-  doc.text(user.name, 80, 155);
+  doc.text(user.emp_name, 80, 155);
   doc.text(user.position, 180, 155);
   doc.text(user.department, 280, 155);
-  doc.text(user?.employmentStatus, 380, 155);
+  doc.text(user.emp_status, 380, 155);
 
   //TABLE FOR ATTENDANCE
   const _tableStartX = 30;

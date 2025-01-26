@@ -1,17 +1,5 @@
 import { generatePDF } from "./dtr.js";
 export const loadSelection = () => {
-  var loadselection = $("#dtr_selection_employee").DataTable({
-    paging: true,
-    ordering: true,
-    info: true,
-    responsive: true,
-    columnDef: [{ targets: 0, width: "50%" }],
-    language: {
-      search: "_INPUT_",
-      searchPlaceholder: "Search table...",
-    },
-  });
-
   $("#select-all").on("click", function () {
     var isChecked = this.checked;
 
@@ -33,11 +21,16 @@ export const loadSelection = () => {
   });
 
   $("#submit-selected").on("click", async function () {
-    // Collect names of selected users
     var selectedUsers = [];
     $(".row-checkbox:checked").each(function () {
-      var userName = $(this).data("name"); // Get the data-name attribute
-      selectedUsers.push(userName);
+      var id = $(this).data("id");
+      var startDate = $(this).data("start");
+      var endDate = $(this).data("end");
+      selectedUsers.push({
+        idnumber: id,
+        startDate: startDate,
+        endDate: endDate,
+      });
     });
 
     // Check if there are any selected users
@@ -45,547 +38,70 @@ export const loadSelection = () => {
       alert("No users selected!");
       return;
     }
+    const users = { users: selectedUsers };
+    _executeRequest(
+      "query/attendancereport.php",
+      "POST",
+      users,
+      async function (res) {
+        if (!res.Error && !res.result.Error) {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({
+            orientation: "portrait",
+            unit: "pt",
+            format: [612, 792],
+          });
+          const datas = res.result.msg;
+          console.log(datas);
 
-    // Send selected users to the server or process them
-    console.log("Selected Users:", selectedUsers);
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({
-      orientation: "portrait",
-      unit: "pt",
-      format: [612, 792],
-    });
-
-    const datas = [
-      {
-        user: {
-          idnumber: 3101,
-          name: "Johnny Johnny ",
-          department: "Human Resources",
-          position: "HR Manager",
-          employmentStatus: "Regular",
-          location: "Head Office",
-        },
-        attendance: [
-          [
-            "01/01/2025",
-            "Wed",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/02/2025",
-            "Thu",
-            "08:10",
-            "18:05",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/03/2025",
-            "Fri",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/04/2025",
-            "Sat",
-            "08:15",
-            "18:10",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/05/2025",
-            "Sun",
-            "08:05",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/06/2025",
-            "Mon",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/07/2025",
-            "Tue",
-            "08:20",
-            "18:15",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/08/2025",
-            "Wed",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/09/2025",
-            "Thu",
-            "08:05",
-            "18:10",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/10/2025",
-            "Fri",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/01/2025",
-            "Wed",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/02/2025",
-            "Thu",
-            "08:10",
-            "18:05",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/03/2025",
-            "Fri",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/04/2025",
-            "Sat",
-            "08:15",
-            "18:10",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/05/2025",
-            "Sun",
-            "08:05",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/06/2025",
-            "Mon",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/07/2025",
-            "Tue",
-            "08:20",
-            "18:15",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/08/2025",
-            "Wed",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/09/2025",
-            "Thu",
-            "08:05",
-            "18:10",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/10/2025",
-            "Fri",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/01/2025",
-            "Wed",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/02/2025",
-            "Thu",
-            "08:10",
-            "18:05",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/03/2025",
-            "Fri",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/04/2025",
-            "Sat",
-            "08:15",
-            "18:10",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/05/2025",
-            "Sun",
-            "08:05",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/06/2025",
-            "Mon",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/07/2025",
-            "Tue",
-            "08:20",
-            "18:15",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/08/2025",
-            "Wed",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/09/2025",
-            "Thu",
-            "08:05",
-            "18:10",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/10/2025",
-            "Fri",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          [
-            "01/10/2025",
-            "Fri",
-            "08:00",
-            "18:00",
-            "08:00",
-            "17:00",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-        ],
-      },
-    ];
-
-    for (let i = 0; i < datas.length; i++) {
-      console.log("hehehe");
-
-      const data = datas[i];
-      const { user, attendance } = data;
-      await generatePDF(doc, user, attendance);
-      if (i < datas.length - 1) {
-        doc.addPage();
+          for (let i = 0; i < datas.length; i++) {
+            const data = datas[i];
+            const { user, attendance } = data;
+            await generatePDF(doc, user, attendance);
+            if (i < datas.length - 1) {
+              doc.addPage();
+            }
+          }
+          const height = window.innerHeight - 50;
+          const pdfBlob = doc.output("blob");
+          const pdfURL = URL.createObjectURL(pdfBlob);
+          const iframe = document.createElement("iframe");
+          iframe.src = pdfURL;
+          iframe.style.width = "100%";
+          iframe.style.height = height + "px";
+          const previewContainer = document.getElementById("pdfPreview");
+          previewContainer.innerHTML = "";
+          previewContainer.appendChild(iframe);
+        }
       }
-    }
-    const height = window.innerHeight - 50;
-    const pdfBlob = doc.output("blob");
-    const pdfURL = URL.createObjectURL(pdfBlob);
-    const iframe = document.createElement("iframe");
-    iframe.src = pdfURL;
-    iframe.style.width = "100%";
-    iframe.style.height = height + "px";
-    const previewContainer = document.getElementById("pdfPreview");
-    previewContainer.innerHTML = "";
-    previewContainer.appendChild(iframe);
+    );
+  });
+};
+
+const _executeRequest = (url, method, data, result) => {
+  $.ajax({
+    url: url,
+    type: method,
+    dataType: "json",
+    data: data,
+    beforeSend: () => {
+      swal.fire({
+        title: "Loading...",
+        text: "Please wait",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+    },
+    success: (response) => {
+      swal.close();
+      result({ Error: false, result: response });
+    },
+    error: (jqXHR, textStatus, errorThrown) => {
+      swal.close();
+      console.log(jqXHR);
+      console.log(textStatus);
+      console.log(errorThrown);
+      result({ Error: true, result: errorThrown });
+    },
   });
 };

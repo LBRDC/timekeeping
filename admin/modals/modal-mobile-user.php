@@ -13,8 +13,8 @@
                     <div class="mdl-importfile">
                         <div class="form-row mb-2">
                             <label for="fld_location">Location<span class="text-danger">*</span></label>
-                           <select class="form-control custom-select-location" name="fld_location" id="fld_location">
-                                    <option value="" selected disabled>Select Location...</option>
+                            <select class="form-control custom-select-location" name="fld_location" id="fld_location">
+                                <option value="" selected disabled>Select Location...</option>
                                 <?php
                                 foreach ($location as $loc) {
                                     echo '<option value="' . $loc['fld_location_id'] . '">' . $loc['name_location'] . '</option>';
@@ -24,27 +24,21 @@
                         </div>
                         <div class="form-row mb-2">
                             <label for="fld_employee">Employee<span class="text-danger">*</span></label>
-                       
+
                             <select class="form-control custom-select-employee" name="fld_employee" id="fld_employee">
-                                 <option value="" selected disabled>Select Employee...</option>
-                                 <?php
-                                 foreach ($employees as $emp) {
-                                     $name = $emp['LastName'] . ', ' . $emp['FirstName'] . ' ' . $emp['MiddleName'];
-                                     echo '<option value="' . $emp['IdNumber'] . '" data-pos="' . $emp['Position'] . '" data-unit="' . $emp['UnitOfAssignment'] . '" >' . $emp['IdNumber'] . ' - ' . $name . '</option>';
-                                 }
-                                 ?>
-                            </select> 
+
+                            </select>
                         </div>
 
                         <div class="form-row mb-2">
                             <label for="startingRow">Position<span class="text-danger">*</span></label>
                             <input type="text" name="fld_position" id="fld_position" class="form-control" placeholder=""
-                                autocomplete="off" required style="width:100%" readonly >
+                                autocomplete="off" required style="width:100%" readonly>
                         </div>
                         <div class="form-row mb-2">
-                            <label for="startingRow">Unit of Assignment<span class="text-danger">*</span></label>
-                            <input type="text" name="fld_unitofassignment" id="fld_unitofassignment" class="form-control" placeholder=""
-                                autocomplete="off" required style="width:100%" readonly >
+                            <label for="startingRow">Department<span class="text-danger">*</span></label>
+                            <input type="text" name="fld_department" id="fld_department" class="form-control" placeholder=""
+                                autocomplete="off" required style="width:100%" readonly>
                         </div>
                     </div>
                 </div>
@@ -76,8 +70,8 @@
                         <input type="text" id="accountID" name="accountID" required hidden>
                         <div class="form-row mb-2">
                             <label for="fld_location">Location<span class="text-danger">*</span></label>
-                           <select class="form-control custom-select-location" name="edit_fld_location" id="edit_fld_location">
-                                    <option value="" selected disabled>Select Location...</option>
+                            <select class="form-control custom-select-location" name="edit_fld_location" id="edit_fld_location">
+                                <option value="" selected disabled>Select Location...</option>
                                 <?php
                                 foreach ($location as $loc) {
                                     echo '<option value="' . $loc['fld_location_id'] . '">' . $loc['name_location'] . '</option>';
@@ -87,27 +81,27 @@
                         </div>
                         <div class="form-row mb-2">
                             <label for="fld_employee">Employee<span class="text-danger">*</span></label>
-                       
+
                             <select class="form-control custom-select-employee" name="edit_fld_employee" id="edit_fld_employee" disabled>
-                                 <option value="" selected disabled>Loading Employee...</option>
-                                 <?php
-                                 foreach ($employees as $emp) {
-                                     $name = $emp['LastName'] . ', ' . $emp['FirstName'] . ' ' . $emp['MiddleName'];
-                                     echo '<option value="' . $emp['IdNumber'] . '" data-pos="' . $emp['Position'] . '" data-unit="' . $emp['UnitOfAssignment'] . '" >' . $emp['IdNumber'] . ' - ' . $name . '</option>';
-                                 }
-                                 ?>
-                            </select> 
+                                <option value="" selected disabled>Loading Employee...</option>
+                                <?php
+                                foreach ($employees as $emp) {
+                                    $name = $emp['LastName'] . ', ' . $emp['FirstName'] . ' ' . $emp['MiddleName'];
+                                    echo '<option value="' . $emp['IdNumber'] . '" data-pos="' . $emp['Position'] . '" data-unit="' . $emp['UnitOfAssignment'] . '" >' . $emp['IdNumber'] . ' - ' . $name . '</option>';
+                                }
+                                ?>
+                            </select>
                         </div>
 
                         <div class="form-row mb-2">
                             <label for="startingRow">Position<span class="text-danger">*</span></label>
                             <input type="text" name="edit_fld_position" id="edit_fld_position" class="form-control" placeholder=""
-                                autocomplete="off" required style="width:100%" readonly >
+                                autocomplete="off" required style="width:100%" readonly>
                         </div>
                         <div class="form-row mb-2">
                             <label for="startingRow">Unit of Assignment<span class="text-danger">*</span></label>
                             <input type="text" name="edit_fld_unitofassignment" id="edit_fld_unitofassignment" class="form-control" placeholder=""
-                                autocomplete="off" required style="width:100%" readonly >
+                                autocomplete="off" required style="width:100%" readonly>
                         </div>
                     </div>
                 </div>
@@ -151,7 +145,7 @@
             </form>
         </div>
     </div>
-</div> 
+</div>
 <!-- MODAL END DISABLE ACCOUNT -->
 
 
@@ -183,7 +177,7 @@
             </form>
         </div>
     </div>
-</div> 
+</div>
 <!-- MODAL END ENABLE ACCOUNT -->
 
 <!-- MODAL RESET PASSWORD -->
@@ -214,11 +208,6 @@
             </form>
         </div>
     </div>
-</div> 
+</div>
 
 <!-- MODAL END RESET PASSWORD -->
-
-
-
-
-

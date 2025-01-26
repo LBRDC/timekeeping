@@ -1,13 +1,13 @@
 <?php
-$query = "SELECT fd.code, fd.name, fd.status, field_location.name_location, fd.fld_dept_id, fd.location_id FROM `field_department` as fd inner join field_location on field_location.fld_location_id = fd.location_id order by fld_dept_id desc  ";
+$query = "SELECT fd.code, fd.name, fd.status, field_payrollgroup.name as payroll_name, fd.fld_dept_id, fd.payroll_id FROM `field_department` as fd inner join field_payrollgroup on field_payrollgroup.fld_payroll_id = fd.payroll_id order by fld_dept_id desc  ";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $department = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$query = "select * from field_location where status != 0";
+$query = "select * from field_payrollgroup where status != 0";
 $stmt = $conn->prepare($query);
 $stmt->execute();
-$location = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$payrollgroup = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!-- &&& FIELDS DEPARTMENT &&& -->
 <div class="container-fluid" id="container-wrapper">
@@ -57,7 +57,7 @@ $location = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <tr>
                 <th>Code</th>
                 <th>Name</th>
-                <th>Location</th>
+                <th>Payroll Group</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -76,10 +76,10 @@ $location = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tr>
                   <td><?= $dept['code'] ?></td>
                   <td><?= $dept['name'] ?></td>
-                  <td><?= $dept['name_location'] ?></td>
+                  <td><?= $dept['payroll_name'] ?></td>
                   <td> <?= $dept['status'] == 1 ? "Active" : "Inactive" ?></td>
                   <td>
-                    <a href="javascript:void(0);" class="btn btn-warning update_department_btn" data-toggle="modal" data-target="#mdlEditDepartment" data-code="<?= $dept['code'] ?>" data-dept-location="<?= $dept['location_id'] ?>" data-name="<?= $dept['name'] ?>" data-id="<?= $dept['fld_dept_id'] ?>" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                    <a href="javascript:void(0);" class="btn btn-warning update_department_btn" data-toggle="modal" data-target="#mdlEditDepartment" data-code="<?= $dept['code'] ?>" data-dept-location="<?= $dept['payroll_id'] ?>" data-name="<?= $dept['name'] ?>" data-id="<?= $dept['fld_dept_id'] ?>" data-toggle="tooltip" data-placement="bottom" title="Edit">
                       <i class="fas fa-edit"></i>
                     </a>
                     <?php if ($dept['status'] == 1): ?>

@@ -10,12 +10,12 @@ if ($fields == "department") {
         $name = $_POST['name'];
         $loc = $_POST['location'];
         $status = 1;
-        $query = "INSERT INTO `field_department`(`code`, `name`, location_id, `status`) VALUES (:code, :name, :location,:status)";
+        $query = "INSERT INTO `field_department`(`code`, `name`, payroll_id, `status`) VALUES (:code, :name, :payroll,:status)";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':code', $code);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':location', $loc);
+        $stmt->bindParam(':payroll', $loc);
         if ($stmt->execute()) {
             $response['msg'] = "Department added successfully!";
         } else {
@@ -30,10 +30,12 @@ if ($fields == "department") {
         $id = $_POST['id'];
         $code = $_POST['code'];
         $name = $_POST['name'];
-        $query = "UPDATE `field_department` SET `code`=:code,`name`=:name WHERE `fld_dept_id`=:id";
+        $payroll = $_POST['payroll'];
+        $query = "UPDATE `field_department` SET `code`=:code,`name`=:name, payroll_id=:payroll WHERE `fld_dept_id`=:id";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':code', $code);
         $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':payroll', $payroll);
         $stmt->bindParam(':id', $id);
         if ($stmt->execute()) {
             $response['msg'] = "Department updated successfully!";
@@ -270,6 +272,66 @@ if ($fields == "department") {
         } else {
             $response['Error'] = true;
             $response['msg'] = "Failed to update payroll status!";
+        }
+        echo json_encode($response);
+        exit();
+    }
+} else if ($fields == "schedule") {
+    if ($key == "add") {
+        $code = $_POST['code'];
+        $checkIn = $_POST['check_in'];
+        $checkOut = $_POST['check_out'];
+        $status = 1;
+        $query = "INSERT INTO `field_schedule`(`code`, `check_in`, `check_out`, `status`) VALUES (:code, :checkIn, :checkOut,:status)";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':code', $code);
+        $stmt->bindParam(':checkIn', $checkIn);
+        $stmt->bindParam(':checkOut', $checkOut);
+        $stmt->bindParam(':status', $status);
+        if ($stmt->execute()) {
+            $response['msg'] = "Schedule added successfully!";
+        } else {
+            $response['Error'] = true;
+            $response['msg'] = "Failed to add schedule!";
+        }
+        echo json_encode($response);
+        exit();
+    }
+
+    if ($key == "edit") {
+        $id = $_POST['id'];
+        $code = $_POST['code'];
+        $checkIn = $_POST['check_in'];
+        $checkOut = $_POST['check_out'];
+        $query = "UPDATE `field_schedule` SET `code`=:code,`check_in`=:checkIn,`check_out`=:checkOut WHERE `fld_schedule_id`=:id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':code', $code);
+        $stmt->bindParam(':checkIn', $checkIn);
+        $stmt->bindParam(':checkOut', $checkOut);
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
+            $response['msg'] = "Schedule updated successfully!";
+        } else {
+            $response['Error'] = true;
+            $response['msg'] = "Failed to update schedule!";
+        }
+        echo json_encode($response);
+        exit();
+    }
+
+    if ($key == "status") {
+        $id = $_POST['id'];
+        $status = $_POST['status'];
+        $query = "UPDATE `field_schedule` SET `status`=:status WHERE `fld_schedule_id`=:id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()) {
+            $response['msg'] = "Schedule status updated successfully!";
+        } else {
+            $response['Error'] = true;
+            $response['msg'] = "Failed to update schedule status!";
         }
         echo json_encode($response);
         exit();

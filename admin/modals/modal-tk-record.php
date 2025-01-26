@@ -10,7 +10,7 @@
 
 
 <div class="modal fade" id="mdlLoadSelectedEmployee" data-backdrop="true" tabindex="-2" role="dialog" aria-labelledby="ModalLabelAddEmployee" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content p-3">
             <!-- Modern Table Design -->
             <style>
@@ -61,14 +61,15 @@
                         <th><input class="big" type="checkbox" id="select-all" /></th>
                         <th>ID</th>
                         <th style="width: 100%;">NAME</th>
+                        <th>POSITION</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody id="dtr_selection_employee_body">
+                    <!-- <tr>
                         <td><input class="big row-checkbox" type="checkbox" data-name="1" /></td>
                         <td>3102</td>
                         <td>John Doe</td>
-                    </tr>
+                    </tr> -->
                     <!-- You can add more rows here -->
                 </tbody>
             </table>

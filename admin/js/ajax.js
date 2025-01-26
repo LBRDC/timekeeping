@@ -936,6 +936,44 @@ const _executeRequest = (url, method, data, result) => {
   });
 };
 
+$(document).on("change", "#fld_location", function () {
+  var location = $(this).val();
+  const data = { location: location };
+
+  _executeRequest("query/mobile_employees.php", "POST", data, (res) => {
+    if (!res.result.Error) {
+      var employees = res.result.msg;
+
+      $("#fld_employee").empty();
+      $("#fld_employee").append(
+        `<option value="" selected disabled>Select Employee</option>`
+      );
+      $.each(employees, function (index, value) {
+        $("#fld_employee").append(
+          `<option value="${value.idnumber}" data-pos="${
+            value.position
+          }" data-dept="${value.department}">${
+            value.idnumber
+          } - ${value.lastname.toUpperCase()}, ${value.firstname.toUpperCase()}</option>`
+        );
+      });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("change", "#fld_employee", function () {
+  const position = $(this).find(":selected").data("pos");
+  const dept = $(this).find(":selected").data("dept");
+  $("#fld_position").val(position);
+  $("#fld_department").val(dept);
+});
+
 $(document).on("submit", "#addMobileUserFrm", function (e) {
   e.preventDefault();
   const frmdata = new FormData(this);
@@ -1060,6 +1098,7 @@ $(document).on("submit", "#frmEditDepartment", function (e) {
   const frmdata = new FormData(this);
   const code = frmdata.get("edit_DeptCode");
   const name = frmdata.get("edit_DeptName");
+  const payroll = frmdata.get("edit_dept_payroll");
   const id = frmdata.get("edit_DeptId");
 
   if (!id) {
@@ -1084,6 +1123,7 @@ $(document).on("submit", "#frmEditDepartment", function (e) {
     code: code,
     name: name,
     id: id,
+    payroll: payroll,
     fields: "department",
     key: "edit",
   };
@@ -1405,6 +1445,7 @@ const updatePositionStatus = (id, status) => {
 $(document).on("submit", "#mdlAddEmployees", function (e) {
   e.preventDefault();
   const frmdata = new FormData(this);
+  const payroll = frmdata.get("add_emp_payroll");
   const dept = frmdata.get("add_emp_dept");
   const position = frmdata.get("add_emp_pos");
   const empno = frmdata.get("add_emp_idnumber");
@@ -1415,7 +1456,11 @@ $(document).on("submit", "#mdlAddEmployees", function (e) {
   const lname = frmdata.get("add_emp_lname");
   const fname = frmdata.get("add_emp_fname");
   const mname = frmdata.get("add_emp_mname");
-  const suffix = frmdata.get("add_emp_suffix");
+  const suffix =
+    frmdata.get("add_emp_suffix").length == 0 ||
+    frmdata.get("add_emp_suffix") == "null"
+      ? ""
+      : frmdata.get("add_emp_suffix");
   const address = frmdata.get("add_emp_address");
   const email = frmdata.get("add_emp_email");
   const contact = frmdata.get("add_emp_contact");
@@ -1423,48 +1468,6 @@ $(document).on("submit", "#mdlAddEmployees", function (e) {
   const gender = frmdata.get("add_emp_gender");
   const civil_status = frmdata.get("add_emp_civil");
   const nationality = frmdata.get("add_emp_nationality");
-
-  console.log(
-    dept,
-    "\n",
-    position,
-    "\n",
-    empno,
-    "\n",
-    shift,
-    "\n",
-    location,
-    "\n",
-    emp_type,
-    "\n",
-    emp_status
-  );
-  console.log(
-    "\n",
-    lname,
-    "\n",
-    fname,
-    "\n",
-    mname,
-    "\n",
-    suffix,
-    "\n",
-    address,
-    "\n",
-    email,
-    "\n",
-    contact
-  );
-  console.log(
-    "\n",
-    dateofbirth,
-    "\n",
-    gender,
-    "\n",
-    civil_status,
-    "\n",
-    nationality
-  );
 
   const validate = [
     dept,
@@ -1475,7 +1478,6 @@ $(document).on("submit", "#mdlAddEmployees", function (e) {
     emp_type,
     emp_status,
     lname,
-    suffix,
     fname,
     mname,
     address,
@@ -1495,6 +1497,48 @@ $(document).on("submit", "#mdlAddEmployees", function (e) {
     });
     return;
   }
+
+  const data = {
+    emp_no: empno,
+    emp_type: emp_type,
+    emp_status: emp_status,
+    lname: lname,
+    fname: fname,
+    mname: mname,
+    suffix: suffix,
+    address: address,
+    email: email,
+    contact: contact,
+    dateofbirth: dateofbirth,
+    gender: gender,
+    civil_status: civil_status,
+    nationality: nationality,
+    payroll: payroll,
+    department: dept,
+    position: position,
+    shift: shift,
+    location: location,
+  };
+
+  _executeRequest("query/manage_employee.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
 });
 
 $(document).on("submit", "#frmAddPayroll", function (e) {
@@ -1610,6 +1654,140 @@ $(document).on("submit", "#enable_payroll", function (e) {
 
 const updatePayrollStatus = (id, status) => {
   const data = { id: id, status: status, fields: "payroll", key: "status" };
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+};
+
+$(document).on("submit", "#frmAddSchedule", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const code = frmdata.get("scheduleCode");
+  const check_in = frmdata.get("checkIn");
+  const check_out = frmdata.get("checkOut");
+
+  if (!code || !check_in || !check_out) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    code: code,
+    check_in: check_in,
+    check_out: check_out,
+    fields: "schedule",
+    key: "add",
+  };
+
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    }
+  });
+});
+
+$(document).on("submit", "#frmEditSchedule", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const code = frmdata.get("edit_scheduleCode");
+  const check_in = frmdata.get("edit_checkIn");
+  const check_out = frmdata.get("edit_checkOut");
+  const id = frmdata.get("edit_schedule_id");
+
+  if (!id) {
+    swal.fire({
+      title: "Error",
+      text: "Please refresh your browser",
+      icon: "error",
+    });
+    return;
+  }
+
+  if (!code || !check_in || !check_out) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    code: code,
+    check_in: check_in,
+    check_out: check_out,
+    id: id,
+    fields: "schedule",
+    key: "edit",
+  };
+
+  _executeRequest("query/fields.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#disable_sched", function (e) {
+  e.preventDefault();
+  updateScheduleStatus($("#sched_disable_id").val(), 0);
+});
+
+$(document).on("submit", "#enable_sched", function (e) {
+  e.preventDefault();
+  updateScheduleStatus($("#sched_enable_id").val(), 1);
+});
+
+const updateScheduleStatus = (id, status) => {
+  const data = {
+    id: id,
+    status: status,
+    fields: "schedule",
+    key: "status",
+  };
+
   _executeRequest("query/fields.php", "POST", data, (res) => {
     if (!res.Error && !res.result.Error) {
       swal

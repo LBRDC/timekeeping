@@ -25,11 +25,11 @@
                             </div>
                         </div>
                         <div class="form-row mb-2">
-                            <label for="add_Position">Department Location<span class="text-danger">*</span></label>
+                            <label for="add_Position">Department Payroll<span class="text-danger">*</span></label>
                             <select class="form-control custom-select-department" name="dept_location" id="dept_location">
                                 <option value="">Select...</option>
-                                <?php foreach ($location as $list): ?>
-                                    <option value="<?= $list['fld_location_id']; ?>"><?= $list['name_location']; ?></option>
+                                <?php foreach ($payrollgroup as $list): ?>
+                                    <option value="<?= $list['fld_payroll_id']; ?>">[<?= $list['code'] ?>] <?= $list['name']; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -82,10 +82,10 @@
                         </div>
                         <div class="form-row mb-2">
                             <label for="add_Position">Department Location<span class="text-danger">*</span></label>
-                            <select class="form-control custom-select-department" name="edit_dept_location" id="edit_dept_location">
+                            <select class="form-control custom-select-department" name="edit_dept_payroll" id="edit_dept_payroll">
                                 <option value="">Select...</option>
-                                <?php foreach ($location as $list): ?>
-                                    <option value="<?= $list['fld_location_id']; ?>"><?= $list['name_location']; ?></option>
+                                <?php foreach ($payrollgroup as $list): ?>
+                                    <option value="<?= $list['fld_payroll_id']; ?>">[<?= $list['code'] ?>] <?= $list['name']; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
