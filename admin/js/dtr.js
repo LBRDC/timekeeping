@@ -30,103 +30,59 @@ export const generatePDF = async (
     return `${hours}:${minutes}`;
   }
 
-  function regHrs(startTime, endTime, startSched, endSched) {
-    const [startHours, startMinutes] = startTime.split(":").map(Number);
-    const [endHours, endMinutes] = endTime.split(":").map(Number);
-    const [schedStartHours, schedStartMinutes] = startSched
-      .split(":")
-      .map(Number);
-    const [schedEndHours, schedEndMinutes] = endSched.split(":").map(Number);
-
-    const startDate = new Date(0, 0, 0, startHours, startMinutes, 0);
-    const endDate = new Date(0, 0, 0, endHours, endMinutes, 0);
-    const schedStartDate = new Date(
-      0,
-      0,
-      0,
-      schedStartHours,
-      schedStartMinutes,
-      0
-    );
-    const schedEndDate = new Date(0, 0, 0, schedEndHours, schedEndMinutes, 0);
-
-    // Check if startTime is greater than or equal to 10:01
-    if (startHours > 10 || (startHours === 10 && startMinutes >= 1)) {
-      return { regularHours: "4:00", undertime: "0" }; // Half-day of 8 hours
+  function regHrs(checkIn, checkOut, scheduledCheckIn, scheduledCheckOut) {
+    function parseTime(time) {
+      const [hours, minutes] = time.split(":").map(Number);
+      return { hours, minutes };
     }
 
-    const lateCheckIn = Math.max(0, (startDate - schedStartDate) / 1000 / 60);
-    const undertimeCheckout = Math.max(0, (schedEndDate - endDate) / 1000 / 60);
+    function toMinutes({ hours, minutes }) {
+      return hours * 60 + minutes;
+    }
 
-    const scheduledMinutes = (schedEndDate - schedStartDate) / 1000 / 60 - 60; // Subtract 1 hour for break
-    const totalMinutes = scheduledMinutes - lateCheckIn - undertimeCheckout;
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
+    const checkInTime = parseTime(checkIn);
+    const checkOutTime = parseTime(checkOut);
+    const scheduledCheckInTime = parseTime(scheduledCheckIn);
+    const scheduledCheckOutTime = parseTime(scheduledCheckOut);
 
-    const regularHours = `${hours}:${minutes.toString().padStart(2, "0")}`;
-    const undertime = `${undertimeCheckout}`;
-    const isUndertime = undertimeCheckout > 0 ? true : false;
-    console.log({ regularHours, undertime, isUndertime });
+    const checkInMinutes = toMinutes(checkInTime);
+    const checkOutMinutes = toMinutes(checkOutTime);
+    const scheduledCheckInMinutes = toMinutes(scheduledCheckInTime);
+    const scheduledCheckOutMinutes = toMinutes(scheduledCheckOutTime);
 
-    return { regularHours, undertime, isUndertime };
+    const start = Math.max(checkInMinutes, scheduledCheckInMinutes);
+    const end = Math.min(checkOutMinutes, scheduledCheckOutMinutes);
+
+    const regularMinutes = Math.max(0, end - start) - 60;
+    const regularHours = Math.floor(regularMinutes / 60);
+    const regularMinutesRemainder = regularMinutes % 60;
+
+    return `${regularHours}:${regularMinutesRemainder
+      .toString()
+      .padStart(2, "0")}`;
   }
 
-  function isUT(startTime, endTime) {
-    const [startHours, startMinutes] = startTime.split(":").map(Number);
-    const [endHours, endMinutes] = endTime.split(":").map(Number);
-    const startDate = new Date(0, 0, 0, startHours, startMinutes, 0);
-    const endDate = new Date(0, 0, 0, endHours, endMinutes, 0);
-    let diff = (endDate - startDate) / 1000 / 60;
-    if (diff < 0) {
-      diff += 24 * 60;
+  function undertime(checkIn, checkOut, scheduledCheckIn, scheduledCheckOut) {
+    const regHrsValue = regHrs(
+      checkIn,
+      checkOut,
+      scheduledCheckIn,
+      scheduledCheckOut
+    );
+    const [regHours, regMinutes] = regHrsValue.split(":").map(Number);
+
+    const totalRegMinutes = regHours * 60 + regMinutes;
+    const scheduledMinutes = 8 * 60; // 8 hours in minutes
+
+    const undertimeMinutes = Math.max(0, scheduledMinutes - totalRegMinutes);
+
+    if (undertimeMinutes === 0) {
+      return "";
     }
-    const hours = Math.floor(diff / 60);
-    const minutes = diff % 60;
-    return hours - 1;
+
+    return undertimeMinutes.toString();
   }
 
-  function UT(checkIn, checkOut, scheduledCheckIn, scheduledCheckOut) {
-    const [scheduledCheckInHour, scheduledCheckInMinute] = scheduledCheckIn
-      .split(":")
-      .map(Number);
-    const [scheduledCheckOutHour, scheduledCheckOutMinute] = scheduledCheckOut
-      .split(":")
-      .map(Number);
-
-    const [checkInHour, checkInMinute] = checkIn.split(":").map(Number);
-    const [checkOutHour, checkOutMinute] = checkOut.split(":").map(Number);
-
-    const scheduledCheckInDate = new Date(
-      0,
-      0,
-      0,
-      scheduledCheckInHour,
-      scheduledCheckInMinute
-    );
-    const scheduledCheckOutDate = new Date(
-      0,
-      0,
-      0,
-      scheduledCheckOutHour,
-      scheduledCheckOutMinute
-    );
-
-    const checkInDate = new Date(0, 0, 0, checkInHour, checkInMinute);
-    const checkOutDate = new Date(0, 0, 0, checkOutHour, checkOutMinute);
-
-    let lateMinutes = 0;
-    let undertimeMinutes = 0;
-
-    if (checkInDate > scheduledCheckInDate) {
-      lateMinutes = (checkInDate - scheduledCheckInDate) / 60000;
-    }
-
-    if (checkOutDate < scheduledCheckOutDate) {
-      undertimeMinutes = (scheduledCheckOutDate - checkOutDate) / 60000;
-    }
-
-    return lateMinutes + undertimeMinutes;
-  }
   rows = rows.map((row) => {
     return {
       ...row,
@@ -141,13 +97,48 @@ export const generatePDF = async (
     };
   });
 
+  const summaryData = {
+    regdays: 0,
+    regdaysHrs: [],
+    undertime: [],
+    restDay: "",
+  };
+
   rows = rows.map((row) => {
-    const { regularHours, undertime, isUndertime } = regHrs(
-      _24Hr(row.check_in),
-      _24Hr(row.check_out),
-      user.check_in,
-      user.check_out
-    );
+    function mregHrs() {
+      const reghrs = regHrs(
+        _24Hr(row.check_in),
+        _24Hr(row.check_out),
+        user.check_in,
+        user.check_out
+      );
+      if (row.check_in && row.check_out) {
+        summaryData.regdays += 1;
+        summaryData.regdaysHrs.push(reghrs);
+        return reghrs;
+      } else {
+        return "";
+      }
+    }
+    function mUT() {
+      const ut = undertime(
+        _24Hr(row.check_in),
+        _24Hr(row.check_out),
+        user.check_in,
+        user.check_out
+      );
+      if (row.check_in && row.check_out) {
+        summaryData.undertime.push(ut);
+        return ut;
+      } else {
+        if (isWeekend(row.timestamps)) {
+          return "";
+        } else {
+          summaryData.undertime.push("480");
+          return "480";
+        }
+      }
+    }
     return [
       row.timestamps,
       row.day,
@@ -157,11 +148,11 @@ export const generatePDF = async (
       row.check_out ? _24Hr(row.check_out) : "",
       row.ot_in ? _24Hr(row.ot_in) : "",
       row.ot_out ? _24Hr(row.ot_out) : "",
-      row.check_in && row.check_out ? regularHours : "",
+      mregHrs(),
       "",
       "",
       "",
-      isWeekend(row.timestamps) ? "" : isUndertime ? undertime : "",
+      mUT(),
       "",
     ];
   });
@@ -185,6 +176,26 @@ export const generatePDF = async (
       }
     }
     return { isHoliday: false, type: "" };
+  }
+
+  function regDaysHrsTime(timeArray) {
+    let totalMinutes = 0;
+    timeArray.forEach((time) => {
+      const [hours, minutes] = time.split(":").map(Number);
+      totalMinutes += hours * 60 + minutes;
+    });
+    const totalHours = Math.floor(totalMinutes / 60);
+    const remainingMinutes = totalMinutes % 60;
+    return `${totalHours}:${remainingMinutes.toString().padStart(2, "0")}`;
+  }
+
+  function totalUndertime(ut) {
+    return ut.reduce((sum, value) => {
+      if (value !== "") {
+        return sum + parseInt(value, 10);
+      }
+      return sum;
+    }, 0);
   }
 
   //All images
@@ -307,12 +318,15 @@ export const generatePDF = async (
 
   const _summaryHeader = "Summary";
   const _summaryRows = [
-    ["Reg Days (Days)", "15"],
-    ["Reg Days (Hrs & Mins)", "15"],
-    ["Undertime (m)", "15"],
+    ["Reg Days (Days)", summaryData.regdays.toString()],
+    [
+      "Reg Days (Hrs & Mins)",
+      regDaysHrsTime(summaryData.regdaysHrs).toString(),
+    ],
+    ["Undertime (m)", totalUndertime(summaryData.undertime).toString()],
     ["Rest Day (RD)/Special Holiday (SH) (h) (130%)", "15"],
   ];
-  const _summaryColumnWidths = [250, 30];
+  const _summaryColumnWidths = [250, 40];
   const _summaryTableWidth = _summaryColumnWidths.reduce((a, b) => a + b, 0);
   doc.setFont("verdana_bold", "bold");
   doc.rect(
