@@ -1,6 +1,13 @@
 import { verdana, verdana_italic, verdana_bold } from "./font.js";
 import { columnWidths, headers } from "./pdfconfigure.js";
-export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
+export const generatePDF = async (
+  doc,
+  user,
+  rows = [],
+  dateRange = "",
+  holidays,
+  signatory
+) => {
   // Nested function
   function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -16,10 +23,168 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
     doc.addFont(fontName + ".ttf", fontName, style);
   }
 
+  function _24Hr(unix) {
+    const date = new Date(unix * 1000);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
+  function regHrs(startTime, endTime, startSched, endSched) {
+    const [startHours, startMinutes] = startTime.split(":").map(Number);
+    const [endHours, endMinutes] = endTime.split(":").map(Number);
+    const [schedStartHours, schedStartMinutes] = startSched
+      .split(":")
+      .map(Number);
+    const [schedEndHours, schedEndMinutes] = endSched.split(":").map(Number);
+
+    const startDate = new Date(0, 0, 0, startHours, startMinutes, 0);
+    const endDate = new Date(0, 0, 0, endHours, endMinutes, 0);
+    const schedStartDate = new Date(
+      0,
+      0,
+      0,
+      schedStartHours,
+      schedStartMinutes,
+      0
+    );
+    const schedEndDate = new Date(0, 0, 0, schedEndHours, schedEndMinutes, 0);
+
+    // Check if startTime is greater than or equal to 10:01
+    if (startHours > 10 || (startHours === 10 && startMinutes >= 1)) {
+      return { regularHours: "4:00", undertime: "0" }; // Half-day of 8 hours
+    }
+
+    const lateCheckIn = Math.max(0, (startDate - schedStartDate) / 1000 / 60);
+    const undertimeCheckout = Math.max(0, (schedEndDate - endDate) / 1000 / 60);
+
+    const scheduledMinutes = (schedEndDate - schedStartDate) / 1000 / 60 - 60; // Subtract 1 hour for break
+    const totalMinutes = scheduledMinutes - lateCheckIn - undertimeCheckout;
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    const regularHours = `${hours}:${minutes.toString().padStart(2, "0")}`;
+    const undertime = `${undertimeCheckout}`;
+    const isUndertime = undertimeCheckout > 0 ? true : false;
+    console.log({ regularHours, undertime, isUndertime });
+
+    return { regularHours, undertime, isUndertime };
+  }
+
+  function isUT(startTime, endTime) {
+    const [startHours, startMinutes] = startTime.split(":").map(Number);
+    const [endHours, endMinutes] = endTime.split(":").map(Number);
+    const startDate = new Date(0, 0, 0, startHours, startMinutes, 0);
+    const endDate = new Date(0, 0, 0, endHours, endMinutes, 0);
+    let diff = (endDate - startDate) / 1000 / 60;
+    if (diff < 0) {
+      diff += 24 * 60;
+    }
+    const hours = Math.floor(diff / 60);
+    const minutes = diff % 60;
+    return hours - 1;
+  }
+
+  function UT(checkIn, checkOut, scheduledCheckIn, scheduledCheckOut) {
+    const [scheduledCheckInHour, scheduledCheckInMinute] = scheduledCheckIn
+      .split(":")
+      .map(Number);
+    const [scheduledCheckOutHour, scheduledCheckOutMinute] = scheduledCheckOut
+      .split(":")
+      .map(Number);
+
+    const [checkInHour, checkInMinute] = checkIn.split(":").map(Number);
+    const [checkOutHour, checkOutMinute] = checkOut.split(":").map(Number);
+
+    const scheduledCheckInDate = new Date(
+      0,
+      0,
+      0,
+      scheduledCheckInHour,
+      scheduledCheckInMinute
+    );
+    const scheduledCheckOutDate = new Date(
+      0,
+      0,
+      0,
+      scheduledCheckOutHour,
+      scheduledCheckOutMinute
+    );
+
+    const checkInDate = new Date(0, 0, 0, checkInHour, checkInMinute);
+    const checkOutDate = new Date(0, 0, 0, checkOutHour, checkOutMinute);
+
+    let lateMinutes = 0;
+    let undertimeMinutes = 0;
+
+    if (checkInDate > scheduledCheckInDate) {
+      lateMinutes = (checkInDate - scheduledCheckInDate) / 60000;
+    }
+
+    if (checkOutDate < scheduledCheckOutDate) {
+      undertimeMinutes = (scheduledCheckOutDate - checkOutDate) / 60000;
+    }
+
+    return lateMinutes + undertimeMinutes;
+  }
+  rows = rows.map((row) => {
+    return {
+      ...row,
+      day: new Date(row.timestamps).toLocaleDateString("en-US", {
+        weekday: "short",
+      }),
+      timestamps: new Date(row.timestamps).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+    };
+  });
+
+  rows = rows.map((row) => {
+    const { regularHours, undertime, isUndertime } = regHrs(
+      _24Hr(row.check_in),
+      _24Hr(row.check_out),
+      user.check_in,
+      user.check_out
+    );
+    return [
+      row.timestamps,
+      row.day,
+      row.check_in ? _24Hr(row.check_in) : "",
+      row.break_out ? _24Hr(row.break_out) : "",
+      row.break_in ? _24Hr(row.break_in) : "",
+      row.check_out ? _24Hr(row.check_out) : "",
+      row.ot_in ? _24Hr(row.ot_in) : "",
+      row.ot_out ? _24Hr(row.ot_out) : "",
+      row.check_in && row.check_out ? regularHours : "",
+      "",
+      "",
+      "",
+      isWeekend(row.timestamps) ? "" : isUndertime ? undertime : "",
+      "",
+    ];
+  });
+
   //Rest day checker
   function isWeekend(date) {
     const day = new Date(date).getDay();
     return day === 0 || day === 6;
+  }
+
+  function isHoliday(date) {
+    const mdate = new Date(date);
+    const month = String(mdate.getMonth() + 1).padStart(2, "0");
+    const day = String(mdate.getDate()).padStart(2, "0");
+    const year = mdate.getFullYear();
+    const formattedDate = `${month}-${day}-${year}`;
+
+    for (const holiday of holidays) {
+      if (formattedDate === holiday.date) {
+        return { isHoliday: true, type: holiday.type };
+      }
+    }
+    return { isHoliday: false, type: "" };
   }
 
   //All images
@@ -69,11 +234,7 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
   doc.setFontSize(8);
 
   doc.text(dateRange, 306, 140, { align: "center" });
-  doc.text(user.idnumber.toString(), 40, 155);
-  doc.text(user.emp_name, 80, 155);
-  doc.text(user.position, 180, 155);
-  doc.text(user.department, 280, 155);
-  doc.text(user.emp_status, 380, 155);
+  doc.text(user.formatted, 40, 155);
 
   //TABLE FOR ATTENDANCE
   const _tableStartX = 30;
@@ -104,11 +265,20 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
 
   rows.forEach((row) => {
     row.forEach((cell, index) => {
-      if (isWeekend(row[0])) {
+      const check = isHoliday(row[0]);
+      if (check.isHoliday) {
+        if (check.type == "Legal") {
+          doc.setFillColor("#ffff7c");
+        }
+        if (check.type == "Special" || check.type == "Local") {
+          doc.setFillColor("#b2fbbb");
+        }
+      } else if (isWeekend(row[0])) {
         doc.setFillColor("#d9d9d9");
       } else {
         doc.setFillColor("#ffffff");
       }
+
       const colWidth = columnWidths[index];
       const cellX =
         _tableStartX + columnWidths.slice(0, index).reduce((a, b) => a + b, 0);
@@ -257,12 +427,12 @@ export const generatePDF = async (doc, user, rows = [], dateRange = "") => {
   doc.text("Approved by:", 250, _tableStartY);
   _tableStartY += 30;
   doc.text("Mabeza, Louis Anthony E.", 30, _tableStartY);
-  doc.text("Jeffrey L. Vargas", 250, _tableStartY);
+  doc.text(signatory.name, 250, _tableStartY);
   _tableStartY += 10;
   // doc.setFont("verdana_bold", "bold");
   doc.setFontSize(9);
   doc.text("Human Resource Specialist", 30, _tableStartY);
-  doc.text("Acting Manager, AGSD", 250, _tableStartY);
+  doc.text(signatory.position, 250, _tableStartY);
 
   //End of Last Content
 

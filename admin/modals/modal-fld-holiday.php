@@ -12,9 +12,9 @@
                     <div class="d-flex flex-column">
                         <div class="form-group">
                             <select required class="form-control" id="txtHolidayDate" name="holidayType">
-                                <option value="Regular">Legal</option>
+                                <option value="Legal">Legal</option>
                                 <option value="Special">Special</option>
-                                <option value="Legal">Local</option>
+                                <option value="Local">Local</option>
                             </select>
                         </div>
                         <div class="form-group">
