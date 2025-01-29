@@ -11,7 +11,7 @@ try {
         exit();
     }
     $status = 1;
-    $password = "LBRDC";
+    $password = hash('sha256', '"LBRDC"');
     $query = "INSERT INTO `mobile_account`(`Employee`, `Location`, `Password`, `Status`) VALUES (:employee,:location,:password,:status)";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':employee', $_POST['employee']);

@@ -58,6 +58,8 @@ if (!isset($page)) {
       break;
     case "adminMng-mobile-user":
       break;
+    case 'adminMng-userlevel':
+      break;
     default:
       break;
   }

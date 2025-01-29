@@ -1,8 +1,9 @@
 <?php
 session_start();
 include("conn.php");
-
+// exit();
 // Header
+// var_dump($_SESSION);
 include("includes/header.php");
 
 if (!isset($_SESSION['user'])) {
@@ -73,6 +74,10 @@ if (!isset($_SESSION['user'])) {
             case 'fields-signatories':
                 include("pages/fields-signatories.php");
                 include("modals/modal-fld-signatories.php");
+                break;
+            case 'adminMng-userlevel':
+                include("pages/useraccountlevel.php");
+                include("modals/modal-admn-userlevel.php");
                 break;
             default:
                 include("pages/404.php");

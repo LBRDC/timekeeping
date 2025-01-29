@@ -1808,3 +1808,45 @@ const updateScheduleStatus = (id, status) => {
     }
   });
 };
+
+$(document).on("submit", "#addAccountUser", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const idnumber = frmdata.get("useraccount_emp");
+  const username = frmdata.get("useraccount_user");
+  const position = frmdata.get("useraccount_pos");
+  const name = frmdata.get("useraccount_name");
+
+  if (!idnumber || !username || !position || !name) {
+    swal.fire({
+      title: "Error",
+      text: "All fields are required",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    id: idnumber,
+    username: username,
+    position: position,
+    key: "add",
+  };
+
+  _executeRequest("query/useraccount.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal.fire({
+        title: "Success",
+        text: res.result.msg,
+        icon: "success",
+      });
+      window.location.reload();
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});

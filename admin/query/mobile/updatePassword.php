@@ -8,7 +8,7 @@ try {
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
     $accountID = $data['accountID'];
-    $password = $data['password'];
+    $password = hash('sha256', $data['password']);
     $query = "UPDATE `mobile_account` SET `Password` = :password WHERE `accountID` = :accountID";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':accountID', $accountID);

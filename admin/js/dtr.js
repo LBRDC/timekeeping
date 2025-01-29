@@ -8,6 +8,9 @@ export const generatePDF = async (
   holidays,
   signatory
 ) => {
+  const userdtls = $("#user_details");
+  const logged_name = userdtls.data("name");
+  const logged_position = userdtls.data("pos");
   // Nested function
   function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -101,7 +104,7 @@ export const generatePDF = async (
     regdays: 0,
     regdaysHrs: [],
     undertime: [],
-    restDay: "",
+    restDay: [],
   };
 
   rows = rows.map((row) => {
@@ -198,6 +201,15 @@ export const generatePDF = async (
     }, 0);
   }
 
+  function totalHoliday(holiday) {
+    return holiday.reduce((sum, value) => {
+      if (value !== "") {
+        return sum + parseInt(value, 10);
+      }
+      return sum;
+    }, 0);
+  }
+
   //All images
   const images = [
     "../img/pdf/logojpg.jpg",
@@ -275,6 +287,7 @@ export const generatePDF = async (
   });
 
   rows.forEach((row) => {
+    let isRestDayPushed = false;
     row.forEach((cell, index) => {
       const check = isHoliday(row[0]);
       if (check.isHoliday) {
@@ -282,6 +295,10 @@ export const generatePDF = async (
           doc.setFillColor("#ffff7c");
         }
         if (check.type == "Special" || check.type == "Local") {
+          if (!isRestDayPushed) {
+            summaryData.restDay.push("8");
+            isRestDayPushed = true;
+          }
           doc.setFillColor("#b2fbbb");
         }
       } else if (isWeekend(row[0])) {
@@ -324,8 +341,14 @@ export const generatePDF = async (
       regDaysHrsTime(summaryData.regdaysHrs).toString(),
     ],
     ["Undertime (m)", totalUndertime(summaryData.undertime).toString()],
-    ["Rest Day (RD)/Special Holiday (SH) (h) (130%)", "15"],
+    [
+      "Rest Day (RD)/Special Holiday (SH) (h) (130%)",
+      totalHoliday(summaryData.restDay).toString(),
+    ],
   ];
+  if (summaryData.restDay.length === 0) {
+    _summaryRows.pop();
+  }
   const _summaryColumnWidths = [250, 40];
   const _summaryTableWidth = _summaryColumnWidths.reduce((a, b) => a + b, 0);
   doc.setFont("verdana_bold", "bold");
@@ -376,7 +399,7 @@ export const generatePDF = async (
   const _legendRows = [
     ["Rest Day", "#d9d9d9"],
     ["Legal Holiday", "#ffff7c"],
-    ["Local Special Holiday", "#b2fbbb"],
+    ["Local/Special Holiday", "#b2fbbb"],
   ];
   const _legendColumnWidths = [90, 30];
   const _legendRowHeight = 15;
@@ -440,12 +463,12 @@ export const generatePDF = async (
   doc.text("Checked by:", 30, _tableStartY);
   doc.text("Approved by:", 250, _tableStartY);
   _tableStartY += 30;
-  doc.text("Mabeza, Louis Anthony E.", 30, _tableStartY);
+  doc.text(logged_name, 30, _tableStartY);
   doc.text(signatory.name, 250, _tableStartY);
   _tableStartY += 10;
   // doc.setFont("verdana_bold", "bold");
   doc.setFontSize(9);
-  doc.text("Human Resource Specialist", 30, _tableStartY);
+  doc.text(logged_position, 30, _tableStartY);
   doc.text(signatory.position, 250, _tableStartY);
 
   //End of Last Content

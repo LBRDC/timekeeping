@@ -938,8 +938,47 @@ $(document).on("click", "#load_dtremployee_btn", function () {
           ])
           .draw();
       });
-
+      // $("#mdlTimekeeping").modal("hide");
       $("#mdlLoadSelectedEmployee").modal("show");
+    }
+  });
+});
+
+$(document).on("change", "#useraccount_emp", function () {
+  const idnumber = $(this).val();
+  const position = $(this).find(":selected").data("pos");
+  const positionid = $(this).find(":selected").data("posid");
+  const name = $(this).find(":selected").data("name");
+  $("#useraccount_name").val(name);
+  $("#useraccount_pos").val(position);
+  $("#useraccount_posid").val(positionid);
+});
+
+$(document).on("click", ".deleteUser", function () {
+  const id = $(this).attr("data-id");
+
+  Swal.fire({
+    title: "Delete Account",
+    text: "You won't be able to revert this",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const data = { id: id, key: "delete" };
+      _executeRequest("query/useraccount.php", "POST", data, (res) => {
+        if (!res.Error && !res.result.Error) {
+          window.location.reload();
+        } else {
+          swal.fire({
+            title: "Error",
+            text: res.result.msg,
+            icon: "error",
+          });
+        }
+      });
     }
   });
 });

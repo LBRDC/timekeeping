@@ -103,6 +103,7 @@ export const loadSelection = () => {
               doc.addPage();
             }
           }
+          $("#mdlLoadSelectedEmployee").modal("hide");
           const height = window.innerHeight - 50;
           const pdfBlob = doc.output("blob");
           const pdfURL = URL.createObjectURL(pdfBlob);

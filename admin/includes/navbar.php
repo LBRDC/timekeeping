@@ -199,9 +199,14 @@ if (!isset($_GET['page'])) {
                                             } ?>" aria-labelledby="headingPage" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Management</h6>
-        <a class="collapse-item <?php if ($activePage == 'adminMng-user') {
-                                  echo 'active';
-                                } ?>" href="?page=adminMng-user">Users Accounts</a>
+        <?php if ($_SESSION['user']['admin_super'] == 1) : ?>
+          <a class="collapse-item <?php if ($activePage == 'adminMng-user') {
+                                    echo 'active';
+                                  } ?>" href="?page=adminMng-user">Users Accounts</a>
+          <a class="collapse-item <?php if ($activePage == 'adminMng-userlevel') {
+                                    echo 'active';
+                                  } ?>" href="?page=adminMng-userlevel">Users Account Level</a>
+        <?php endif; ?>
         <a class="collapse-item <?php if ($activePage == 'adminMng-mobile-user') {
                                   echo 'active';
                                 } ?>" href="?page=adminMng-mobile-user">Mobile Users Account</a>
@@ -232,11 +237,11 @@ if (!isset($_GET['page'])) {
                                                               } else {
                                                                 echo 'admin_user.webp';
                                                               } ?>" style="max-width: 60px">
-            <span class="ml-2 d-none d-lg-inline text-white small"><?php if (isset($_SESSION['user']['admin_name'])) {
-                                                                      echo $_SESSION['user']['admin_name'];
-                                                                    } else {
-                                                                      echo 'User';
-                                                                    } ?></span>
+            <span class="ml-2 d-none d-lg-inline text-white small" data-pos="<?= $_SESSION['user']['admin_position'] ?>" id="user_details" data-name="<?= $_SESSION['user']['admin_name'] ?>"><?php if (isset($_SESSION['user']['admin_name'])) {
+                                                                                                                                                                                                echo $_SESSION['user']['admin_name'];
+                                                                                                                                                                                              } else {
+                                                                                                                                                                                                echo 'User';
+                                                                                                                                                                                              } ?></span>
           </a>
           <!-- USER: Dropdown -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

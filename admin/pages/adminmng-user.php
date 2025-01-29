@@ -1,5 +1,13 @@
 <?php
+$query = "SELECT emp.idnumber, concat(emp.lastname, ' ', emp.firstname) as name, emp.position as positionid, fp.name as position   FROM `employees` as emp inner join field_position as fp on fp.fld_position_id = emp.position";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$query = "SELECT emp.idnumber, concat(emp.firstname,' ',emp.lastname) as name, au.admin_username as username, fp.name as position  FROM `employees` as emp inner join admin_users as au on au.employee = emp.idnumber inner join field_position as fp on fp.fld_position_id = emp.position";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!-- &&& EMPLOYEE MANAGE &&& -->
 <div class="container-fluid" id="container-wrapper">
@@ -9,7 +17,7 @@
       <li class="breadcrumb-item"><a href="home.php">Home</a></li>
       <li class="breadcrumb-item">Administrator</li>
       <li class="breadcrumb-item">Management</li>
-      <li class="breadcrumb-item active" aria-current="page">Mobile Users Account</li>
+      <li class="breadcrumb-item active" aria-current="page">Users Account</li>
     </ol>
   </div>
 
@@ -17,7 +25,7 @@
     <!-- Add Employee -->
     <div class="col-xl-3 col-md-6 mb-4">
       <div class="card h-100">
-        <a class="btn" href="javascript:void(0);" data-toggle="modal" data-target="#mobile_addEmployee">
+        <a class="btn" href="javascript:void(0);" data-toggle="modal" data-target="#addEmployee_user">
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col mr-2">
@@ -31,24 +39,6 @@
         </a>
       </div>
     </div>
-
-    <!-- Import Employee -->
-    <!-- <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card h-100">
-                <a class="btn" href="javascript:void(0);" data-toggle="modal" data-target="#mdlImport">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col mr-2">
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">Import Excel</div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-plus-circle fa-2x text-success"></i>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            </div> -->
   </div>
 
 
@@ -58,7 +48,7 @@
     <div class="col-lg-12">
       <div class="card mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Employee Records</h6>
+          <h6 class="m-0 font-weight-bold text-primary">User List</h6>
           <!-- <div class="">
                      <button class="btn btn-primary" data-toggle="modal" data-target="#filterTableData">Filter Data</button>
                       <button class="btn btn-primary" data-toggle="modal" data-target="#filterTableColumn">Filter Column</button>
@@ -91,14 +81,24 @@
                 <th>ID NUMBER</th>
                 <th>EMPLOYEE NAME</th>
                 <th>POSITION</th>
-                <th>ACCOUNT LEVEL</th>
-                <th>PASSWORD</th>
-                <th>STATUS</th>
+                <th>USERNAME</th>
                 <th>ACTION</th>
               </tr>
             </thead>
             <tbody>
-
+              <?php foreach ($users as $user): ?>
+                <tr>
+                  <td><?= $user['idnumber'] ?></td>
+                  <td><?= $user['name'] ?></td>
+                  <td><?= $user['position'] ?></td>
+                  <td><?= $user['username'] ?></td>
+                  <td>
+                    <a href="javascript:void(0);" class="btn btn-danger btn-circle btn-sm deleteUser" data-toggle="modal" data-id="<?= $user['idnumber'] ?>">
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
             </tbody>
           </table>
         </div> <!-- #END# TABLE -->

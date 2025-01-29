@@ -1,5 +1,5 @@
 <?php
-$query = 'SELECT att.check_in, att.check_out, att.break_in, att.break_out, att.ot_in, att.ot_out, att.timestamps, ma.Employee, concat(emp.FirstName, " ",emp.LastName) as name  FROM `employee_attendance` as att inner join mobile_account as ma on ma.accountID = att.accountID inner join employee_tbl as emp on emp.IdNumber = ma.Employee order by att.timestamps desc';
+$query = 'SELECT att.check_in, att.check_out, att.break_in, att.break_out, att.ot_in, att.ot_out, att.timestamps, ma.Employee, concat(emp.firstname, " ",emp.lastname) as name  FROM `employee_attendance` as att inner join mobile_account as ma on ma.accountID = att.accountID inner join employees as emp on emp.idnumber = ma.Employee order by att.timestamps desc';
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $attendance = $stmt->fetchAll(PDO::FETCH_ASSOC);
