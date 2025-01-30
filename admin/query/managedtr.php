@@ -33,7 +33,7 @@ try {
         $department_id = $_POST['department'];
         $location_id = $_POST['location'];
         $payroll_id = $_POST['payrollgroup'];
-        $query = "SELECT emp.firstname, emp.lastname, emp.idnumber, fp.name as position  FROM `employees` as emp inner join field_position as fp WHERE department = :department_id AND location = :location_id AND payrollgroup = :payroll_id";
+        $query = "SELECT emp.firstname, emp.lastname, emp.idnumber, emp.idnumber, fp.name as position, ma.accountID as accountID  FROM `employees` as emp inner join field_position as fp inner join mobile_account as ma on ma.Employee = emp.idnumber WHERE department = :department_id AND emp.location = :location_id AND payrollgroup = :payroll_id";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':department_id', $department_id);
         $stmt->bindParam(':location_id', $location_id);

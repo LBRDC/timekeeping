@@ -9,9 +9,10 @@ try {
 
     foreach ($users as $user) {
         $id = $user['idnumber'];
+        $accid = $user['accid'];
         $start_date = $user['startDate'];
         $end_date = $user['endDate'];
-        array_push($response['msg'], getUser($conn, $id, formatDate($start_date), formatDate($end_date)));
+        array_push($response['msg'], getUser($conn, $accid, $id, formatDate($start_date), formatDate($end_date)));
     }
     echo json_encode($response);
     exit();
@@ -29,7 +30,7 @@ function formatDate($date)
     return date_format($date, 'm-d-Y');
 }
 
-function getUser($con, $id, $start_date, $end_date)
+function getUser($con, $accid, $id, $start_date, $end_date)
 {
 
     $userDetails = ["user" => ['idnumber' => '', 'emp_name' => '', 'emp_status' => '', 'department' => '', 'position' => '', 'location' => '',], 'attendance' => [], 'startdate' => $start_date, 'enddate' => $end_date, "holidays" => [], 'signatory' => ''];
@@ -61,7 +62,7 @@ function getUser($con, $id, $start_date, $end_date)
     $stmt = $con->prepare($sql);
     $stmt->bindParam(':startdate', $start_date);
     $stmt->bindParam(':enddate', $end_date);
-    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':id', $accid);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $attendance = [];

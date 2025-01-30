@@ -931,7 +931,7 @@ $(document).on("click", "#load_dtremployee_btn", function () {
       employees.forEach((emp) => {
         tbl.row
           .add([
-            `<input class="big row-checkbox" type="checkbox" data-start="${startDate}" data-end="${endDate}" data-id="${emp.idnumber}" />`,
+            `<input class="big row-checkbox" type="checkbox" data-start="${startDate}" data-end="${endDate}" data-id="${emp.idnumber}" data-accid="${emp.accountID}" />`,
             emp.idnumber,
             `${emp.lastname}, ${emp.firstname}`,
             emp.position,

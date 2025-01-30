@@ -9,7 +9,7 @@ try {
     $data = json_decode($json, true);
     $usernamae = $data['username'];
     $password = hash('sha256', $data['password']);
-    $query = "SELECT concat(e.lastname, ', ', e.firstname, ' ', e.middlename) as name, m.accountID, m.Employee as EmployeeID, m.Location as LocationID, m.Email, m.Password, l.name_location as Location, l.latitude, l.longitude, l.radius, m.Status, m.identifier FROM `mobile_account` as m INNER join employees as e on e.idnumber = m.Employee INNER JOIN field_location as l on l.fld_location_id = m.Location where BINARY m.Employee = :emp_id and BINARY m.Password = :emp_pass";
+    $query = "SELECT concat(e.lastname, ', ', e.firstname, ' ', e.middlename) as name, m.accountID, m.Employee as EmployeeID, m.Location as LocationID, m.Email, m.Password, concat(l.name_location, ' ', '[', fs.check_in,' - ', fs.check_out ,']') as Location, l.latitude, l.longitude, l.radius, m.Status, m.identifier FROM `mobile_account` as m INNER join employees as e on e.idnumber = m.Employee INNER JOIN field_location as l on l.fld_location_id = m.Location inner join field_schedule as fs on fs.fld_schedule_id = e.shift where BINARY m.Employee = :emp_id and BINARY m.Password = :emp_pass";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':emp_id', $usernamae);
     $stmt->bindParam(':emp_pass', $password);

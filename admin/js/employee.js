@@ -24,20 +24,23 @@ export const loadSelection = () => {
     var selectedUsers = [];
     $(".row-checkbox:checked").each(function () {
       var id = $(this).data("id");
+      var accid = $(this).data("accid")
       var startDate = $(this).data("start");
       var endDate = $(this).data("end");
       selectedUsers.push({
         idnumber: id,
+        accid : accid,
         startDate: startDate,
         endDate: endDate,
       });
     });
-
+    
     // Check if there are any selected users
     if (selectedUsers.length === 0) {
       alert("No users selected!");
       return;
     }
+    
     const users = { users: selectedUsers };
     _executeRequest(
       "query/attendancereport.php",
