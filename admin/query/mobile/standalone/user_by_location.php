@@ -1,23 +1,20 @@
 <?php
-include("../../conn.php");
+include("../../../conn.php");
 
 $response = array("Error" => false, 'msg' => '');
 
 try {
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
-    $accountID = $data['accountID'];
-    $serialNumber = $data['serialNumber'];
-    $query = "Update mobile_account set identifier=:identifier where accountID=:accountID";
+    $query = "select  em.idnumber, concat(em.firstname, ' ', em.lastname) as name from employees as em INNER JOIN field_location as fl on fl.fld_location_id = em.location where fl.fld_location_id = :locationID";
     $stmt = $conn->prepare($query);
-    $stmt->bindParam(":identifier", $serialNumber);
-    $stmt->bindParam(":accountID", $accountID);
+    $stmt->bindParam(':locationID', $data['location']);
     if ($stmt->execute()) {
-        $response['msg'] = 'Device has been registered';
+        $response['msg'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($response);
     } else {
         $response['Error'] = true;
-        $response['msg'] = 'Failed to register device';
+        $response['msg'] = 'Failed to fetch sites';
         echo json_encode($response);
     }
     exit();
