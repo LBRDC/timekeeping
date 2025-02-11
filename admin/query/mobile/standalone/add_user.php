@@ -21,6 +21,7 @@ try {
             $stmt->bindParam(':employee', $employee);
             if ($stmt->execute()) {
                 $response['msg'] = "Face added successfully!";
+                $response['face'] = $face;
                 echo json_encode($response);
             } else {
                 $response['Error'] = true;
