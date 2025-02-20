@@ -17,33 +17,34 @@
 </head>
 
 <body class="bg-gradient-login">
-<!-- Center Wrapper -->
-<div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
-  <!-- Login -->
-  <div class="container-login">
-    <div class="row justify-content-center">
-      <div>
-        <div class="card shadow-sm w-100">
-          <div class="card-body p-0">
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="login-form">
-                  <div class="text-center">
-                    <img class="mb-4" src="img/logo/lbrdc-banner-nobg.webp" alt="banner" style="max-width: 300px;">
-                    <h6 class="text-gray-900 mb-4">Biometrics and Attendance Management System</h6>
+  <!-- Center Wrapper -->
+  <div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <!-- Login -->
+    <div class="container-login">
+      <div class="row justify-content-center">
+        <div>
+          <div class="card shadow-sm w-100">
+            <div class="card-body p-0">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="login-form">
+                    <div class="text-center">
+                      <img class="mb-4" src="img/logo/lbrdc-banner-nobg.webp" alt="banner" style="max-width: 300px;">
+                      <h6 class="text-gray-900 mb-4">Biometrics and Attendance Management System</h6>
+                    </div>
+                    <form id="loginFrm" method="post">
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="lgn_username" aria-describedby="usernameHelp" placeholder="Username" required>
+                      </div>
+                      <div class="form-group">
+                        <input type="password" class="form-control" id="lgn_password" placeholder="Password" required>
+                      </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block" id="lgn_btn">Login</button>
+                        <!--<a href="javascript:void(0)" class="btn btn-success btn-block">Login</a>-->
+                      </div>
+                    </form>
                   </div>
-                  <form id="loginFrm" method="post">
-                    <div class="form-group">
-                      <input type="text" class="form-control" id="lgn_username" aria-describedby="usernameHelp" placeholder="Username" required>
-                    </div>
-                    <div class="form-group">
-                      <input type="password" class="form-control" id="lgn_password" placeholder="Password" required>
-                    </div>
-                    <div class="form-group">
-                      <button type="submit" class="btn btn-success btn-block" id="lgn_btn">Login</button>
-                      <!--<a href="javascript:void(0)" class="btn btn-success btn-block">Login</a>-->
-                    </div>
-                  </form>
                 </div>
               </div>
             </div>
@@ -52,7 +53,6 @@
       </div>
     </div>
   </div>
-</div>
   <!-- END Login -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -61,7 +61,9 @@
   <!-- sweetalert2 -->
   <script src="vendor/sweetalert2/old/sweetalert.min.js"></script>
   <!-- LOGIN JS -->
-  <script src="js/login.js"></script>
+  <script type="module" src="./js/functions.js"></script>
+  <script type="module" src="./js/login.js"></script>
+
 </body>
 
 </html>

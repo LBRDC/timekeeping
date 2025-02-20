@@ -4,7 +4,8 @@ export const _executeRequest = (url, method, data, result) => {
     type: method,
     dataType: "json",
     data: data,
-    beforeSend: () => {
+    beforeSend: (xhr) => {
+      xhr.setRequestHeader("Authorization", authQuery);
       swal.fire({
         title: "Loading...",
         text: "Please wait",
@@ -25,3 +26,5 @@ export const _executeRequest = (url, method, data, result) => {
     },
   });
 };
+
+export const authQuery = "Basic WmhlbjpMYnJkYzIwMjEu";

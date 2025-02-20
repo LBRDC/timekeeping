@@ -1,3 +1,4 @@
+import { authQuery } from "./functions.js";
 // fields-location-add ADD
 $(document).on("submit", "#addLocationFrm", function (event) {
   event.preventDefault();
@@ -34,6 +35,9 @@ $(document).on("submit", "#addLocationFrm", function (event) {
     type: "POST",
     dataType: "json",
     data: formData,
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", authQuery);
+    },
     success: function (response) {
       console.log(response);
       if (response.res == "success") {
@@ -132,6 +136,9 @@ $(document).on("submit", "#editLocationFrm", function (event) {
           type: "POST",
           dataType: "json",
           data: formData,
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", authQuery);
+          },
           success: function (response) {
             console.log(response);
             if (response.res == "success") {
@@ -912,7 +919,8 @@ const _executeRequest = (url, method, data, result) => {
     type: method,
     dataType: "json",
     data: data,
-    beforeSend: () => {
+    beforeSend: (xhr) => {
+      xhr.setRequestHeader("Authorization", authQuery);
       swal.fire({
         title: "Loading...",
         text: "Please wait",

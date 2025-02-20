@@ -5,7 +5,7 @@ $response = array("Error" => false, 'msg' => '');
 
 try {
     $accID = $_POST['accountID'];
-    $pw = "LBRDC";
+    $pw = hash('sha256', "LBRDC");
     $query = "UPDATE `mobile_account` SET `Password` = :location WHERE `accountID` = :accountID";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':accountID', $accID);

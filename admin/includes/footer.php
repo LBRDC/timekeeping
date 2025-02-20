@@ -134,11 +134,12 @@ if (!isset($page)) {
 <!-- Custom JS -->
 <script src="js/intervals.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script type="module" src="js/functions.js"></script>
 <script type="module" src="js/pdfconfigure.js"></script>
 <script type="module" src="js/font.js"></script>
 <script type="module" src="js/dtr.js"></script>
 <script type="module" src="js/custom.js"></script>
-<script src="js/ajax.js"></script>
+<script type="module" src="js/ajax.js"></script>
 
 
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
