@@ -127,7 +127,7 @@ if (!isset($page)) {
   });
 </script>
 <!-- session -->
-<script src="js/session.js"></script>
+<script type="module" src="js/session.js"></script>
 <!-- PAGES JS -->
 <?php echo $pages_js;
 ?>

@@ -1,4 +1,5 @@
 import { generatePDF } from "./dtr.js";
+import { authQuery } from "./functions.js";
 export const loadSelection = () => {
   $("#select-all").on("click", function () {
     var isChecked = this.checked;

@@ -1,5 +1,6 @@
 import { generatePDF } from "./dtr.js";
 import { loadSelection } from "./employee.js";
+import { authQuery } from "./functions.js";
 let payroll = null;
 let adddepartment = null;
 let editdepartment = null;
