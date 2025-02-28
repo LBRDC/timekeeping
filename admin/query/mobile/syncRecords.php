@@ -42,6 +42,29 @@ try {
                 echo json_encode($response);
                 exit();
             }
+        } else {
+            $arr = ["check_in" => $record['check_in'], "check_out" => $checkout, "break_in" => $breakin, "break_out" => $breakout, "ot_in" => $otin, "ot_out" => $otout];
+            $keys = array_keys($arr);
+            $values = array_values($arr);
+            for ($i = 0; $i < count($keys); $i++) {
+                if (!checkField($conn, $record['accountID'], $keys[$i], $record['date'])) {
+                    $query = "UPDATE `employee_attendance` SET $keys[$i] = :value WHERE `accountID` = :accountID AND `timestamps` = :timestamps";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bindParam(':value', $values[$i]);
+                    $stmt->bindParam(':accountID', $record['accountID']);
+                    $stmt->bindParam(':timestamps', $record['date']);
+                    if (!$stmt->execute()) {
+                        echo "false";
+                        $conn->rollBack();
+                        $response['Error'] = true;
+                        $response['msg'] = 'Failed to Sync Records';
+                        echo json_encode($response);
+                        exit();
+                    } else {
+                        echo "true";
+                    }
+                }
+            }
         }
     }
     $conn->commit();
@@ -63,4 +86,17 @@ function checkDuplicate($conn, $accountID, $date)
     $stmt->bindParam(':timestamps', $date);
     $stmt->execute();
     return $stmt->rowCount() > 0;
+}
+
+
+
+function checkField($conn, $accoundID, $key, $date)
+{
+    $query = "select $key from `employee_attendance` where `accountID` = :accountID and timestamps = :timestamps";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':accountID', $accoundID);
+    $stmt->bindParam(':timestamps', $date);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result[$key] != null;
 }

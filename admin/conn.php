@@ -6,10 +6,10 @@ $db = "lbrdc_tk";
 $port = 3306;
 $conn = null;
 
-// $host = "sql101.infinityfree.com";
-// $user = "if0_38029794";
-// $pass = "Lbrdc2021";
-// $db = "if0_38029794_tk";
+// $host = "lbrdc-software.com";
+// $user = "lbrdcsof";
+// $pass = "Lbrdc2021.";
+// $db = "lbrdcsof_tk";
 // $port = 3306;
 // $conn = null;
 
