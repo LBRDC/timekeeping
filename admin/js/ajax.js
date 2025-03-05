@@ -762,13 +762,13 @@ $(document).on("submit", "#mobile_enable_user", function (e) {
   updateMobileStatus(data, 1);
 });
 
-$(document).on("submit", "#mobile_reset_user", function (e) {
+$(document).on("submit", "#mobile_reset_password", function (e) {
   e.preventDefault();
   const data = $("#acc_reset_id").val();
   _executeRequest(
     "query/reset_mobile_user.php",
     "POST",
-    { accountID: data },
+    { accountID: data, key: "resetPassword" },
     (res) => {
       if (!res.result.Error) {
         swal
@@ -1849,6 +1849,86 @@ $(document).on("submit", "#addAccountUser", function (e) {
         icon: "success",
       });
       window.location.reload();
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#setPermissionFrm", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const data = {
+    permissions: JSON.stringify(frmdata.getAll("permissions[]")),
+    key: "setPermission",
+    userid: $("#userid").val(),
+  };
+  _executeRequest("query/useraccount.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal.fire({
+        title: "Success",
+        text: res.result.msg,
+        icon: "success",
+      });
+      window.location.reload();
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#mobile_reset_device", function (e) {
+  e.preventDefault();
+  const data = {
+    accountID: $("#device_reset_id").val(),
+    key: "resetDevice",
+  };
+  _executeRequest("query/reset_mobile_user.php", "POST", data, (res) => {
+    if (!res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then((res) => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#mobile_reset_email", function (e) {
+  e.preventDefault();
+  const data = {
+    accountID: $("#email_reset_id").val(),
+    key: "resetEmail",
+  };
+  _executeRequest("query/reset_mobile_user.php", "POST", data, (res) => {
+    if (!res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then((res) => {
+          window.location.reload();
+        });
     } else {
       swal.fire({
         title: "Error",

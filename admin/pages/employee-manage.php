@@ -38,8 +38,12 @@ function formatTime($time24hr)
   $time12hr = date("g:i A", strtotime($time24hr));
   return $time12hr;
 }
-?>
+$user = $_SESSION['user'];
+$E_ADD = $user['employee_add'];
+$E_EDIT = $user['employee_edit'];
+$E_DELETE = $user['employee_delete'];
 
+?>
 
 <!-- &&& EMPLOYEE MANAGE &&& -->
 <div class="container-fluid" id="container-wrapper">
@@ -57,18 +61,33 @@ function formatTime($time24hr)
     <!-- Add Employee -->
     <div class="col-xl-3 col-md-6 mb-4">
       <div class="card h-100">
-        <a class="btn" href="javascript:void(0);" data-toggle="modal" data-target="#mdlAddEmployee">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col mr-2">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">Add Employee</div>
-              </div>
-              <div class="col-auto">
-                <i class="fas fa-plus-circle fa-2x text-success"></i>
+        <?php if ($E_ADD == 1) : ?>
+          <a class="btn " href="javascript:void(0);" data-toggle="modal" data-target="#mdlAddEmployee">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col mr-2">
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">Add Employee</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-plus-circle fa-2x text-success"></i>
+                </div>
               </div>
             </div>
-          </div>
-        </a>
+          </a>
+        <?php else : ?>
+          <a class="btn disabled" href="javascript:void(0);">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col mr-2">
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">Add Employee</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-plus-circle fa-2x text-success"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -112,8 +131,13 @@ function formatTime($time24hr)
                   <td><?= $employee['department'] ?></td>
                   <td><?= $employee['location'] ?></td>
                   <td>
-                    <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlEditEmployee<?= $employee['id'] ?>" class="btn btn-sm btn-primary">Edit</a>
-                    <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlDeleteEmployee<?= $employee['id'] ?>" class="btn btn-sm btn-danger">Delete</a>
+                    <?php if ($E_EDIT == "1") : ?>
+                      <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlEditEmployee<?= $employee['id'] ?>" class="btn btn-md btn-warning"> <i class="fas fa-edit"></i></a>
+                    <?php endif; ?>
+                    <?php if ($E_DELETE == "1") : ?>
+                      <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlDeleteEmployee<?= $employee['id'] ?>" class="btn btn-md btn-danger"><i class="fas fa-trash"></i></a>
+                    <?php endif; ?>
+
                   </td>
                 </tr>
               <?php endforeach; ?>

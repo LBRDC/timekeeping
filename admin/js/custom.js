@@ -458,6 +458,18 @@ $(document).ready(async function () {
     $("#acc_reset_name").html(name);
     $("#acc_reset_id").val(id);
   });
+  $(".reset_device").on("click", function (e) {
+    const id = $(this).data("id");
+    const name = $(this).data("name");
+    $("#device_reset_name").html(name);
+    $("#device_reset_id").val(id);
+  });
+  $(".reset_email").on("click", function (e) {
+    const id = $(this).data("id");
+    const name = $(this).data("name");
+    $("#email_reset_name").html(name);
+    $("#email_reset_id").val(id);
+  });
 });
 
 const regionRate = async () => {
@@ -980,6 +992,42 @@ $(document).on("click", ".deleteUser", function () {
             icon: "error",
           });
         }
+      });
+    }
+  });
+});
+
+$(document).on("click", ".permission_btn", function (e) {
+  const id = $(this).attr("data-id");
+  const data = { id: id, key: "getPermission" };
+  _executeRequest("query/useraccount.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      const permissions = [
+        "employee_add",
+        "employee_edit",
+        "employee_delete",
+        "department",
+        "position",
+        "payroll_group",
+        "schedule",
+        "location",
+        "signatories",
+        "holiday",
+        "mobile_add",
+        "mobile_email",
+        "mobile_device",
+      ];
+
+      permissions.forEach((perm) => {
+        $(`#p_${perm}`).prop("checked", res.result[perm] == 1);
+      });
+      $("#userid").val(id);
+      $("#permissionModal").modal("show");
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
       });
     }
   });

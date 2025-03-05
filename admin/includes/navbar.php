@@ -55,6 +55,14 @@ if (!isset($_GET['page'])) {
 }
 // for nav-item/collapse-item assign to class: active
 // for collapse assign to class: show
+$user = $_SESSION['user'];
+$dept = $user['department'];
+$pos = $user['position'];
+$payroll = $user['payroll_group'];
+$location = $user['location'];
+$schedule = $user['schedule'];
+$signatories = $user['signatories'];
+$holiday = $user['holiday'];
 ?>
 
 <!-- &&& NAVBAR &&& -->
@@ -137,27 +145,41 @@ if (!isset($_GET['page'])) {
                                             } ?>" aria-labelledby="headingTable" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Fields</h6>
-        <a class="collapse-item <?php if ($activePage == 'fields-department') {
-                                  echo 'active';
-                                } ?>" href="?page=fields-department">Department</a>
-        <a class="collapse-item <?php if ($activePage == 'fields-position') {
-                                  echo 'active';
-                                } ?>" href="?page=fields-position">Position</a>
-        <a class="collapse-item <?php if ($activePage == 'fields-payroll') {
-                                  echo 'active';
-                                } ?>" href="?page=fields-payroll">Payroll Grouping</a>
-        <a class="collapse-item <?php if ($activePage == 'fields-location' || $activePage == 'fields-location-add') {
-                                  echo 'active';
-                                } ?>" href="?page=fields-location">Satellite Locations</a>
-        <a class="collapse-item <?php if ($activePage == 'fields-schedule') {
-                                  echo 'active';
-                                } ?>" href="?page=fields-schedule">Schedules</a>
-        <a class="collapse-item <?php if ($activePage == 'fields-signatories') {
-                                  echo 'active';
-                                } ?>" href="?page=fields-signatories">Signatories</a>
-        <a class="collapse-item <?php if ($activePage == 'fields-holiday') {
-                                  echo 'active';
-                                } ?>" href="?page=fields-holiday">Holidays</a>
+        <?php if ($dept == 1): ?>
+          <a class="collapse-item <?php if ($activePage == 'fields-department') {
+                                    echo 'active';
+                                  } ?>" href="?page=fields-department">Department</a>
+        <?php endif; ?>
+        <?php if ($pos == 1): ?>
+          <a class="collapse-item <?php if ($activePage == 'fields-position') {
+                                    echo 'active';
+                                  } ?>" href="?page=fields-position">Position</a>
+        <?php endif; ?>
+        <?php if ($payroll == 1): ?>
+          <a class="collapse-item <?php if ($activePage == 'fields-payroll') {
+                                    echo 'active';
+                                  } ?>" href="?page=fields-payroll">Payroll Grouping</a>
+        <?php endif; ?>
+        <?php if ($location == 1): ?>
+          <a class="collapse-item <?php if ($activePage == 'fields-location' || $activePage == 'fields-location-add') {
+                                    echo 'active';
+                                  } ?>" href="?page=fields-location">Satellite Locations</a>
+        <?php endif; ?>
+        <?php if ($schedule == 1): ?>
+          <a class="collapse-item <?php if ($activePage == 'fields-schedule') {
+                                    echo 'active';
+                                  } ?>" href="?page=fields-schedule">Schedules</a>
+        <?php endif; ?>
+        <?php if ($signatories == 1): ?>
+          <a class="collapse-item <?php if ($activePage == 'fields-signatories') {
+                                    echo 'active';
+                                  } ?>" href="?page=fields-signatories">Signatories</a>
+        <?php endif; ?>
+        <?php if ($holiday == 1): ?>
+          <a class="collapse-item <?php if ($activePage == 'fields-holiday') {
+                                    echo 'active';
+                                  } ?>" href="?page=fields-holiday">Holidays</a>
+        <?php endif; ?>
       </div>
     </div>
   </li>

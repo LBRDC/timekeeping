@@ -3,7 +3,9 @@ session_start();
 include("conn.php");
 // exit();
 // Header
+
 // var_dump($_SESSION);
+
 include("includes/header.php");
 
 if (!isset($_SESSION['user'])) {

@@ -181,18 +181,18 @@
 <!-- MODAL END ENABLE ACCOUNT -->
 
 <!-- MODAL RESET PASSWORD -->
-<div class="modal fade" id="mdl_reset_mobile_user" tabindex="-1" role="dialog" aria-labelledby="mdl_reset_mobile_user"
+<div class="modal fade" id="mdl_reset_mobile_password" tabindex="-1" role="dialog" aria-labelledby="mdl_reset_mobile_user"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="mdlEnableEmployeeLabel">Reset Password <span
-                        class="text-success font-weight-bold" id="acc_reset_name">NAME</span></h5>
+                        class="text-danger font-weight-bold" id="acc_reset_name">NAME</span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="mobile_reset_user" name="mobile_reset_user" method="post">
+            <form id="mobile_reset_password" name="mobile_reset_user" method="post">
                 <div class="modal-body">
                     <div class="col-md-12">
                         <input type="text" name="acc_reset_id" id="acc_reset_id" value="" hidden required>
@@ -203,7 +203,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">RESET</button>
+                    <button type="submit" class="btn btn-danger">RESET</button>
                 </div>
             </form>
         </div>
@@ -211,3 +211,70 @@
 </div>
 
 <!-- MODAL END RESET PASSWORD -->
+
+<!-- MODAL RESET DEVICE -->
+
+<div class="modal fade" id="mdl_reset_mobile_device" tabindex="-1" role="dialog" aria-labelledby="mdl_reset_mobile_user"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mdlEnableEmployeeLabel">Reset Device <span
+                        class="text-danger font-weight-bold" id="device_reset_name">NAME</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="mobile_reset_device" name="mobile_reset_device" method="post">
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <input type="text" name="device_reset_id" id="device_reset_id" value="" hidden required>
+                        <div class="form-row mb-2">
+                            Are you sure you want to RESET&nbsp;<span class=" text-success font-weight-bold"></span>?
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">RESET</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL END RESET DEVICE -->
+
+
+<!-- MODAL RESET EMAIL -->
+
+<div class="modal fade" id="mdl_reset_mobile_email" tabindex="-1" role="dialog" aria-labelledby="mdl_reset_mobile_user"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mdlEnableEmployeeLabel">Reset Email <span
+                        class="text-danger font-weight-bold" id="email_reset_name">NAME</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="mobile_reset_email" name="mobile_reset_email" method="post">
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <input type="text" name="email_reset_id" id="email_reset_id" value="" hidden required>
+                        <div class="form-row mb-2">
+                            Are you sure you want to RESET&nbsp;<span class=" text-success font-weight-bold"></span>?
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">RESET</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL END RESET EMAIL -->

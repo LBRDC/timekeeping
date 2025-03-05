@@ -13,6 +13,7 @@ $emptbl_query = "select e.idnumber, concat(e.lastname, ', ', e.firstname) as nam
 $emp_tbl = $conn->prepare($emptbl_query);
 $emp_tbl->execute();
 $employees_tbl = $emp_tbl->fetchAll(PDO::FETCH_ASSOC);
+$user = $_SESSION['user'];
 ?>
 <!-- &&& EMPLOYEE MANAGE &&& -->
 <div class="container-fluid" id="container-wrapper">
@@ -30,18 +31,34 @@ $employees_tbl = $emp_tbl->fetchAll(PDO::FETCH_ASSOC);
     <!-- Add Employee -->
     <div class="col-xl-3 col-md-6 mb-4">
       <div class="card h-100">
-        <a class="btn" href="javascript:void(0);" data-toggle="modal" data-target="#mobile_addEmployee">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col mr-2">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">Add Employee</div>
-              </div>
-              <div class="col-auto">
-                <i class="fas fa-plus-circle fa-2x text-success"></i>
+        <?php if ($user['mobile_add'] == 1): ?>
+          <a class="btn" href="javascript:void(0);" data-toggle="modal" data-target="#mobile_addEmployee">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col mr-2">
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">Add Employee</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-plus-circle fa-2x text-success"></i>
+                </div>
               </div>
             </div>
-          </div>
-        </a>
+          </a>
+        <?php else: ?>
+          <a class="btn disabled" href="javascript:void(0);">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col mr-2">
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">Add Employee</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-plus-circle fa-2x text-success"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        <?php endif; ?>
+
       </div>
     </div>
 
@@ -125,7 +142,13 @@ $employees_tbl = $emp_tbl->fetchAll(PDO::FETCH_ASSOC);
                 echo '<td>' . $status . '</td>';
                 echo '<td><div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
   <div class="btn-group btn-group-sm" role="group" aria-label="First group">
-    <button type="button" class="btn btn btn-info acc_reset" title="Reset Password"  data-toggle="modal" data-target="#mdl_reset_mobile_user" data-id="' . $emp['accountID'] . '" data-name="' . $emp['name'] . '"> <i class="fas fa-lock-open"></i></button>';
+    <button type="button" class="btn btn btn-info acc_reset" title="Reset Password"  data-toggle="modal" data-target="#mdl_reset_mobile_password" data-id="' . $emp['accountID'] . '" data-name="' . $emp['name'] . '"> <i class="fas fa-lock-open"></i></button>';
+                if ($user['mobile_email'] == 1) {
+                  echo '<button type="button" class="btn btn btn-danger reset_email" title="Reset Email"  data-toggle="modal" data-target="#mdl_reset_mobile_email" data-id="' . $emp['accountID'] . '" data-name="' . $emp['name'] . '"> <i class="fas fa-envelope"></i></button>';
+                }
+                if ($user['mobile_device'] == 1) {
+                  echo '<button type="button" class="btn btn btn-warning reset_device" title="Reset Device"  data-toggle="modal" data-target="#mdl_reset_mobile_device" data-id="' . $emp['accountID'] . '" data-name="' . $emp['name'] . '"> <i class="fas fa-tablet"></i></button>';
+                }
 
                 if ($emp['Status'] == 1) {
                   echo '<button type="button" class="btn btn btn-danger acc_disable" title="Inactive"  data-toggle="modal" data-target="#mdl_disable_mobile_user" data-id="' . $emp['accountID'] . '" data-name="' . $emp['name'] . '"> <i class="fas fa-times-circle"></i></button>';

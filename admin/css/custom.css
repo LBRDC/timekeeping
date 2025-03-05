@@ -1,41 +1,44 @@
 .bg-navbar {
-    background-color: #019525
+  background-color: #019525;
 }
 
 .sidebar-light .sidebar-brand {
-    color: #fafafa;
-    background-color: #028623;
+  color: #fafafa;
+  background-color: #028623;
 }
 
 .card-bg {
-    background-image: url('../img/landbank.webp');
-    background-size: cover;
-    min-height: 200px;
-    background-position-y: center;
+  background-image: url("../img/landbank.webp");
+  background-size: cover;
+  min-height: 200px;
+  background-position-y: center;
 }
 
 .txt-shadow {
-    text-shadow: 2px 2px #adadad;
+  text-shadow: 2px 2px #adadad;
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: 0.3;
+}
 /*body.swal2-shown > [aria-hidden='true'] {
     transition: 0s filter;
     filter: blur(3px);
   }*/
 
 #manningList tbody tr td:last-of-type {
-    display: flex;
-    gap: 5px;
-
+  display: flex;
+  gap: 5px;
 }
 
 .hoverable-input:hover .close-btn {
-    display: block;
+  display: block;
 }
 
 .close-btn {
-    margin-bottom: 5px;
-    display: none;
-    color: red;
-    cursor: pointer;
+  margin-bottom: 5px;
+  display: none;
+  color: red;
+  cursor: pointer;
 }
