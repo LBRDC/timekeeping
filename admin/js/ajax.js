@@ -1487,7 +1487,6 @@ $(document).on("submit", "#mdlAddEmployees", function (e) {
     emp_status,
     lname,
     fname,
-    mname,
     address,
     email,
     contact,
@@ -1927,6 +1926,104 @@ $(document).on("submit", "#mobile_reset_email", function (e) {
           icon: "success",
         })
         .then((res) => {
+          window.location.reload();
+        });
+    } else {
+      swal.fire({
+        title: "Error",
+        text: res.result.msg,
+        icon: "error",
+      });
+    }
+  });
+});
+
+$(document).on("submit", "#mdlEditEmployees", function (e) {
+  e.preventDefault();
+
+  const frmdata = new FormData(this);
+  const payroll = frmdata.get("edit_emp_payroll");
+  const dept = frmdata.get("edit_emp_dept");
+  const position = frmdata.get("edit_emp_pos");
+  const empno = frmdata.get("edit_emp_idnumber");
+  const shift = frmdata.get("edit_emp_shift");
+  const location = frmdata.get("edit_emp_location");
+  const emp_type = frmdata.get("edit_emp_type");
+  const emp_status = frmdata.get("edit_emp_status");
+  const lname = frmdata.get("edit_emp_lname");
+  const fname = frmdata.get("edit_emp_fname");
+  const mname = frmdata.get("edit_emp_mname");
+  const suffix =
+    frmdata.get("edit_emp_suffix").length == 0 ||
+    frmdata.get("edit_emp_suffix") == "null"
+      ? ""
+      : frmdata.get("edit_emp_suffix");
+  const address = frmdata.get("edit_emp_address");
+  const email = frmdata.get("edit_emp_email");
+  const contact = frmdata.get("edit_emp_contact");
+  const dateofbirth = frmdata.get("edit_emp_bdate");
+  const gender = frmdata.get("edit_emp_gender");
+  const civil_status = frmdata.get("edit_emp_civil");
+  const nationality = frmdata.get("edit_emp_nationality");
+
+  const validate = [
+    dept,
+    position,
+    empno,
+    shift,
+    location,
+    emp_type,
+    emp_status,
+    lname,
+    fname,
+    address,
+    email,
+    contact,
+    dateofbirth,
+    gender,
+    civil_status,
+    nationality,
+  ];
+
+  if (validate.includes("")) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  const data = {
+    emp_no: empno,
+    emp_type: emp_type,
+    emp_status: emp_status,
+    lname: lname,
+    fname: fname,
+    mname: mname,
+    suffix: suffix,
+    address: address,
+    email: email,
+    contact: contact,
+    dateofbirth: dateofbirth,
+    gender: gender,
+    civil_status: civil_status,
+    nationality: nationality,
+    payroll: payroll,
+    department: dept,
+    position: position,
+    shift: shift,
+    location: location,
+  };
+  _executeRequest("query/manage_EditEmployee.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      swal
+        .fire({
+          title: "Success",
+          text: res.result.msg,
+          icon: "success",
+        })
+        .then(() => {
           window.location.reload();
         });
     } else {

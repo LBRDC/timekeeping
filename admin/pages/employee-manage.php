@@ -132,10 +132,10 @@ $E_DELETE = $user['employee_delete'];
                   <td><?= $employee['location'] ?></td>
                   <td>
                     <?php if ($E_EDIT == "1") : ?>
-                      <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlEditEmployee<?= $employee['id'] ?>" class="btn btn-md btn-warning"> <i class="fas fa-edit"></i></a>
+                      <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlEditEmployee" data-id="<?= $employee['id'] ?>" class="btn btn-md btn-warning emps_edit"> <i class="fas fa-edit"></i></a>
                     <?php endif; ?>
                     <?php if ($E_DELETE == "1") : ?>
-                      <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlDeleteEmployee<?= $employee['id'] ?>" class="btn btn-md btn-danger"><i class="fas fa-trash"></i></a>
+                      <a href="javascript:void(0);" data-toggle="modal" data-target="#mdlDeleteEmployee" data-id="<?= $employee['id'] ?>" class="btn btn-md btn-danger emps_delete"><i class="fas fa-trash"></i></a>
                     <?php endif; ?>
 
                   </td>

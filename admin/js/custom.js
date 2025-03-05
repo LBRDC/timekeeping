@@ -842,13 +842,9 @@ $(document).on("change", "#add_emp_location", function () {
   const data = { location: location, key: "payrollgroup" };
 
   _executeRequest("query/managedtr.php", "POST", data, (res) => {
-    console.log(res);
-
     if (!res.Error && !res.result.Error) {
       const payrollgroup = res.result.msg;
       const payrollgroupSelection = $("#add_emp_payroll");
-      console.log(payrollgroupSelection);
-
       payrollgroupSelection.html("");
       payrollgroupSelection.append(
         "`<option value='' disabled selected>Select Payroll Group</option>`"
@@ -888,11 +884,51 @@ $(document).on("change", "#add_emp_payroll", function () {
   const data = { payrollgroup: payrollgroup, key: "department" };
 
   _executeRequest("query/managedtr.php", "POST", data, (res) => {
-    console.log(res);
-
     if (!res.Error && !res.result.Error) {
       const department = res.result.msg;
       const departmentSelection = $("#add_emp_dept");
+      departmentSelection.html("");
+      departmentSelection.append(
+        "`<option value='' disabled selected>Select Department</option>`"
+      );
+      department.forEach((dept) => {
+        departmentSelection.append(
+          `<option value='${dept.fld_dept_id}'>${dept.name}</option>`
+        );
+      });
+    }
+  });
+});
+
+$(document).on("change", "#edit_emp_location", function () {
+  const location = $(this).val();
+  const data = { location: location, key: "payrollgroup" };
+
+  _executeRequest("query/managedtr.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      const payrollgroup = res.result.msg;
+      const payrollgroupSelection = $("#edit_emp_payroll");
+      payrollgroupSelection.html("");
+      payrollgroupSelection.append(
+        "`<option value='' disabled selected>Select Payroll Group</option>`"
+      );
+      payrollgroup.forEach((payroll) => {
+        payrollgroupSelection.append(
+          `<option value='${payroll.fld_payroll_id}'>${payroll.name}</option>`
+        );
+      });
+    }
+  });
+});
+
+$(document).on("change", "#edit_emp_payroll", function () {
+  const payrollgroup = $(this).val();
+  const data = { payrollgroup: payrollgroup, key: "department" };
+
+  _executeRequest("query/managedtr.php", "POST", data, (res) => {
+    if (!res.Error && !res.result.Error) {
+      const department = res.result.msg;
+      const departmentSelection = $("#edit_emp_dept");
       departmentSelection.html("");
       departmentSelection.append(
         "`<option value='' disabled selected>Select Department</option>`"
@@ -998,6 +1034,7 @@ $(document).on("click", ".deleteUser", function () {
 });
 
 $(document).on("click", ".permission_btn", function (e) {
+  alert("click");
   const id = $(this).attr("data-id");
   const data = { id: id, key: "getPermission" };
   _executeRequest("query/useraccount.php", "POST", data, (res) => {
@@ -1032,3 +1069,106 @@ $(document).on("click", ".permission_btn", function (e) {
     }
   });
 });
+
+$(document).on("click", ".emps_edit", function (e) {
+  const id = $(this).attr("data-id");
+
+  _executeRequest(
+    "query/manage_allemloyees.php",
+    "POST",
+    { id: id },
+    async (res) => {
+      if (!res.Error && !res.result.Error) {
+        const result = res.result.msg;
+
+        //PAYROLL
+        const payrollGroup = await getPayrollGroup(result.location);
+        const payrollgroupSelection = $("#edit_emp_payroll");
+        payrollgroupSelection.html("");
+        payrollgroupSelection.append(
+          "`<option value='' disabled selected>Select Payroll Group</option>`"
+        );
+        payrollGroup.forEach((payroll) => {
+          payrollgroupSelection.append(
+            `<option value='${payroll.fld_payroll_id}'>${payroll.name}</option>`
+          );
+        });
+
+        //DEPARTMENT
+        const department = await getDepartment(result.payrollgroup);
+        const departmentSelection = $("#edit_emp_dept");
+        departmentSelection.html("");
+        departmentSelection.append(
+          "`<option value='' disabled selected>Select Department</option>`"
+        );
+        department.forEach((dept) => {
+          departmentSelection.append(
+            `<option value='${dept.fld_dept_id}'>${dept.name}</option>`
+          );
+        });
+
+        $("#edit_emp_location").val(result.location);
+        $("#edit_emp_payroll").val(result.payrollgroup);
+        $("#edit_emp_dept").val(result.department);
+        $("#edit_emp_pos").val(result.position);
+        $("#edit_emp_idnumber").val(result.idnumber);
+        $("#edit_emp_shift").val(result.shift);
+        $("#edit_emp_type").val(result.employment_type);
+        $("#edit_emp_status").val(result.employment_status);
+        $("#edit_emp_fname").val(result.firstname);
+        $("#edit_emp_mname").val(result.middlename);
+        $("#edit_emp_lname").val(result.lastname);
+        $("#edit_emp_suffix").val(result.suffix);
+        $("#edit_emp_address").val(result.address);
+        $("#edit_emp_email").val(result.email);
+        $("#edit_emp_contact").val(result.contact);
+        $("#edit_emp_bdate").val(result.birthdate);
+        $("#edit_emp_gender").val(result.gender);
+        $("#edit_emp_civil").val(result.civil_status);
+        $("#edit_emp_nationality").val(result.nationality);
+      } else {
+        swal.fire({
+          title: "Error",
+          text: res.result.msg,
+          icon: "error",
+        });
+      }
+    }
+  );
+
+  $("#mdlEditEmployee").modal("show");
+});
+
+const getPayrollGroup = async (location) => {
+  return new Promise((resolve, reject) => {
+    _executeRequest(
+      "query/managedtr.php",
+      "POST",
+      { location: location, key: "payrollgroup" },
+      (res) => {
+        if (!res.Error && !res.result.Error) {
+          resolve(res.result.msg);
+        } else {
+          reject(res.result.msg);
+        }
+      }
+    );
+  });
+};
+
+const getDepartment = async (payrollGroup) => {
+  return new Promise((resolve, reject) => {
+    _executeRequest(
+      "query/managedtr.php",
+      "POST",
+      { payrollgroup: payrollGroup, key: "department" },
+      (res) => {
+        if (!res.Error && !res.result.Error) {
+          resolve(res.result.msg);
+        } else {
+          reject(res.result.msg);
+        }
+      }
+    );
+  });
+};

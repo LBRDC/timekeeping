@@ -182,3 +182,192 @@
         </form>
     </div>
 </div> <!-- #END# Modal Add Employee -->
+
+
+
+
+
+<!-- Modal Edit Employee -->
+<div class="modal fade" id="mdlEditEmployee" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="ModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <form id="mdlEditEmployees">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Edit Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Company -->
+                    <div name="company_info">
+                        <hr />
+                        <h5 class="font-weight-bold text-center">Company Information</h5>
+                        <hr />
+
+                        <div class="form-row mb-2">
+                            <div class="col-md-6">
+                                <label for="add_SatLoc">Satellite Location<span class="text-danger">*</span></label>
+                                <select class="form-control " id="edit_emp_location" name="edit_emp_location" data-live-search="true" data-style="btn-outline-light">
+                                    <option value="" disabled selected>Select Location....</option>
+                                    <?php foreach ($location as $list): ?>
+                                        <option value="<?= $list['fld_location_id']; ?>"><?= $list['name_location']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="add_Position">Payroll Group<span class="text-danger">*</span></label>
+                                <select class="form-control " id="edit_emp_payroll" name="edit_emp_payroll" data-live-search="true" data-style="btn-outline-light">
+                                    <?php foreach ($payrollgroup as $list): ?>
+                                        <!-- <option value="<?= $list['fld_payroll_id']; ?>"><?= "[" . $list['code'] . "]" ?> <?= $list['name']; ?></option> -->
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row mb-2">
+                            <div class="col-md-6">
+                                <label for="add_Dept">Department<span class="text-danger">*</span></label>
+                                <select class="form-control " name="edit_emp_dept" id="edit_emp_dept" data-live-search="true" data-style="btn-outline-light">
+
+                                    <?php foreach ($departments as $list): ?>
+                                        <!-- <option value="<?= $list['fld_dept_id']; ?>"><?= "[" . $list['code'] . "]" ?> <?= $list['name']; ?></option> -->
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="add_Position">Position<span class="text-danger">*</span></label>
+                                <select class="form-control " id="edit_emp_pos" name="edit_emp_pos" data-live-search="true" data-style="btn-outline-light">
+                                    <option value="">Select...</option>
+                                    <?php foreach ($position as $list): ?>
+                                        <option value="<?= $list['fld_position_id']; ?>"><?= "[" . $list['code'] . "]" ?> <?= $list['name']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row mb-2">
+                            <div class="col-md-6">
+                                <label for="add_EmpId">Employee Number<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="edit_emp_idnumber" name="edit_emp_idnumber">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit_EmpSched">Shift Schedule<span class="text-danger">*</span></label>
+                                <select class="form-control " id="edit_emp_shift" name="edit_emp_shift" data-style="btn-outline-light">
+                                    <option value="">Select...</option>
+                                    <?php foreach ($schedules as $list): ?>
+                                        <option value="<?= $list['fld_schedule_id'] ?>"><?= $list['code'] . ": " ?><?= formatTime($list['check_in']) . ' - ' . formatTime($list['check_out']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-row mb-4">
+                            <div class="col-md-6">
+                                <label for="edit_EmpType">Employment Type<span class="text-danger">*</span></label>
+                                <select class="form-control " id="edit_emp_type" name="edit_emp_type" data-style="btn-outline-light">
+                                    <option value="">Select...</option>
+                                    <option value="regular">Regular</option>
+                                    <option value="reliever">Reliever</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="add_EmpStatus">Employment Status<span class="text-danger">*</span></label>
+                                <select class="form-control " id="edit_emp_status" name="edit_emp_status" data-style="btn-outline-light">
+                                    <option value="">Select...</option>
+                                    <option value="active">Active</option>
+                                    <option value="resigned">Resigned</option>
+                                    <option value="retired">Retired</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> <!-- #END# Company -->
+                    <!-- Personal -->
+                    <div name="personal_info">
+                        <hr />
+                        <h5 class="font-weight-bold text-center">Personal Information</h5>
+                        <hr />
+                        <div class="form-row mb-2">
+                            <div class="col-md-3">
+                                <label for="edit_NameFirst">First Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="edit_emp_fname" id="edit_emp_fname" placeholder="">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit_NameMid">Middle Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="edit_emp_mname" id="edit_emp_mname">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit_NameLast">Last Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="edit_emp_lname" id="edit_emp_lname">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit_NameSuf">Suffix</label>
+                                <select class="form-control" id="edit_emp_suffix" name="edit_emp_suffix">
+                                    <option value="">Select...</option>
+                                    <option value="Jr.">Jr.</option>
+                                    <option value="Sr.">Sr.</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row mb-2">
+                            <div class="col">
+                                <label for="edit_Resident">Residential Address</label>
+                                <input type="text" class="form-control" id="edit_emp_address" name="edit_emp_address">
+                            </div>
+                        </div>
+                        <div class="form-row mb-2">
+                            <div class="col-md-6">
+                                <label for="edit_Email">Email Address</label>
+                                <input type="email" class="form-control" id="edit_emp_email" name="edit_emp_email">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="add_Contact">Contact Number</label>
+                                <input type="text" class="form-control" id="edit_emp_contact" name="edit_emp_contact">
+                            </div>
+                        </div>
+                        <div class="form-row mb-2">
+                            <div class="col-md-3" id="datepicker-year">
+                                <label for="edit_Birth">Date of Birth</label>
+                                <div class="input-group date">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="edit_emp_bdate" name="edit_emp_bdate" placeholder="MM/DD/YYYY">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit_Sex">Sex</label>
+                                <select class="form-control" id="edit_emp_gender" name="edit_emp_gender">
+                                    <option value="">Select...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit_Civil">Civil Status</label>
+                                <select class="form-control " id="edit_emp_civil" name="edit_emp_civil">
+                                    <option value="">Select</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Divorced">Divorced</option>
+                                    <option value="Separated">Separated</option>
+                                    <option value="Annulled">Annulled</option>
+                                    <option value="Widowed">Widowed</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3" id="datepicker-year">
+                                <label for="edit_Nation">Nationality</label>
+                                <input type="text" class="form-control" id="edit_emp_nationality" name="edit_emp_nationality">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-center">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> <!-- #END# Modal Edit Employee -->
