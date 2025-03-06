@@ -12,7 +12,7 @@ if ($lgn_username == "admin") {
     $query = "SELECT * FROM admin_users WHERE admin_username = :username AND admin_password = :password";
     $stmt = $conn->prepare($query);
 } else {
-    $stmt = $conn->prepare("SELECT au.admin_img, au.superuser, concat(emp.firstname, ' ', emp.lastname) as name, fp.name as position, up.employee_add, up.employee_edit, up.employee_delete, up.department, up.position, up.payroll_group, up.location, up.schedule, up.signatories, up.holiday, up.mobile_add, up.mobile_email, up.mobile_device FROM admin_users as au inner join employees as emp on emp.idnumber = au.employee inner join field_position as fp on fp.fld_position_id = emp.position inner join user_permission as up on up.userID = au.employee  WHERE admin_username = :username AND admin_password = :password ");
+    $stmt = $conn->prepare("SELECT au.id, au.admin_img, au.superuser, concat(emp.firstname, ' ', emp.lastname) as name, fp.name as position, up.employee_add, up.employee_edit, up.employee_delete, up.department, up.position, up.payroll_group, up.location, up.schedule, up.signatories, up.holiday, up.mobile_add, up.mobile_email, up.mobile_device FROM admin_users as au inner join employees as emp on emp.idnumber = au.employee inner join field_position as fp on fp.fld_position_id = emp.position inner join user_permission as up on up.userID = au.employee  WHERE admin_username = :username AND admin_password = :password ");
 }
 
 $stmt->bindParam(':username', $lgn_username);
@@ -24,9 +24,11 @@ $admin_Acc = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($admin_Acc) {
     $_SESSION['user'] = array(
+        'admin_id' => $admin_Acc['id'],
         'admin_img' => $admin_Acc['admin_img'],
         'admin_name' => $admin_Acc['name'] ?? "Administrator",
         'admin_super' => $admin_Acc['superuser'],
+        'admin_pass' => $lgn_password,
         'admin_position' => $admin_Acc['position'] ?? "Administrator",
         'employee_add' => $admin_Acc['employee_add'] ?? 1,
         'employee_edit' => $admin_Acc['employee_edit'] ?? 1,

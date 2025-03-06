@@ -2035,3 +2035,36 @@ $(document).on("submit", "#mdlEditEmployees", function (e) {
     }
   });
 });
+
+$("#user_change_password").on("submit", function (e) {
+  e.preventDefault();
+  const frmdata = new FormData(this);
+  const data = {
+    accountID: frmdata.get("password_change_id").trim(),
+    curr_pass: frmdata.get("curr_password").trim(),
+    new_pass: frmdata.get("new_password").trim(),
+    con_pass: frmdata.get("confirm_password").trim(),
+  };
+
+  if (!data.accountID) {
+    swal.fire({
+      title: "Error",
+      text: "Please refresh your browser",
+      icon: "error",
+    });
+    return;
+  }
+
+  if (!data.curr_pass || !data.new_pass || !data.con_pass) {
+    swal.fire({
+      title: "Error",
+      text: "Please fill in all fields.",
+      icon: "error",
+    });
+    return;
+  }
+
+  _executeRequest("query/changepassword.php", "POST", data, (res) => {
+    console.log(res);
+  });
+});

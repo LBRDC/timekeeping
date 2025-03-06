@@ -7,7 +7,7 @@ include("conn.php");
 // var_dump($_SESSION);
 
 include("includes/header.php");
-
+$user = $_SESSION['user'];
 if (!isset($_SESSION['user'])) {
 } else {
     include('includes/navbar.php');
